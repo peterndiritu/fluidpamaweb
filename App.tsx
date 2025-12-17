@@ -15,6 +15,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import BlockchainPage from './pages/BlockchainPage';
 import BuyPage from './pages/BuyPage';
 import SupportPage from './pages/SupportPage';
+import DocsPage from './pages/DocsPage';
 
 // Define the logical order of pages for navigation
 const PAGE_SEQUENCE = [
@@ -28,6 +29,7 @@ const PAGE_SEQUENCE = [
   'host',
   'about',
   'roadmap',
+  'docs',
   'support',
   'faq',
   'terms',
@@ -100,6 +102,7 @@ function App() {
       case 'host': return <HostPage />;
       case 'about': return <AboutPage />;
       case 'roadmap': return <RoadmapPage />;
+      case 'docs': return <DocsPage />;
       case 'faq': return <FaqPage />;
       case 'terms': return <TermsPage />;
       case 'privacy': return <PrivacyPage />;

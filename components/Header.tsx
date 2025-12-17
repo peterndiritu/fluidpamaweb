@@ -90,20 +90,20 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
     { label: 'Support', action: () => handleLinkClick('support') },
     { label: 'Listing', action: () => {} },
     { label: 'Community', action: () => handleLinkClick('home', 'presale') },
-    { label: 'Docs', action: () => window.open('https://docs.fluid.finance', '_blank') },
+    { label: 'Docs', action: () => handleLinkClick('docs') },
   ];
 
   return (
     <nav 
       className={`fixed w-full z-50 top-0 left-0 transition-all duration-300 py-4 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}
+      } ${isMenuOpen ? 'bg-slate-950/80 dark:bg-slate-950/95 backdrop-blur-xl' : ''}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div 
           className={`flex items-center justify-between h-16 rounded-2xl px-6 transition-all duration-300 ${
-            isScrolled 
-              ? 'backdrop-blur-xl bg-transparent border border-white/10 dark:border-white/5 shadow-none' 
+            isScrolled || isMenuOpen
+              ? 'backdrop-blur-xl bg-slate-950/50 border border-white/10 shadow-lg' 
               : 'bg-transparent border-transparent'
           }`}
         >
@@ -116,157 +116,100 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                 <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" />
                 <path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" />
             </svg>
-            <span className="font-bold text-xl tracking-tighter text-slate-900 dark:text-white transition-colors">
-              fluid
-            </span>
+            <span className="font-bold text-2xl tracking-tighter text-slate-900 dark:text-white">fluid</span>
           </div>
-
+          
           {/* Desktop Nav */}
-          <div className="hidden xl:flex items-center space-x-1">
-            {navStructure.map((item, index) => (
-              <div key={index} className="relative group">
-                {item.children ? (
-                  <button className="flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 font-bold text-sm px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all">
-                    {item.label} <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
+          <div className="hidden md:flex items-center space-x-2">
+            {navStructure.map(item => (
+              item.children ? (
+                <div key={item.label} className="group relative">
+                  <button className="flex items-center space-x-1 px-4 py-2 text-sm font-bold text-slate-400 hover:text-white rounded-lg transition-colors">
+                    <span>{item.label}</span>
+                    <ChevronDown size={14} />
                   </button>
-                ) : (
-                  <button 
-                    onClick={item.action} 
-                    className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 font-bold text-sm px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all"
-                  >
-                    {item.label}
-                  </button>
-                )}
-
-                {item.children && (
-                  <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
-                    <div className="w-56 backdrop-blur-3xl bg-white/20 dark:bg-black/40 rounded-xl border border-white/20 dark:border-white/10 overflow-hidden p-2 shadow-2xl">
-                      {item.children.map((child, cIndex) => (
-                        <button
-                          key={cIndex}
-                          onClick={child.action}
-                          className="block w-full text-left px-4 py-2 rounded-lg text-sm text-slate-800 dark:text-slate-200 hover:bg-white/20 dark:hover:bg-white/10 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors font-medium"
-                        >
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                    <div className="bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg p-2 min-w-[200px]">
+                      {item.children.map(child => (
+                        <a key={child.label} onClick={child.action} className="block px-4 py-2 text-sm text-slate-300 hover:bg-white/10 hover:text-white rounded-lg cursor-pointer">
                           {child.label}
-                        </button>
+                        </a>
                       ))}
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              ) : (
+                <a key={item.label} onClick={item.action} className="px-4 py-2 text-sm font-bold text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer">
+                  {item.label}
+                </a>
+              )
             ))}
           </div>
 
-          {/* Right Side Actions */}
-          <div className="hidden md:flex items-center gap-4">
-            <button 
-                onClick={() => handleLinkClick('wallet')}
-                className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 rounded-lg hover:bg-white/10 dark:hover:bg-white/5 transition-colors"
-            >
-                <Download size={14} /> Download
+          {/* Right Section: Wallet + Theme Toggle + Mobile Menu */}
+          <div className="flex items-center space-x-2">
+            <div className="hidden md:block">
+              <ConnectButton 
+                client={client}
+                wallets={wallets}
+                theme={"dark"}
+                connectButton={{
+                  className: "!py-2 !px-4 !rounded-xl !text-sm !font-bold !bg-white/10 !border-none !text-white hover:!bg-white/20 !transition-all"
+                }}
+              />
+            </div>
+            
+            <button onClick={toggleTheme} className="p-2.5 rounded-full text-slate-400 bg-white/5 hover:bg-white/10 transition-colors">
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
             
-            <button 
-              onClick={toggleTheme}
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-white/20 transition-colors"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="-mr-2 flex xl:hidden items-center gap-4">
-            <button 
-                onClick={toggleTheme}
-                className="p-2 rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-600 dark:text-slate-400 md:hidden"
-              >
-                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/10 focus:outline-none"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="md:hidden">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2.5 rounded-full text-slate-400 bg-white/5 hover:bg-white/10 transition-colors">
+                {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
+      
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="xl:hidden backdrop-blur-3xl bg-white/80 dark:bg-black/80 border-b border-white/20 dark:border-white/10 absolute w-full left-0 top-20 shadow-2xl transition-colors max-h-[calc(100vh-80px)] overflow-y-auto rounded-b-3xl">
-          <div className="px-4 pt-4 pb-8 space-y-2">
-            
-            {navStructure.map((item, index) => (
-              <div key={index}>
-                {item.children ? (
-                  <div>
-                    <button 
-                      onClick={() => toggleMobileSubmenu(item.label)}
-                      className="w-full flex items-center justify-between text-left text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl text-base font-bold"
-                    >
-                      {item.label}
-                      <ChevronDown size={16} className={`transition-transform duration-200 ${mobileSubmenu === item.label ? 'rotate-180' : ''}`} />
-                    </button>
-                    
-                    {mobileSubmenu === item.label && (
-                      <div className="pl-4 pr-2 space-y-1 mt-1 mb-2 border-l-2 border-white/20 ml-4">
-                        {item.children.map((child, cIndex) => (
-                          <button
-                            key={cIndex}
-                            onClick={() => {
-                              child.action();
-                              setIsMenuOpen(false);
-                            }}
-                            className="w-full text-left block px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-cyan-400 font-medium"
-                          >
-                            {child.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <button 
-                    onClick={() => {
-                      item.action();
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full text-left text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-white hover:bg-white/10 block px-4 py-3 rounded-xl text-base font-bold"
-                  >
-                    {item.label}
+      <div className={`transition-all duration-300 md:hidden ${isMenuOpen ? 'max-h-screen' : 'max-h-0'} overflow-hidden`}>
+        <div className="pt-4 pb-3 space-y-1 px-4">
+          {navStructure.map(item => (
+            <div key={item.label}>
+              {item.children ? (
+                <>
+                  <button onClick={() => toggleMobileSubmenu(item.label)} className="w-full flex justify-between items-center px-3 py-3 text-base font-bold text-slate-300 rounded-lg hover:bg-white/10">
+                    <span>{item.label}</span>
+                    <ChevronDown size={16} className={`transition-transform ${mobileSubmenu === item.label ? 'rotate-180' : ''}`} />
                   </button>
-                )}
-              </div>
-            ))}
-
-            <div className="border-t border-white/10 my-4 pt-4 space-y-3">
-              <button 
-                onClick={() => handleLinkClick('wallet')}
-                className="w-full flex items-center justify-center gap-2 py-3 bg-white/10 text-slate-900 dark:text-white font-bold rounded-xl"
-              >
-                <Download size={18} /> Download Wallet
-              </button>
-              <button 
-                onClick={() => handleLinkClick('buy')}
-                className="w-full py-3 bg-gradient-to-r from-lime-400 to-green-500 text-slate-900 font-bold rounded-xl shadow-lg"
-              >
-                Buy FLUID Tokens
-              </button>
+                  <div className={`pl-4 transition-all duration-300 ${mobileSubmenu === item.label ? 'max-h-96' : 'max-h-0'} overflow-hidden`}>
+                    {item.children.map(child => (
+                      <a key={child.label} onClick={child.action} className="block px-3 py-2 text-base font-medium text-slate-400 rounded-lg hover:bg-white/10 hover:text-white cursor-pointer">
+                        {child.label}
+                      </a>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <a onClick={item.action} className="block px-3 py-3 text-base font-bold text-slate-300 rounded-lg hover:bg-white/10 cursor-pointer">
+                  {item.label}
+                </a>
+              )}
             </div>
-
-            <div className="flex justify-center pt-2">
-              <ConnectButton 
-                client={client} 
+          ))}
+          <div className="pt-4 px-3">
+             <ConnectButton 
+                client={client}
                 wallets={wallets}
-                theme={theme}
-              />
-            </div>
+                theme={"dark"}
+                connectButton={{
+                    className: "!w-full !py-3 !rounded-xl !text-base !font-bold !bg-white !text-black !border-none hover:!bg-gray-200 transition-all shadow-lg"
+                }}
+             />
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
