@@ -110,7 +110,7 @@ function App() {
 
   return (
     <div 
-      className="min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-emerald-500/30 transition-colors duration-300 relative"
+      className="min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-cyan-500/30 transition-colors duration-300 relative"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
