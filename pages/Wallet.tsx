@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowUpRight, ArrowDownLeft, X, Copy, QrCode, Check, Loader2, CheckCircle, Wallet as WalletIcon, 
   ArrowLeft, ChevronRight, Search, AppWindow, Landmark, SlidersHorizontal, LogOut, ShieldCheck, Bell, Palette,
   Globe, Briefcase, Minus, Plus, Building, Network, AlertTriangle, RefreshCw, CreditCard, 
   ArrowDownUp, Droplets, BarChart2, Zap, Eye, EyeOff, Ban, Trash2, Smartphone, ShoppingBag, Music, Tv,
-  ChevronDown, Wifi, ExternalLink, Shield, HardDrive, Smartphone as PhoneIcon, Tablet, Monitor, History
+  ChevronDown, Wifi, ExternalLink, Shield, HardDrive, Tablet, Monitor, History, User, Fingerprint, Lock
 } from 'lucide-react';
-import { AreaChart, Area, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 
 // --- Shared Types ---
 interface Token {
-  id: string; symbol: string; name: string; icon: React.ReactNode; price: number; balance: number; color: string; network: string;
+  id: string; 
+  symbol: string; 
+  name: string; 
+  icon: React.ReactNode; 
+  price: number; 
+  balance: number; 
+  color: string; 
+  network: string;
 }
-
-interface CardTransaction { id: string; vendor: string; amount: number; date: string; icon: React.ReactNode; }
 
 const FLUID_LOGO_SVG = (
   <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -23,11 +27,18 @@ const FLUID_LOGO_SVG = (
   </svg>
 );
 
+const NETWORKS = [
+  { id: 'fluid', name: 'Fluid Mainnet', icon: <div className="text-cyan-400 w-4 h-4">{FLUID_LOGO_SVG}</div> },
+  { id: 'ethereum', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-4 h-4" alt="ETH" /> },
+  { id: 'solana', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png" className="w-4 h-4" alt="SOL" /> },
+  { id: 'polygon', name: 'Polygon', icon: <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" className="w-4 h-4" alt="MATIC" /> },
+];
+
 const TOKENS: Token[] = [
   { id: 'fluid', symbol: 'FLD', name: 'Fluid', icon: <div className="text-cyan-400">{FLUID_LOGO_SVG}</div>, price: 0.85, balance: 45200, color: '#22d3ee', network: 'Fluid' },
-  { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-full" />, price: 3450, balance: 4.25, color: '#6366f1', network: 'Ethereum' },
-  { id: 'usdc', symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" className="w-full" />, price: 1, balance: 12500, color: '#2775ca', network: 'Ethereum' },
-  { id: 'solana', symbol: 'SOL', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png" className="w-full" />, price: 145, balance: 120, color: '#14f195', network: 'Solana' },
+  { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-full" alt="ETH" />, price: 3450, balance: 4.25, color: '#6366f1', network: 'Ethereum' },
+  { id: 'usdc', symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" className="w-full" alt="USDC" />, price: 1, balance: 12500, color: '#2775ca', network: 'Ethereum' },
+  { id: 'solana', symbol: 'SOL', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png" className="w-full" alt="SOL" />, price: 145, balance: 120, color: '#14f195', network: 'Solana' },
 ];
 
 const TRANSACTIONS = [
@@ -131,7 +142,6 @@ const PortfolioTab = () => {
         </div>
       </div>
 
-      {/* Transaction History Section */}
       <div className="space-y-3">
         <div className="flex items-center justify-between px-2">
             <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Transaction History</h3>
@@ -163,11 +173,12 @@ const PortfolioTab = () => {
         </div>
       </div>
 
-      {/* --- MODALS --- */}
       {selectedToken && !modalType && (
         <div className="absolute inset-0 z-[150] bg-slate-950/90 flex flex-col animate-fade-in-up rounded-[inherit]">
            <header className="p-4 border-b border-slate-800 flex justify-between items-center">
-              <button onClick={() => setSelectedToken(null)}><ArrowLeft/></button>
+              <button onClick={() => setSelectedToken(null)} aria-label="Back">
+                <ArrowLeft size={24} />
+              </button>
               <h3 className="font-bold text-white">{selectedToken.name}</h3>
               <div className="w-6 h-6"></div>
            </header>
@@ -189,7 +200,13 @@ const PortfolioTab = () => {
 
       {modalType === 'send' && (
         <div className="absolute inset-0 z-[150] bg-slate-950 flex flex-col animate-fade-in-up p-6 rounded-[inherit]">
-           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)} className="text-slate-400"><X/></button><h3 className="font-bold text-white">Send Crypto</h3><div className="w-6"/>header>
+           <header className="flex justify-between items-center mb-8">
+              <button onClick={() => setModalType(null)} className="text-slate-400">
+                <X size={24} />
+              </button>
+              <h3 className="font-bold text-white">Send Crypto</h3>
+              <div className="w-6" />
+           </header>
            <div className="space-y-6">
               <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800">
                  <label className="text-xs text-slate-500 uppercase font-bold mb-2 block">Recipient</label>
@@ -209,7 +226,13 @@ const PortfolioTab = () => {
 
       {modalType === 'receive' && (
         <div className="absolute inset-0 z-[150] bg-slate-950 flex flex-col animate-fade-in-up p-6 rounded-[inherit]">
-           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)} className="text-slate-400"><X/></button><h3 className="font-bold text-white">Receive</h3><div className="w-6"/>header>
+           <header className="flex justify-between items-center mb-8">
+              <button onClick={() => setModalType(null)} className="text-slate-400">
+                <X size={24} />
+              </button>
+              <h3 className="font-bold text-white">Receive</h3>
+              <div className="w-6" />
+           </header>
            <div className="flex flex-col items-center gap-8 py-8 text-center overflow-y-auto">
               <div className="p-4 bg-white rounded-3xl shadow-2xl">
                  <QrCode size={180} className="text-slate-950" />
@@ -271,7 +294,7 @@ const TradeTab = () => {
               <div className="flex justify-between items-center">
                 <input type="number" value={payAmount} onChange={e => setPayAmount(e.target.value)} className="bg-transparent text-3xl md:text-4xl font-bold text-white outline-none w-1/2" />
                 <button className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
-                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-5 h-5"/> <span className="font-bold text-sm text-white">ETH</span> <ChevronDown size={14}/>
+                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-5 h-5" alt="ETH" /> <span className="font-bold text-sm text-white">ETH</span> <ChevronDown size={14}/>
                 </button>
               </div>
             </div>
@@ -418,8 +441,8 @@ const BankTab = () => {
   };
 
   const rwas = [
-    { name: 'NYC Penthouse Share', value: 125000, yield: '4.2%', icon: <Building/> },
-    { name: 'Gold Bullion (LBMA)', value: 4500, yield: 'N/A', icon: <Briefcase/> }
+    { name: 'NYC Penthouse Share', value: 125000, yield: '4.2%', icon: <Building size={24} /> },
+    { name: 'Gold Bullion (LBMA)', value: 4500, yield: 'N/A', icon: <Briefcase size={24} /> }
   ];
 
   return (
@@ -468,182 +491,197 @@ const BankTab = () => {
                   <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Yield: {rwa.yield}</p>
                 </div>
               </div>
-              <p className="text-base md:text-lg font-bold text-white">${rwa.value.toLocaleString()}</p>
+              <ChevronRight size={20} className="text-slate-600" />
             </div>
           ))}
-          <button className="w-full py-4 bg-blue-600/10 text-blue-400 border border-blue-500/20 font-bold rounded-2xl mt-2 text-sm transition-transform active:scale-95">Explore RWA Marketplace</button>
         </div>
       </div>
     </div>
   );
 };
 
-const BrowserTab = () => {
-  const [connectSim, setConnectSim] = useState<any>(null);
-  const dapps = [
-    { name: 'Uniswap v3', category: 'DeFi', icon: '🦄' },
-    { name: 'OpenSea', category: 'NFT Marketplace', icon: '🌊' },
-    { name: 'Aave', category: 'Lending', icon: '👻' },
-    { name: 'Curve', category: 'Stable DEX', icon: '🌈' },
-  ];
+const SettingsTab = () => {
+    const settingsItems = [
+        { icon: User, label: 'Profile Settings', sub: 'Manage account details' },
+        { icon: Lock, label: 'Security & Privacy', sub: '2FA, Biometrics, Recovery' },
+        { icon: Network, label: 'Network Config', sub: 'Custom RPC, Nodes' },
+        { icon: Bell, label: 'Notifications', sub: 'Alerts, Price updates' },
+        { icon: Palette, label: 'App Theme', sub: 'Dark mode, custom styles' },
+        { icon: Fingerprint, label: 'Identity Verification', sub: 'KYC Tier 2' },
+        { icon: HardDrive, label: 'Data & Storage', sub: 'Cache, backup export' },
+    ];
 
-  return (
-    <div className="p-4 space-y-6 pb-28 animate-fade-in-up h-full overflow-y-auto custom-scrollbar relative">
-      <SimulationOverlay 
-        show={!!connectSim} 
-        title={connectSim?.title} 
-        sub={connectSim?.sub} 
-        icon={connectSim?.icon} 
-        onDone={connectSim?.done ? () => setConnectSim(null) : null} 
-      />
-
-      <div className="relative">
-        <input type="text" placeholder="Search DApps or Enter URL" className="w-full bg-slate-900 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-cyan-500 outline-none transition-colors text-sm" />
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18}/>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 md:gap-4">
-        {dapps.map(dapp => (
-          <button 
-            key={dapp.name} 
-            onClick={() => setConnectSim({ title: `Connecting to ${dapp.name}...`, sub: 'Approving connection request', icon: ShieldCheck, done: true })}
-            className="p-4 md:p-6 bg-slate-900 border border-slate-800 rounded-3xl flex flex-col items-center gap-3 hover:border-cyan-500/30 transition-all group"
-          >
-            <div className="text-3xl md:text-4xl group-hover:scale-110 transition-transform">{dapp.icon}</div>
-            <div className="text-center">
-              <p className="font-bold text-white text-xs md:text-sm">{dapp.name}</p>
-              <p className="text-[9px] md:text-[10px] text-slate-500 uppercase font-bold tracking-widest">{dapp.category}</p>
+    return (
+        <div className="p-4 space-y-8 pb-28 animate-fade-in-up h-full overflow-y-auto custom-scrollbar">
+            <div className="flex flex-col items-center gap-4 py-6">
+                <div className="w-20 h-20 rounded-full bg-slate-800 border border-slate-700 p-4 relative">
+                    {FLUID_LOGO_SVG}
+                    <div className="absolute bottom-0 right-0 w-6 h-6 bg-emerald-500 border-2 border-slate-950 rounded-full flex items-center justify-center text-[10px] text-black font-black"><Check size={14}/></div>
+                </div>
+                <div className="text-center">
+                    <h3 className="text-xl font-bold text-white">Marcus Fluid</h3>
+                    <p className="text-xs text-slate-500 font-bold">Premium User • 0x71C...88B</p>
+                </div>
             </div>
-          </button>
-        ))}
-      </div>
 
-      <div className="p-6 bg-slate-950/50 border border-slate-800 rounded-3xl space-y-4">
-         <h4 className="font-bold text-white flex items-center gap-2"><HardDrive size={18} className="text-cyan-400"/> Parmaweb Hosting</h4>
-         <p className="text-[10px] md:text-xs text-slate-500">Your decentralized files and frontends are deployed globally with 100% uptime.</p>
-         <button className="w-full py-3 bg-slate-800 text-white text-xs font-bold rounded-xl">Manage Hosting</button>
-      </div>
-    </div>
-  );
+            <div className="space-y-2">
+                {settingsItems.map((item, idx) => (
+                    <button key={idx} className="w-full flex items-center justify-between p-4 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all group">
+                        <div className="flex items-center gap-4">
+                            <div className="p-2.5 rounded-xl bg-slate-800 text-slate-400 group-hover:text-cyan-400 transition-colors"><item.icon size={20}/></div>
+                            <div className="text-left">
+                                <p className="text-sm font-bold text-white leading-none mb-1">{item.label}</p>
+                                <p className="text-[10px] text-slate-500 font-medium">{item.sub}</p>
+                            </div>
+                        </div>
+                        <ChevronRight size={16} className="text-slate-600" />
+                    </button>
+                ))}
+                <button className="w-full flex items-center gap-4 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500/20 transition-all mt-4">
+                    <LogOut size={20}/>
+                    <span className="text-sm font-bold">Logout Session</span>
+                </button>
+            </div>
+            
+            <div className="text-center pt-8">
+                <p className="text-[10px] text-slate-700 font-black uppercase tracking-widest">Fluid v1.2.4 (Mainnet)</p>
+            </div>
+        </div>
+    );
 };
 
-// --- Main App Presentation Layer ---
+// --- Main Page Component ---
 
-const WalletPage = () => {
-  const [activeTab, setActiveTab] = useState<'wallet' | 'trade' | 'cards' | 'browser' | 'bank'>('wallet');
-  const [viewMode, setViewMode] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
+const WalletPage: React.FC = () => {
+  const [tab, setTab] = useState<'portfolio' | 'trade' | 'cards' | 'bank' | 'settings'>('portfolio');
+  const [currentNetwork, setCurrentNetwork] = useState(NETWORKS[0]);
+  const [isNetworkSelectorOpen, setIsNetworkSelectorOpen] = useState(false);
+  const networkRef = useRef<HTMLDivElement>(null);
 
-  const navItems = [
-    { id: 'wallet', label: 'Wallet', icon: WalletIcon },
-    { id: 'trade', label: 'Trade', icon: RefreshCw },
-    { id: 'cards', label: 'Cards', icon: CreditCard },
-    { id: 'browser', label: 'Browser', icon: AppWindow },
-    { id: 'bank', label: 'Bank', icon: Landmark },
-  ] as const;
-
-  const renderContent = () => {
-    switch(activeTab) {
-      case 'wallet': return <PortfolioTab />;
-      case 'trade': return <TradeTab />;
-      case 'cards': return <CardsTab />;
-      case 'browser': return <BrowserTab />;
-      case 'bank': return <BankTab />;
-    }
-  };
-
-  // Viewport sizes for simulation
-  const viewportStyles = {
-    mobile: "w-[375px] h-[812px] rounded-[3rem] border-[12px] border-slate-900 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]",
-    tablet: "w-[768px] h-[1024px] rounded-[2.5rem] border-[16px] border-slate-900 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]",
-    desktop: "w-full min-h-[800px] border-none shadow-none"
-  };
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (networkRef.current && !networkRef.current.contains(event.target as Node)) {
+        setIsNetworkSelectorOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white pt-32 pb-20 overflow-x-hidden">
-      
-      {/* Presentation Header */}
+    <div className="min-h-screen pt-32 pb-16 flex flex-col items-center">
       <div className="max-w-7xl mx-auto px-4 text-center mb-12">
-          <span className="text-cyan-500 font-bold uppercase tracking-widest text-xs">Product Demo</span>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mt-4 mb-6">Experience the Super App</h2>
-          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 text-lg">
-             The Fluid Super App combines banking, DeFi, and RWA management into a unified mobile experience. Test the interactive simulation below.
-          </p>
-          
-          {/* Simulation Controls */}
-          <div className="flex justify-center gap-2 p-1.5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 w-max mx-auto shadow-xl">
-             <button 
-                onClick={() => setViewMode('mobile')}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'mobile' ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-700 dark:hover:text-white'}`}
-             >
-                <Smartphone size={14}/> Mobile
-             </button>
-             <button 
-                onClick={() => setViewMode('tablet')}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'tablet' ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-700 dark:hover:text-white'}`}
-             >
-                <Tablet size={14}/> Tablet
-             </button>
-             <button 
-                onClick={() => setViewMode('desktop')}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'desktop' ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-700 dark:hover:text-white'}`}
-             >
-                <Monitor size={14}/> Desktop
-             </button>
-          </div>
+        <h1 className="text-5xl font-extrabold text-white mb-4">Fluid Non-Custodial Wallet</h1>
+        <p className="text-slate-400 max-w-2xl mx-auto text-lg font-medium">Your assets, your keys. The most advanced multichain wallet for the Fluid ecosystem.</p>
       </div>
 
       {/* Simulator Container */}
-      <div className="max-w-7xl mx-auto px-4 flex justify-center perspective-2000">
-        <div className={`transition-all duration-700 ease-in-out overflow-hidden relative bg-slate-950 border-slate-900 ${viewportStyles[viewMode]}`}>
-            
-            {/* The "Internal" App Body */}
-            <div className="h-full flex flex-col pt-16 relative">
-                {/* Internal Notch for mobile/tablet */}
-                {(viewMode === 'mobile' || viewMode === 'tablet') && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-2xl z-[60]"></div>
-                )}
-
-                {/* Header (App Bar) */}
-                <header className="absolute top-0 left-0 right-0 p-4 flex items-center justify-between bg-slate-950/80 backdrop-blur-xl border-b border-slate-900 z-50">
-                    <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center text-cyan-400 shadow-lg">
-                            <div className="w-4 h-4">{FLUID_LOGO_SVG}</div>
-                        </div>
-                        <div className={`${viewMode === 'mobile' ? 'hidden sm:block' : 'block'}`}>
-                            <h1 className="text-xs font-bold text-white leading-none">Fluid Super App</h1>
-                            <p className="text-[8px] text-emerald-400 font-bold uppercase tracking-tighter mt-0.5 flex items-center gap-1">
-                                <span className="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span> Mainnet
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex gap-1.5">
-                        <button className="p-1.5 bg-slate-900 rounded-lg border border-slate-800 text-slate-400 hover:text-white transition-colors"><Bell size={14}/></button>
-                        <button className="p-1.5 bg-slate-900 rounded-lg border border-slate-800 text-slate-400 hover:text-white transition-colors"><SlidersHorizontal size={14}/></button>
-                    </div>
-                </header>
-
-                {/* Tab Content */}
-                <main className="flex-1 overflow-hidden">
-                    {renderContent()}
-                </main>
-
-                {/* Internal Bottom Nav */}
-                <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-slate-900/80 backdrop-blur-2xl border border-slate-800 rounded-[2rem] p-1.5 flex justify-between z-[100] shadow-2xl">
-                    {navItems.map(item => (
-                        <button 
-                            key={item.id} 
-                            onClick={() => setActiveTab(item.id)} 
-                            className={`flex flex-col items-center gap-1 py-2 px-3 rounded-2xl transition-all ${activeTab === item.id ? 'text-cyan-400 bg-cyan-500/5' : 'text-slate-500 hover:text-slate-300'}`}
-                        >
-                            <item.icon size={18} className={activeTab === item.id ? 'scale-110 drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]' : ''}/>
-                            <span className="text-[8px] font-bold uppercase tracking-widest leading-none">{viewMode === 'mobile' ? item.label.charAt(0) : item.label}</span>
-                        </button>
-                    ))}
-                </nav>
-            </div>
+      <div className="relative w-full max-w-[420px] h-[840px] bg-slate-950 border-[12px] border-slate-900 rounded-[4rem] shadow-2xl overflow-hidden animate-fade-in-up">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-6 bg-slate-900 rounded-b-3xl z-[100] flex items-center justify-center">
+            <div className="w-16 h-1 bg-slate-800 rounded-full"></div>
         </div>
+
+        {/* Dynamic Header with Network Selector */}
+        <header className="flex justify-between items-center p-6 pt-10 border-b border-slate-800/50 relative z-40 bg-slate-950">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 bg-white/5 rounded-lg p-1.5 text-white">{FLUID_LOGO_SVG}</div>
+              <h1 className="text-lg font-bold text-white tracking-tight leading-none">Fluid Wallet</h1>
+            </div>
+            
+            {/* Network Selector Dropdown */}
+            <div className="relative" ref={networkRef}>
+              <button 
+                onClick={() => setIsNetworkSelectorOpen(!isNetworkSelectorOpen)}
+                className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all"
+              >
+                {currentNetwork.icon}
+                <span className="text-[10px] font-black text-slate-300 uppercase tracking-wider">{currentNetwork.name}</span>
+                <ChevronDown size={10} className={`text-slate-500 transition-transform ${isNetworkSelectorOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isNetworkSelectorOpen && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl py-2 z-[60] animate-fade-in-up">
+                   <p className="px-3 py-1 text-[9px] font-black text-slate-600 uppercase tracking-widest">Select Network</p>
+                   {NETWORKS.map(net => (
+                     <button
+                        key={net.id}
+                        onClick={() => {
+                          setCurrentNetwork(net);
+                          setIsNetworkSelectorOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-3 py-2 text-xs font-bold transition-colors ${currentNetwork.id === net.id ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
+                     >
+                        <div className="w-5 h-5 flex items-center justify-center bg-slate-950 rounded-md p-1 border border-slate-800">
+                          {net.icon}
+                        </div>
+                        {net.name}
+                        {currentNetwork.id === net.id && <Check size={12} className="ml-auto" />}
+                     </button>
+                   ))}
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div className="flex gap-2">
+            <button className="p-2.5 rounded-xl bg-slate-900 text-slate-400 border border-slate-800 hover:text-white transition-colors relative">
+                <Bell size={20}/>
+                <span className="absolute top-2 right-2 w-2 h-2 bg-cyan-500 rounded-full border-2 border-slate-950"></span>
+            </button>
+            <button onClick={() => setTab('settings')} className={`p-2.5 rounded-xl border transition-all ${tab === 'settings' ? 'bg-cyan-500 text-slate-950 border-cyan-500' : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'}`}><SlidersHorizontal size={20}/></button>
+          </div>
+        </header>
+
+        {/* Simulator Main View Area */}
+        <div className="h-full bg-slate-950">
+          {tab === 'portfolio' && <PortfolioTab />}
+          {tab === 'trade' && <TradeTab />}
+          {tab === 'cards' && <CardsTab />}
+          {tab === 'bank' && <BankTab />}
+          {tab === 'settings' && <SettingsTab />}
+        </div>
+
+        {/* Enhanced Navigation Bar with Labels */}
+        <nav className="absolute bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-2xl border-t border-slate-800 flex justify-around items-center p-3 pb-8 z-50 rounded-b-[3.5rem] shadow-2xl">
+          <button 
+            onClick={() => setTab('portfolio')} 
+            className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl transition-all min-w-[64px] ${tab === 'portfolio' ? 'bg-cyan-500/10 text-cyan-400 shadow-lg shadow-cyan-500/10' : 'text-slate-500 hover:text-white'}`}
+          >
+            <WalletIcon size={22}/>
+            <span className="text-[9px] font-black uppercase tracking-tighter">Home</span>
+          </button>
+          <button 
+            onClick={() => setTab('trade')} 
+            className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl transition-all min-w-[64px] ${tab === 'trade' ? 'bg-cyan-500/10 text-cyan-400 shadow-lg shadow-cyan-500/10' : 'text-slate-500 hover:text-white'}`}
+          >
+            <RefreshCw size={22}/>
+            <span className="text-[9px] font-black uppercase tracking-tighter">Swap</span>
+          </button>
+          <button 
+            onClick={() => setTab('cards')} 
+            className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl transition-all min-w-[64px] ${tab === 'cards' ? 'bg-cyan-500/10 text-cyan-400 shadow-lg shadow-cyan-500/10' : 'text-slate-500 hover:text-white'}`}
+          >
+            <CreditCard size={22}/>
+            <span className="text-[9px] font-black uppercase tracking-tighter">Cards</span>
+          </button>
+          <button 
+            onClick={() => setTab('bank')} 
+            className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl transition-all min-w-[64px] ${tab === 'bank' ? 'bg-cyan-500/10 text-cyan-400 shadow-lg shadow-cyan-500/10' : 'text-slate-500 hover:text-white'}`}
+          >
+            <Landmark size={22}/>
+            <span className="text-[9px] font-black uppercase tracking-tighter">Bank</span>
+          </button>
+        </nav>
       </div>
 
+      <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl">
+        <div className="flex items-center gap-3 text-slate-400"><ShieldCheck className="text-emerald-500"/> AES-256 Encrypted</div>
+        <div className="flex items-center gap-3 text-slate-400"><Globe className="text-blue-500"/> 10+ Blockchains</div>
+        <div className="flex items-center gap-3 text-slate-400"><Zap className="text-yellow-500"/> Instant Off-Ramp</div>
+        <div className="flex items-center gap-3 text-slate-400"><ArrowDownUp className="text-cyan-500"/> Native Bridge</div>
+      </div>
     </div>
   );
 };

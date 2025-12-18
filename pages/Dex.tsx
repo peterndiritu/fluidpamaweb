@@ -134,7 +134,7 @@ const TokenSelectorModal = ({ isOpen, onClose, onSelect, currentToken }: { isOpe
                 </div>
                 
                 <div className="p-6 overflow-y-auto custom-scrollbar space-y-6">
-                    {/* Refined Search Field */}
+                    {/* Search Field */}
                     <div className="relative group">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors" size={20} />
                         <input 
@@ -155,7 +155,7 @@ const TokenSelectorModal = ({ isOpen, onClose, onSelect, currentToken }: { isOpe
                         )}
                     </div>
 
-                    {/* Common Bases - Quick Access */}
+                    {/* Common Bases */}
                     <div>
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 px-1">Common Bases</p>
                         <div className="flex flex-wrap gap-2">
@@ -172,7 +172,7 @@ const TokenSelectorModal = ({ isOpen, onClose, onSelect, currentToken }: { isOpe
                         </div>
                     </div>
 
-                    {/* Token List with Balance */}
+                    {/* Token List */}
                     <div className="space-y-1">
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 px-1">Token List</p>
                         {filteredTokens.length > 0 ? filteredTokens.map(t => (
