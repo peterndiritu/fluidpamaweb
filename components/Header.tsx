@@ -68,8 +68,8 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       children: [
         { label: 'Fluid Blockchain', action: () => handleLinkClick('blockchain') },
         { label: 'Wallet', action: () => handleLinkClick('wallet') },
-        { label: 'Fluid DEX', action: () => handleLinkClick('dex') },
-        { label: 'Fluid Crypto Cards', action: () => handleLinkClick('cards') },
+        { label: 'Fluid DEX', action: () => handleLinkClick('wallet') },
+        { label: 'Fluid Crypto Cards', action: () => handleLinkClick('wallet') },
         { label: 'Fluid Token', action: () => handleLinkClick('token') },
       ]
     },

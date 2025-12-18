@@ -4,8 +4,6 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import WalletPage from './pages/Wallet';
 import HostPage from './pages/Host';
-import DexPage from './pages/Dex';
-import CardsPage from './pages/Cards';
 import AboutPage from './pages/About';
 import TokenPage from './pages/TokenPage';
 import RoadmapPage from './pages/RoadmapPage';
@@ -23,8 +21,6 @@ const PAGE_SEQUENCE = [
   'buy',
   'blockchain',
   'wallet',
-  'dex',
-  'cards',
   'token',
   'host',
   'about',
@@ -96,8 +92,6 @@ function App() {
       case 'buy': return <BuyPage />;
       case 'blockchain': return <BlockchainPage />;
       case 'wallet': return <WalletPage />;
-      case 'dex': return <DexPage />;
-      case 'cards': return <CardsPage />;
       case 'token': return <TokenPage />;
       case 'host': return <HostPage />;
       case 'about': return <AboutPage />;

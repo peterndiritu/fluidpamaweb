@@ -1,11 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize Gemini Client safely
-// Ensure process.env.API_KEY is accessed safely to avoid crashes if process is undefined (handled by polyfill in index.html)
-const apiKey = typeof process !== "undefined" && process.env ? process.env.API_KEY : "";
-
-// Only create instance if key exists to prevent immediate errors, though functionality will require it.
-const ai = new GoogleGenAI({ apiKey: apiKey || "dummy_key_to_prevent_crash_if_missing" });
+// Fix: Simplified GoogleGenAI initialization as per the latest SDK guidelines.
+// The API key is expected to be available in the environment variables.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 /**
  * Edits an image using Gemini 2.5 Flash Image based on a text prompt.
@@ -19,11 +16,6 @@ export const editImageWithGemini = async (
   mimeType: string,
   prompt: string
 ): Promise<string | null> => {
-  if (!apiKey) {
-    console.error("Gemini API Key is missing");
-    return null;
-  }
-
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
@@ -78,14 +70,10 @@ export interface SearchResult {
  * @returns Object containing text response and grounding metadata
  */
 export const generateTextWithSearch = async (prompt: string): Promise<SearchResult> => {
-  if (!apiKey) {
-    console.error("Gemini API Key is missing");
-    return { text: "API Key is missing. Please check your configuration.", sources: [] };
-  }
-
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      // Fix: Updated model to 'gemini-3-flash-preview' for better performance on search-grounded text tasks as per guidelines.
+      model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
