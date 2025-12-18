@@ -4,7 +4,7 @@ import {
   ArrowLeft, ChevronRight, Search, AppWindow, Landmark, SlidersHorizontal, LogOut, ShieldCheck, Bell, Palette,
   Globe, Briefcase, Minus, Plus, Building, Network, AlertTriangle, RefreshCw, CreditCard, 
   ArrowDownUp, Droplets, BarChart2, Zap, Eye, EyeOff, Ban, Trash2, Smartphone, ShoppingBag, Music, Tv,
-  ChevronDown, Wifi, ExternalLink, Shield, HardDrive, Smartphone as PhoneIcon, Tablet, Monitor
+  ChevronDown, Wifi, ExternalLink, Shield, HardDrive, Smartphone as PhoneIcon, Tablet, Monitor, History
 } from 'lucide-react';
 import { AreaChart, Area, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 
@@ -28,6 +28,14 @@ const TOKENS: Token[] = [
   { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-full" />, price: 3450, balance: 4.25, color: '#6366f1', network: 'Ethereum' },
   { id: 'usdc', symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" className="w-full" />, price: 1, balance: 12500, color: '#2775ca', network: 'Ethereum' },
   { id: 'solana', symbol: 'SOL', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png" className="w-full" />, price: 145, balance: 120, color: '#14f195', network: 'Solana' },
+];
+
+const TRANSACTIONS = [
+  { id: '1', date: 'May 24', type: 'Receive', amount: '+1,200 FLD', status: 'Success', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+  { id: '2', date: 'May 23', type: 'Swap', amount: '-0.25 ETH', status: 'Success', color: 'text-slate-300', bg: 'bg-slate-500/10' },
+  { id: '3', date: 'May 21', type: 'Send', amount: '-500 USDC', status: 'Success', color: 'text-rose-400', bg: 'bg-rose-500/10' },
+  { id: '4', date: 'May 20', type: 'Stake', amount: '10k FLD', status: 'Success', color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
+  { id: '5', date: 'May 19', type: 'Buy', amount: '+0.1 ETH', status: 'Pending', color: 'text-amber-400', bg: 'bg-amber-500/10' },
 ];
 
 // --- Sub-Components ---
@@ -100,25 +108,59 @@ const PortfolioTab = () => {
 
       <div className="space-y-3">
         <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest px-2">Assets</h3>
-        {TOKENS.map(token => (
-          <button 
-            key={token.id} 
-            onClick={() => setSelectedToken(token)}
-            className="w-full flex items-center justify-between p-4 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all group"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-slate-800 rounded-2xl p-2 group-hover:scale-110 transition-transform">{token.icon}</div>
-              <div className="text-left">
-                <div className="font-bold text-white leading-none mb-1">{token.name}</div>
-                <div className="text-xs text-slate-500 font-medium">{token.balance.toLocaleString()} {token.symbol}</div>
-              </div>
+        <div className="space-y-2">
+            {TOKENS.map(token => (
+            <button 
+                key={token.id} 
+                onClick={() => setSelectedToken(token)}
+                className="w-full flex items-center justify-between p-4 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all group"
+            >
+                <div className="flex items-center gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-slate-800 rounded-2xl p-2 group-hover:scale-110 transition-transform">{token.icon}</div>
+                <div className="text-left">
+                    <div className="font-bold text-white leading-none mb-1">{token.name}</div>
+                    <div className="text-xs text-slate-500 font-medium">{token.balance.toLocaleString()} {token.symbol}</div>
+                </div>
+                </div>
+                <div className="text-right">
+                <div className="font-bold text-white mb-1 text-sm md:text-base">${(token.balance * token.price).toLocaleString()}</div>
+                <div className="text-[10px] text-emerald-400 font-bold">+1.2%</div>
+                </div>
+            </button>
+            ))}
+        </div>
+      </div>
+
+      {/* Transaction History Section */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between px-2">
+            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Transaction History</h3>
+            <button className="text-[10px] text-cyan-400 font-bold hover:text-cyan-300 transition-colors flex items-center gap-1">
+                View All <ChevronRight size={12}/>
+            </button>
+        </div>
+        <div className="bg-slate-900/50 border border-slate-800 rounded-3xl overflow-hidden shadow-inner">
+            <div className="grid grid-cols-4 px-4 py-3 border-b border-slate-800 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <span>Date</span>
+                <span>Type</span>
+                <span>Amount</span>
+                <span className="text-right">Status</span>
             </div>
-            <div className="text-right">
-              <div className="font-bold text-white mb-1 text-sm md:text-base">${(token.balance * token.price).toLocaleString()}</div>
-              <div className="text-[10px] text-emerald-400 font-bold">+1.2%</div>
+            <div className="divide-y divide-slate-800/50">
+                {TRANSACTIONS.map(tx => (
+                    <div key={tx.id} className="grid grid-cols-4 items-center px-4 py-3.5 hover:bg-slate-800/20 transition-colors">
+                        <span className="text-[10px] font-bold text-slate-400">{tx.date}</span>
+                        <span className="text-xs font-extrabold text-white">{tx.type}</span>
+                        <span className={`text-xs font-black ${tx.color}`}>{tx.amount}</span>
+                        <div className="flex justify-end">
+                            <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${tx.bg} ${tx.color} border border-white/5`}>
+                                {tx.status}
+                            </span>
+                        </div>
+                    </div>
+                ))}
             </div>
-          </button>
-        ))}
+        </div>
       </div>
 
       {/* --- MODALS --- */}
@@ -126,12 +168,12 @@ const PortfolioTab = () => {
         <div className="absolute inset-0 z-[150] bg-slate-950/90 flex flex-col animate-fade-in-up rounded-[inherit]">
            <header className="p-4 border-b border-slate-800 flex justify-between items-center">
               <button onClick={() => setSelectedToken(null)}><ArrowLeft/></button>
-              <h3 className="font-bold">{selectedToken.name}</h3>
+              <h3 className="font-bold text-white">{selectedToken.name}</h3>
               <div className="w-6 h-6"></div>
            </header>
            <div className="flex-1 p-6 space-y-8 overflow-y-auto">
               <div className="text-center">
-                 <p className="text-3xl font-extrabold">${(selectedToken.balance * selectedToken.price).toLocaleString()}</p>
+                 <p className="text-3xl font-extrabold text-white">${(selectedToken.balance * selectedToken.price).toLocaleString()}</p>
                  <p className="text-slate-400">{selectedToken.balance} {selectedToken.symbol}</p>
               </div>
               <div className="h-48 bg-slate-900/50 rounded-3xl border border-slate-800 flex items-center justify-center italic text-slate-600">
@@ -147,7 +189,7 @@ const PortfolioTab = () => {
 
       {modalType === 'send' && (
         <div className="absolute inset-0 z-[150] bg-slate-950 flex flex-col animate-fade-in-up p-6 rounded-[inherit]">
-           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)}><X/></button><h3 className="font-bold">Send Crypto</h3><div className="w-6"/>header>
+           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)} className="text-slate-400"><X/></button><h3 className="font-bold text-white">Send Crypto</h3><div className="w-6"/>header>
            <div className="space-y-6">
               <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800">
                  <label className="text-xs text-slate-500 uppercase font-bold mb-2 block">Recipient</label>
@@ -156,8 +198,8 @@ const PortfolioTab = () => {
               <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800">
                  <label className="text-xs text-slate-500 uppercase font-bold mb-2 block">Amount</label>
                  <div className="flex justify-between items-center">
-                    <input type="number" placeholder="0.00" className="w-2/3 bg-transparent text-2xl md:text-3xl font-bold outline-none" />
-                    <button className="flex items-center gap-2 bg-slate-800 px-3 py-1 rounded-full text-xs font-bold">FLD <ChevronDown size={14}/></button>
+                    <input type="number" placeholder="0.00" className="w-2/3 bg-transparent text-2xl md:text-3xl font-bold text-white outline-none" />
+                    <button className="flex items-center gap-2 bg-slate-800 text-white px-3 py-1 rounded-full text-xs font-bold">FLD <ChevronDown size={14}/></button>
                  </div>
               </div>
               <button onClick={handleSend} className="w-full py-4 bg-cyan-600 text-white font-bold rounded-2xl shadow-xl">Review & Send</button>
@@ -167,7 +209,7 @@ const PortfolioTab = () => {
 
       {modalType === 'receive' && (
         <div className="absolute inset-0 z-[150] bg-slate-950 flex flex-col animate-fade-in-up p-6 rounded-[inherit]">
-           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)}><X/></button><h3 className="font-bold">Receive</h3><div className="w-6"/>header>
+           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)} className="text-slate-400"><X/></button><h3 className="font-bold text-white">Receive</h3><div className="w-6"/>header>
            <div className="flex flex-col items-center gap-8 py-8 text-center overflow-y-auto">
               <div className="p-4 bg-white rounded-3xl shadow-2xl">
                  <QrCode size={180} className="text-slate-950" />
@@ -229,7 +271,7 @@ const TradeTab = () => {
               <div className="flex justify-between items-center">
                 <input type="number" value={payAmount} onChange={e => setPayAmount(e.target.value)} className="bg-transparent text-3xl md:text-4xl font-bold text-white outline-none w-1/2" />
                 <button className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
-                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-5 h-5"/> <span className="font-bold text-sm">ETH</span> <ChevronDown size={14}/>
+                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-5 h-5"/> <span className="font-bold text-sm text-white">ETH</span> <ChevronDown size={14}/>
                 </button>
               </div>
             </div>
@@ -244,7 +286,7 @@ const TradeTab = () => {
               <div className="flex justify-between items-center">
                 <input type="number" readOnly value={(parseFloat(payAmount) * 4058).toFixed(2)} className="bg-transparent text-3xl md:text-4xl font-bold text-emerald-400 outline-none w-1/2" />
                 <button className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
-                  <div className="w-5 h-5 text-cyan-400">{FLUID_LOGO_SVG}</div> <span className="font-bold text-sm">FLD</span> <ChevronDown size={14}/>
+                  <div className="w-5 h-5 text-cyan-400">{FLUID_LOGO_SVG}</div> <span className="font-bold text-sm text-white">FLD</span> <ChevronDown size={14}/>
                 </button>
               </div>
             </div>
