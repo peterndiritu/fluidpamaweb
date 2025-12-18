@@ -14,11 +14,11 @@ const HowItWorks: React.FC = () => {
           </p>
         </div>
 
-        {/* Sharding Architecture Visualization */}
+        {/* Distributed Architecture Visualization */}
         <div className="mb-12 relative scroll-card">
           <div className="absolute inset-0 bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none"></div>
           <div className="bg-white/10 dark:bg-slate-900/30 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-xl dark:shadow-none transition-colors">
-            <h3 className="text-xl font-bold text-center mb-8 text-slate-900 dark:text-white">Sharding Architecture</h3>
+            <h3 className="text-xl font-bold text-center mb-8 text-slate-900 dark:text-white">Distributed Architecture</h3>
             
             <div className="flex flex-col items-center gap-6 max-w-4xl mx-auto">
               
@@ -63,7 +63,7 @@ const HowItWorks: React.FC = () => {
                   </div>
               </div>
 
-              {/* Shards */}
+              {/* Data Blocks */}
               <div className="grid grid-cols-4 gap-4 md:gap-8 w-full max-w-3xl">
                  {[1, 2, 3, 4].map((i) => (
                     <div key={i} className="flex flex-col items-center relative group">
@@ -74,10 +74,10 @@ const HowItWorks: React.FC = () => {
                        
                        <div className="w-full aspect-square bg-white/30 dark:bg-slate-800/30 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center mb-2 group-hover:border-cyan-400 transition-colors shadow-sm dark:shadow-lg relative overflow-hidden backdrop-blur-sm">
                           <div className="absolute inset-0 bg-cyan-400/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                          <span className="text-xs text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors font-bold">SHARD {i}</span>
+                          <span className="text-xs text-slate-600 dark:text-slate-400 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors font-bold">SEGMENT {i}</span>
                        </div>
                        
-                       {/* Line Shard -> Node */}
+                       {/* Line -> Node */}
                        <div className="h-8 w-px bg-gradient-to-b from-slate-300 to-cyan-500 dark:from-slate-700 my-2 relative overflow-visible">
                           <div className="flow-particle-y cyan delay-200"></div>
                        </div>
@@ -103,7 +103,7 @@ const HowItWorks: React.FC = () => {
         {/* Process Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
            {[
-             { icon: Upload, title: "Data Upload", desc: "Your data is encrypted and split into multiple redundant shards for maximum durability." },
+             { icon: Upload, title: "Data Upload", desc: "Your data is encrypted and split into multiple redundant segments for maximum durability." },
              { icon: Coins, title: "One-Time Payment", desc: "Pay once using FLUID tokens. Your payment funds an endowment that sustains storage forever." },
              { icon: Globe, title: "Permanent Access", desc: "Your data is distributed globally and remains accessible indefinitely—no renewals needed." }
            ].map((item, idx) => (

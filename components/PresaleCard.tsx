@@ -18,7 +18,7 @@ import { client, wallets } from "../client";
 
 // --- Configuration ---
 const PRESALE_CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890"; // Placeholder
-const FALLBACK_FLUID_PRICE = 0.05; // $0.05 per FLUID
+const FALLBACK_FLUID_PRICE = 0.05; // $0.05 per Fluid
 
 // Chain Definitions
 const ETH_CHAIN = defineChain(1);
@@ -128,20 +128,20 @@ const PresaleCard: React.FC = () => {
     <div className="w-full max-w-[480px] mx-auto z-10">
       <div className="bg-slate-950/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
         <div className="p-6 border-b border-white/5 flex flex-col items-center">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Buy $FLUID Presale</h2>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Buy Fluid presale</h2>
             <div className="flex items-center gap-2 mt-2">
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider">Sale Stage 1 Live</span>
+                <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider">Sale stage 1 live</span>
             </div>
         </div>
         <div className="p-6 space-y-6">
             <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-400 font-medium">Payment Method</span>
-                    <span className="text-xs text-slate-500">Multichain Support</span>
+                    <span className="text-slate-400 font-medium">Payment method</span>
+                    <span className="text-xs text-slate-500">Multichain support</span>
                 </div>
                 <div className="grid grid-cols-4 gap-2">
                     {PAYMENT_OPTIONS.slice(0, 4).map(opt => (
@@ -172,10 +172,10 @@ const PresaleCard: React.FC = () => {
             </div>
             <div className="pt-2">
                 {!account ? (
-                    <ConnectButton client={client} wallets={wallets} theme={"dark"} connectButton={{ label: "Connect Wallet", className: "!w-full !py-4 !rounded-xl !text-lg !font-bold !bg-white !text-black" }} />
+                    <ConnectButton client={client} wallets={wallets} theme={"dark"} connectButton={{ label: "Connect wallet", className: "!w-full !py-4 !rounded-xl !text-lg !font-bold !bg-white !text-black" }} />
                 ) : (
                     <button onClick={handleBuy} disabled={status === 'PENDING'} className="w-full py-4 rounded-xl text-lg font-bold bg-gradient-to-r from-lime-400 to-green-500 text-slate-900 hover:brightness-110 transition-all">
-                        {status === 'PENDING' ? 'Processing...' : 'Buy Tokens'}
+                        {status === 'PENDING' ? 'Processing...' : 'Buy tokens'}
                     </button>
                 )}
             </div>

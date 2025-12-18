@@ -1,57 +1,128 @@
 import React, { useState, useEffect } from 'react';
-import { Layers, Server, Repeat, Coins, ChevronDown, Rocket, Users, Wallet, Lock, Landmark } from 'lucide-react';
+import { Layers, Server, Repeat, Coins, ChevronDown, Rocket, Users, Wallet, Lock, Landmark, Zap, Activity } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, Legend } from 'recharts';
 
 // --- Reusable Visual Components ---
 
 const ShardingSimulation = () => {
     const [traffic, setTraffic] = useState(20);
-    const numShards = Math.max(1, Math.ceil(traffic / 25));
+    const numPartitions = Math.max(1, Math.ceil(traffic / 25));
 
     return (
-        <div className="my-10 p-6 bg-slate-950/50 border border-slate-800 rounded-xl">
-            <h4 className="text-lg font-bold text-white mb-4 text-center">Dynamic Sharding Simulation</h4>
-            <div className="mb-6">
-                <label htmlFor="traffic" className="block text-sm font-medium text-slate-400 mb-2">
-                    Simulated Network Traffic: <span className="font-bold text-cyan-400">{traffic}%</span>
-                </label>
-                <input
-                    id="traffic"
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={traffic}
-                    onChange={(e) => setTraffic(Number(e.target.value))}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500"
-                />
+        <div className="my-10 p-6 bg-slate-950/50 border border-slate-800 rounded-[2rem] relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 p-6 opacity-20 pointer-events-none">
+                <Activity size={120} className="text-cyan-500/20" />
             </div>
-            <div className="grid grid-cols-4 gap-2 h-32 transition-all duration-300">
-                {Array.from({ length: 4 }).map((_, shardIndex) => (
-                    <div
-                        key={shardIndex}
-                        className={`p-2 rounded-lg border-2 transition-all duration-500 ${
-                            shardIndex < numShards
-                                ? 'bg-cyan-500/10 border-cyan-500 animate-pulse'
-                                : 'bg-slate-800/50 border-slate-700'
-                        }`}
-                    >
-                        <div className="text-center font-bold text-xs mb-2 text-white">
-                            Shard {shardIndex + 1}
-                        </div>
-                        <div className="grid grid-cols-2 gap-1">
-                            {Array.from({ length: 4 }).map((_, nodeIndex) => (
-                                <div
-                                    key={nodeIndex}
-                                    className={`h-4 rounded-sm transition-colors duration-300 ${
-                                        shardIndex < numShards ? 'bg-cyan-500/50' : 'bg-slate-700'
-                                    }`}
-                                ></div>
-                            ))}
-                        </div>
+            
+            <h4 className="text-xl font-black text-white mb-8 text-center uppercase italic tracking-tighter">Dynamic Network Partitioning</h4>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-10 gap-6 px-2 relative z-10">
+                <div className="flex-1 w-full bg-slate-900/50 p-5 rounded-2xl border border-slate-800 shadow-inner">
+                    <div className="flex justify-between items-center mb-3">
+                        <label htmlFor="traffic" className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                            Network Load Intensity
+                        </label>
+                        <span className="text-sm font-black text-cyan-400">{traffic}%</span>
                     </div>
-                ))}
+                    <input
+                        id="traffic"
+                        type="range"
+                        min="1"
+                        max="100"
+                        value={traffic}
+                        onChange={(e) => setTraffic(Number(e.target.value))}
+                        className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                    />
+                </div>
+                
+                <div className="flex flex-col items-center sm:items-end gap-2 shrink-0">
+                    <span className="text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Live Status</span>
+                    <div className="flex items-center gap-3 px-5 py-3 bg-slate-900 border border-slate-800 rounded-[1.5rem] shadow-2xl ring-1 ring-white/5">
+                        <div className="flex flex-col items-end">
+                            <span className="text-[9px] font-black text-cyan-500 uppercase leading-none mb-1 tracking-tighter">Active</span>
+                            <span className="text-[9px] font-black text-slate-500 uppercase leading-none tracking-tighter">Shards</span>
+                        </div>
+                        <div className="w-px h-6 bg-slate-800 mx-1"></div>
+                        <span className="text-3xl font-black text-white leading-none">{numPartitions}</span>
+                    </div>
+                </div>
             </div>
-            <p className="text-center text-xs text-slate-500 mt-4">As traffic increases, the network dynamically activates more shards to handle the load in parallel.</p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 h-auto transition-all duration-300 relative z-10">
+                {Array.from({ length: 4 }).map((_, partitionIndex) => {
+                    const isActive = partitionIndex < numPartitions;
+                    return (
+                        <div
+                            key={partitionIndex}
+                            className={`p-5 rounded-[1.5rem] border-2 transition-all duration-700 relative overflow-hidden group ${
+                                isActive
+                                    ? 'bg-cyan-500/5 border-cyan-500/40 shadow-[0_0_30px_rgba(6,182,212,0.1)] scale-100 opacity-100'
+                                    : 'bg-slate-900/30 border-slate-800/50 opacity-30 scale-95 grayscale'
+                            }`}
+                        >
+                            {isActive && (
+                                <div className="absolute top-0 right-0 p-3">
+                                    <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+                                </div>
+                            )}
+                            
+                            <div className={`text-center font-black text-[9px] mb-4 uppercase tracking-[0.2em] transition-colors ${isActive ? 'text-cyan-400' : 'text-slate-700'}`}>
+                                Cluster {String.fromCharCode(65 + partitionIndex)}
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-2">
+                                {Array.from({ length: 4 }).map((_, nodeIndex) => (
+                                    <div
+                                        key={nodeIndex}
+                                        className={`h-6 rounded-lg border transition-all duration-500 flex items-center justify-center ${
+                                            isActive 
+                                                ? 'bg-cyan-500/20 border-cyan-500/20 group-hover:border-cyan-400/50' 
+                                                : 'bg-slate-800/50 border-slate-700'
+                                        }`}
+                                    >
+                                        {isActive && (
+                                            <div 
+                                                className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" 
+                                                style={{ animationDelay: `${nodeIndex * 0.1}s` }}
+                                            ></div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="mt-4 pt-3 border-t border-slate-800/50">
+                                <div className={`w-full h-1 rounded-full bg-slate-800 overflow-hidden`}>
+                                    {isActive && (
+                                        <div 
+                                            className="h-full bg-cyan-500 transition-all duration-1000 ease-out" 
+                                            style={{ width: `${Math.min(100, (traffic % 25 || 25) * 4)}%` }}
+                                        ></div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+            
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-8 border-t border-slate-800/50 pt-6">
+                <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-md bg-cyan-500/20 border border-cyan-500/50 shadow-[0_0_10px_rgba(6,182,212,0.2)]"></div>
+                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Primary Execution</span>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-md bg-slate-800 border border-slate-700"></div>
+                    <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Node Standby</span>
+                </div>
+                <div className="hidden sm:flex items-center gap-2 ml-4">
+                    <Zap size={14} className="text-yellow-500" />
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Infinite Scaling Enabled</span>
+                </div>
+            </div>
+            
+            <p className="text-center text-[10px] text-slate-600 mt-6 font-bold uppercase tracking-[0.1em] max-w-lg mx-auto leading-relaxed">
+                As network traffic spikes, the Fluid protocol autonomously spawns sub-clusters to maintain sub-second finality.
+            </p>
         </div>
     );
 };
@@ -65,11 +136,11 @@ const PermawebFlowDiagram = () => (
             </div>
             <div className="h-8 w-px bg-slate-700 relative"><div className="flow-particle-y cyan" style={{ animationDuration: '1.5s' }}></div></div>
             <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-800 border border-slate-700">
-                <Lock size={16} className="text-emerald-400" /> <span className="text-white">2. Encrypt & Shard</span>
+                <Lock size={16} className="text-emerald-400" /> <span className="text-white">2. Encrypt & Distribute</span>
             </div>
             <div className="h-8 w-px bg-slate-700 relative"><div className="flow-particle-y" style={{ animationDuration: '1.5s' }}></div></div>
             <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-800 border border-slate-700">
-                <Server size={16} className="text-purple-400" /> <span className="text-white">3. Distribute to Nodes</span>
+                <Server size={16} className="text-purple-400" /> <span className="text-white">3. Store on Global Nodes</span>
             </div>
         </div>
     </div>
@@ -167,12 +238,12 @@ const BlockchainSection = () => (
         <ShardingSimulation />
         <h4>Key Properties</h4>
         <ul>
-            <li><strong>Scalability:</strong> Dynamic sharding allows the network to partition based on load, processing transactions in parallel. This means network capacity grows linearly with the number of participating nodes.</li>
+            <li><strong>Scalability:</strong> Dynamic partitioning allows the network to distribute load, processing transactions in parallel. This means network capacity grows linearly with the number of participating nodes.</li>
             <li><strong>Speed:</strong> Sub-second finality (~600ms) ensures transactions are confirmed almost instantly, making the chain suitable for high-frequency applications like DEXs and global payments.</li>
             <li><strong>Efficiency:</strong> The PoS foundation is significantly more energy-efficient than Proof-of-Work systems, while the PoUS component rewards nodes for useful work (data storage) rather than computational puzzles.</li>
         </ul>
         <h4>Proof-of-Useful-Storage (PoUS) Deep Dive</h4>
-        <p>Unlike traditional consensus where work is discarded, PoUS requires storage nodes to continuously prove they are hosting data shards from the Parmaweb. These cryptographic proofs (PoRep & PoSt) are lightweight and verified by the PoS validators. This creates a transparent and unbreakable link: to earn maximum rewards, nodes must contribute to both network security (staking FLUID) and utility (providing storage).</p>
+        <p>Unlike traditional consensus where work is discarded, PoUS requires storage nodes to continuously prove they are hosting redundant data segments from the Parmaweb. These cryptographic proofs (PoRep & PoSt) are lightweight and verified by the PoS validators. This creates a transparent and unbreakable link: to earn maximum rewards, nodes must contribute to both network security (staking FLUID) and utility (providing storage).</p>
     </>
 );
 
@@ -184,7 +255,7 @@ const HostingSection = () => (
         <PermawebFlowDiagram />
         <h4>The Mechanics of Permanence</h4>
         <ol>
-            <li><strong>Client-Side Encryption & Sharding:</strong> Data is encrypted on the user's device before upload. It's then erasure-coded into redundant shards, meaning the original file can be reconstructed even if a significant portion of nodes storing its shards go offline. This guarantees extreme data durability.</li>
+            <li><strong>Client-Side Encryption & Distribution:</strong> Data is encrypted on the user's device before upload. It's then erasure-coded into redundant segments, meaning the original file can be reconstructed even if a significant portion of nodes storing those segments go offline. This guarantees extreme data durability.</li>
             <li><strong>Content-Addressing:</strong> All data is addressed by its cryptographic hash (Content ID), not its location. This makes content immutable; any change to the data results in a new Content ID, while the old version remains accessible. This provides unparalleled transparency and verifiability.</li>
             <li><strong>One-Time Fee:</strong> A single payment, priced based on a conservative forecast of future storage costs, is made in $FLUID. This fee is not paid to nodes directly but is instead deposited into the Endowment Pool, the economic heart of the PermaWeb.</li>
         </ol>
