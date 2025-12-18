@@ -58,7 +58,7 @@ const DexPage: React.FC = () => {
           <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-blue-600/5 rounded-full blur-[80px] -z-10 animate-pulse delay-700"></div>
           
           <div className="p-3">
-            {/* Unified Tabs Container with Sliding Indicator */}
+            {/* Unified Tabs */}
             <div className="relative flex gap-1 p-1 bg-slate-950/80 rounded-2xl mb-6 border border-slate-800 shadow-inner group">
                 <button 
                   onClick={() => setActiveTab('swap')} 
@@ -79,7 +79,6 @@ const DexPage: React.FC = () => {
                   <BarChart2 size={14} /> Stake
                 </button>
                 
-                {/* Sliding Indicator Background */}
                 <div 
                   className="absolute top-1 bottom-1 bg-slate-800 border border-slate-700 rounded-xl transition-all duration-300 ease-out shadow-lg"
                   style={{ 
@@ -89,7 +88,6 @@ const DexPage: React.FC = () => {
                 />
             </div>
 
-            {/* Content Area */}
             <div className="min-h-[480px]">
                 {activeTab === 'swap' && <SwapView />}
                 {activeTab === 'liquidity' && <LiquidityView />}
@@ -202,13 +200,21 @@ const SwapView = () => {
       <TokenSelectorModal isOpen={!!showSelector} onClose={() => setShowSelector(null)} currentToken={showSelector === 'A' ? tokenA : tokenB} onSelect={(t) => showSelector === 'A' ? setTokenA(t) : setTokenB(t)} />
 
       <div className="flex justify-between items-center px-1">
-          <div className="flex items-center gap-2"><h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">Atomic swap</h3><History size={12} className="text-slate-700 hover:text-slate-400 cursor-pointer transition-colors" /></div>
-          <button onClick={() => setShowSettings(!showSettings)} className={`p-2 rounded-xl transition-all ${showSettings ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'bg-slate-800 text-slate-600 hover:text-white'}`}><Settings size={16} /></button>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">Atomic swap</h3>
+            <History size={12} className="text-slate-700 hover:text-slate-400 cursor-pointer transition-colors" />
+          </div>
+          <button onClick={() => setShowSettings(!showSettings)} className={`p-2 rounded-xl transition-all ${showSettings ? 'bg-cyan-500 text-slate-950 shadow-lg' : 'bg-slate-800 text-slate-600 hover:text-white'}`}>
+            <Settings size={16} />
+          </button>
       </div>
 
       {showSettings && (
           <div className="p-5 bg-slate-950 border border-slate-800 rounded-3xl animate-fade-in-up mb-4 space-y-4 shadow-inner">
-              <div className="flex items-center justify-between text-[10px] font-black text-slate-500 uppercase tracking-widest"><div className="flex items-center gap-2"><Clock size={12} /> Slippage</div><span className="text-cyan-400">{slippage}%</span></div>
+              <div className="flex items-center justify-between text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <div className="flex items-center gap-2"><Clock size={12} /> Slippage tolerance</div>
+                <span className="text-cyan-400">{slippage}%</span>
+              </div>
               <div className="flex gap-2">
                     {[0.1, 0.5, 1.0].map(s => (
                         <button key={s} onClick={() => setSlippage(s)} className={`flex-1 py-2.5 rounded-xl text-[10px] font-black transition-all border ${slippage === s ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-slate-900 border border-slate-800 text-slate-600'}`}>{s}%</button>
@@ -218,7 +224,7 @@ const SwapView = () => {
       )}
       
       {/* Input Field A */}
-      <div className="bg-slate-950 rounded-3xl p-5 border border-slate-800 group relative transition-all hover:border-slate-700">
+      <div className="bg-slate-950 rounded-3xl p-5 border border-slate-800 group relative transition-all hover:border-slate-700 shadow-inner">
         <div className="flex justify-between text-[9px] font-black text-slate-700 mb-3 uppercase tracking-widest">
           <span>Paying</span>
           <div className="flex items-center gap-2">
@@ -232,24 +238,58 @@ const SwapView = () => {
           </div>
         </div>
         <div className="flex justify-between items-center gap-4">
-            <input type="number" value={amountA} onChange={e => setAmountA(e.target.value)} placeholder="0.00" className="bg-transparent text-3xl font-black text-white outline-none w-full placeholder-slate-900 tracking-tighter" />
-            <button onClick={() => setShowSelector('A')} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 p-2 pl-2.5 pr-3.5 rounded-2xl border border-slate-700 transition-all shrink-0"><div className="w-8 h-8 flex items-center justify-center p-1.5 bg-slate-900 rounded-xl">{tokenA.icon}</div><span className="font-black text-xs text-white uppercase">{tokenA.symbol}</span><ChevronDown size={14} className="text-slate-600" /></button>
+            <input 
+              type="number" 
+              value={amountA} 
+              onChange={e => setAmountA(e.target.value)} 
+              placeholder="0.00" 
+              className="bg-transparent text-3xl font-black text-white outline-none w-full placeholder-slate-900 tracking-tighter" 
+            />
+            <button onClick={() => setShowSelector('A')} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 p-2 pl-2.5 pr-3.5 rounded-2xl border border-slate-700 transition-all shrink-0">
+              <div className="w-8 h-8 flex items-center justify-center p-1.5 bg-slate-900 rounded-xl">{tokenA.icon}</div>
+              <span className="font-black text-xs text-white uppercase">{tokenA.symbol}</span>
+              <ChevronDown size={14} className="text-slate-600" />
+            </button>
         </div>
       </div>
       
       {/* Reverse Switch */}
       <div className="flex justify-center -my-6 relative z-10">
-        <button onClick={() => { const t = tokenA; setTokenA(tokenB); setTokenB(t); setAmountA(amountB); }} className="bg-slate-900 border-[5px] border-slate-950 p-3 rounded-2xl text-cyan-400 hover:text-white transition-all shadow-xl active:scale-90"><ArrowDownUp size={20} /></button>
+        <button onClick={() => { const t = tokenA; setTokenA(tokenB); setTokenB(t); setAmountA(amountB); }} className="bg-slate-900 border-[5px] border-slate-950 p-3 rounded-2xl text-cyan-400 hover:text-white transition-all shadow-xl active:scale-90">
+          <ArrowDownUp size={20} />
+        </button>
       </div>
       
       {/* Output Field B */}
-      <div className="bg-slate-950 rounded-3xl p-5 border border-slate-800 pt-9 group transition-all hover:border-slate-700">
-        <div className="flex justify-between text-[9px] font-black text-slate-700 mb-3 uppercase tracking-widest"><span>Receiving (est.)</span><span className="flex items-center gap-1"><Wallet size={10} /> {tokenB.balance.toLocaleString()}</span></div>
+      <div className="bg-slate-950 rounded-3xl p-5 border border-slate-800 pt-9 group transition-all hover:border-slate-700 shadow-inner">
+        <div className="flex justify-between text-[9px] font-black text-slate-700 mb-3 uppercase tracking-widest">
+          <span>Receiving (est.)</span>
+          <span className="flex items-center gap-1"><Wallet size={10} /> {tokenB.balance.toLocaleString()}</span>
+        </div>
         <div className="flex justify-between items-center gap-4">
-            <input type="text" value={amountB} readOnly placeholder="0.00" className="bg-transparent text-3xl font-black text-emerald-400 outline-none w-full placeholder-slate-900 cursor-default tracking-tighter" />
-            <button onClick={() => setShowSelector('B')} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 p-2 pl-2.5 pr-3.5 rounded-2xl border border-slate-700 transition-all shrink-0"><div className="w-8 h-8 flex items-center justify-center p-1.5 bg-slate-900 rounded-xl">{tokenB.icon}</div><span className="font-black text-xs text-white uppercase">{tokenB.symbol}</span><ChevronDown size={14} className="text-slate-600" /></button>
+            <input 
+              type="text" 
+              value={amountB} 
+              readOnly 
+              placeholder="0.00" 
+              className="bg-transparent text-3xl font-black text-emerald-400 outline-none w-full placeholder-slate-900 cursor-default tracking-tighter" 
+            />
+            <button onClick={() => setShowSelector('B')} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 p-2 pl-2.5 pr-3.5 rounded-2xl border border-slate-700 transition-all shrink-0">
+              <div className="w-8 h-8 flex items-center justify-center p-1.5 bg-slate-900 rounded-xl">{tokenB.icon}</div>
+              <span className="font-black text-xs text-white uppercase">{tokenB.symbol}</span>
+              <ChevronDown size={14} className="text-slate-600" />
+            </button>
         </div>
       </div>
+
+      {/* Estimated Output Result Display */}
+      {amountA && (
+        <div className="px-2 animate-fade-in-up">
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+              Estimated Output: <span className="text-white">{amountB} {tokenB.symbol}</span>
+            </p>
+        </div>
+      )}
       
       {/* Transaction Details Collapsible */}
       <div className="space-y-2">
@@ -258,18 +298,33 @@ const SwapView = () => {
             className="w-full flex items-center justify-between p-4 bg-slate-950/30 rounded-2xl border border-slate-800/50 hover:bg-slate-950/50 transition-all group"
           >
               <span className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] flex items-center gap-2 group-hover:text-slate-400">
-                  Transaction metrics
+                  Transaction Details
               </span>
               {isDetailsOpen ? <ChevronUp size={14} className="text-slate-700" /> : <ChevronDown size={14} className="text-slate-700" />}
           </button>
 
           {isDetailsOpen && (
               <div className="p-5 bg-slate-950/20 rounded-2xl text-[10px] font-black uppercase space-y-3.5 border border-slate-800/30 animate-fade-in-up shadow-inner">
-                  <div className="flex justify-between items-center"><span className="text-slate-600 flex items-center gap-1.5"><Zap size={10} className="text-yellow-500"/> Current rate</span><span className="text-slate-300">1 {tokenA.symbol} ≈ {(tokenA.price / tokenB.price).toFixed(4)} {tokenB.symbol}</span></div>
-                  <div className="flex justify-between items-center"><span className="text-slate-600 flex items-center gap-1.5"><TrendingUp size={10} className="text-cyan-500"/> Price impact</span><span className="text-emerald-400 font-black">0.02%</span></div>
-                  <div className="flex justify-between items-center"><span className="text-slate-600 flex items-center gap-1.5"><AlertTriangle size={10} className="text-orange-500"/> Slippage</span><span className="text-slate-300">{slippage}% max</span></div>
-                  <div className="flex justify-between items-center"><span className="text-slate-600 flex items-center gap-1.5"><Timer size={10} className="text-blue-500"/> Deadline</span><span className="text-slate-300">{deadline} min</span></div>
-                  <div className="pt-2 border-t border-slate-800/50 flex justify-between items-center text-xs tracking-tighter"><span className="text-slate-600">Minimum receive</span><span className="text-emerald-400 font-black">{amountA ? (parseFloat(amountB || '0') * (1 - slippage/100)).toFixed(4) : '0.0000'} {tokenB.symbol}</span></div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600 flex items-center gap-1.5"><Zap size={10} className="text-yellow-500"/> Exchange rate</span>
+                    <span className="text-slate-300">1 {tokenA.symbol} ≈ {(tokenA.price / tokenB.price).toFixed(4)} {tokenB.symbol}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600 flex items-center gap-1.5"><TrendingUp size={10} className="text-cyan-500"/> Price impact</span>
+                    <span className="text-emerald-400 font-black">0.02%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600 flex items-center gap-1.5"><AlertTriangle size={10} className="text-orange-500"/> Slippage tolerance</span>
+                    <span className="text-slate-300">{slippage}% max</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600 flex items-center gap-1.5"><Timer size={10} className="text-blue-500"/> Transaction deadline</span>
+                    <span className="text-slate-300">{deadline} min</span>
+                  </div>
+                  <div className="pt-2 border-t border-slate-800/50 flex justify-between items-center text-xs tracking-tighter">
+                    <span className="text-slate-600">Minimum receive</span>
+                    <span className="text-emerald-400 font-black">{amountA ? (parseFloat(amountB || '0') * (1 - slippage/100)).toFixed(4) : '0.0000'} {tokenB.symbol}</span>
+                  </div>
               </div>
           )}
       </div>
@@ -363,7 +418,6 @@ const StakeView = () => {
          </div>
        </div>
 
-       {/* Governance Secondary Panel */}
        <div className="bg-slate-900/20 border border-slate-800 border-dashed rounded-[2.5rem] p-6 relative overflow-hidden group">
          <div className="flex justify-between items-center mb-6">
              <div className="opacity-40">
