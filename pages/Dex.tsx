@@ -116,32 +116,33 @@ const TokenSelectorModal = ({ isOpen, onClose, onSelect, currentToken }: { isOpe
     const [search, setSearch] = useState('');
     
     const filteredTokens = useMemo(() => {
+        const lowerSearch = search.toLowerCase();
         return TOKENS.filter(t => 
-            t.name.toLowerCase().includes(search.toLowerCase()) || 
-            t.symbol.toLowerCase().includes(search.toLowerCase())
+            t.name.toLowerCase().includes(lowerSearch) || 
+            t.symbol.toLowerCase().includes(lowerSearch)
         );
     }, [search]);
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md animate-fade-in-up">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-md animate-fade-in-up">
             <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
                 <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
                     <h3 className="text-xl font-black text-white tracking-tight">Select Token</h3>
                     <button onClick={onClose} className="p-2 text-slate-500 hover:text-white transition-colors bg-slate-800 rounded-xl"><X size={20}/></button>
                 </div>
                 
-                <div className="p-6 overflow-y-auto custom-scrollbar">
-                    {/* Search Field */}
-                    <div className="relative mb-6 group">
+                <div className="p-6 overflow-y-auto custom-scrollbar space-y-6">
+                    {/* Refined Search Field */}
+                    <div className="relative group">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-cyan-400 transition-colors" size={20} />
                         <input 
                             type="text" 
                             placeholder="Search by name or symbol" 
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-5 pl-14 pr-12 text-white font-bold focus:outline-none focus:border-cyan-500 transition-all placeholder:text-slate-700 shadow-inner"
+                            className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-12 text-white font-bold focus:outline-none focus:border-cyan-500 transition-all placeholder:text-slate-700 shadow-inner"
                             autoFocus
                         />
                         {search && (
@@ -154,24 +155,24 @@ const TokenSelectorModal = ({ isOpen, onClose, onSelect, currentToken }: { isOpe
                         )}
                     </div>
 
-                    {/* Common Bases */}
-                    <div className="mb-8">
+                    {/* Common Bases - Quick Access */}
+                    <div>
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 px-1">Common Bases</p>
                         <div className="flex flex-wrap gap-2">
                             {COMMON_BASES.map(t => (
                                 <button 
                                     key={t.symbol} 
                                     onClick={() => { onSelect(t); onClose(); }}
-                                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border font-bold text-sm transition-all ${currentToken.symbol === t.symbol ? 'bg-cyan-500/10 border-cyan-500/50 text-cyan-400' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600'}`}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-xl border font-bold text-sm transition-all ${currentToken.symbol === t.symbol ? 'bg-cyan-500/10 border-cyan-500/50 text-cyan-400' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600'}`}
                                 >
-                                    <div className="w-5 h-5">{t.icon}</div>
+                                    <div className="w-5 h-5 flex items-center justify-center p-0.5">{t.icon}</div>
                                     {t.symbol}
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* Token List */}
+                    {/* Token List with Balance */}
                     <div className="space-y-1">
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 px-1">Token List</p>
                         {filteredTokens.length > 0 ? filteredTokens.map(t => (
@@ -181,15 +182,15 @@ const TokenSelectorModal = ({ isOpen, onClose, onSelect, currentToken }: { isOpe
                                 className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all border ${currentToken.symbol === t.symbol ? 'bg-cyan-500/10 border-cyan-500/20' : 'hover:bg-slate-800/50 border-transparent'}`}
                             >
                                 <div className="flex items-center gap-4 text-left">
-                                    <div className="w-12 h-12 rounded-2xl bg-slate-800 p-2.5 shadow-lg flex items-center justify-center">{t.icon}</div>
+                                    <div className="w-10 h-10 rounded-xl bg-slate-800 p-2 shadow-lg flex items-center justify-center shrink-0">{t.icon}</div>
                                     <div>
-                                        <div className="font-black text-white text-lg leading-none mb-1">{t.symbol}</div>
+                                        <div className="font-black text-white text-base leading-none mb-1">{t.symbol}</div>
                                         <div className="text-xs text-slate-500 font-bold">{t.name}</div>
                                     </div>
                                 </div>
                                 <div className="text-right">
                                     <div className="text-sm font-black text-white">{t.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-                                    <div className="text-[10px] text-slate-500 uppercase tracking-widest font-black">Balance</div>
+                                    <div className="text-[9px] text-slate-600 uppercase tracking-widest font-black">Balance</div>
                                 </div>
                             </button>
                         )) : (
@@ -344,12 +345,12 @@ const SwapView = () => {
           </div>
       )}
       
-      {/* Token A Input */}
+      {/* Token A Input - Pays */}
       <div className={`bg-slate-950 rounded-[2rem] p-6 border border-slate-800 hover:border-slate-700 transition-all group relative ${isReversing ? 'opacity-50 scale-95' : ''}`}>
         <div className="flex justify-between text-[10px] font-black text-slate-500 mb-4 uppercase tracking-widest">
-            <span>Pay From Wallet</span>
+            <span>You Pay</span>
             <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1 cursor-default">
+                <span className="flex items-center gap-1 cursor-default text-slate-400">
                     <Wallet size={10} /> {tokenA.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </span>
                 <button onClick={handleMax} className="text-cyan-500 hover:text-cyan-400 font-black transition-colors px-2 py-0.5 bg-cyan-500/10 rounded-md">MAX</button>
@@ -365,16 +366,18 @@ const SwapView = () => {
             />
             <button 
                 onClick={() => setShowSelector('A')}
-                className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 p-2.5 pr-4 rounded-2xl border border-slate-700 shadow-xl transition-all active:scale-95"
+                className="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 p-2.5 pl-3 pr-4 rounded-2xl border border-slate-700 shadow-xl transition-all active:scale-95 group/btn"
             >
-                <div className="w-8 h-8 flex items-center justify-center p-1 bg-slate-900 rounded-lg">{tokenA.icon}</div>
+                <div className="w-10 h-10 flex items-center justify-center p-2 bg-slate-900 rounded-xl group-hover/btn:scale-105 transition-transform">{tokenA.icon}</div>
                 <div className="flex flex-col text-left">
-                  <span className="font-black text-white text-base leading-none mb-0.5 tracking-tight">{tokenA.symbol}</span>
-                  <span className="text-[10px] text-slate-500 font-bold flex items-center gap-1 leading-none">
-                    <Wallet size={8}/>{tokenA.balance > 1000 ? (tokenA.balance / 1000).toFixed(1) + 'k' : tokenA.balance.toFixed(2)}
+                  <div className="flex items-center gap-1">
+                    <span className="font-black text-white text-base leading-none tracking-tight">{tokenA.symbol}</span>
+                    <ChevronDown size={14} className="text-slate-500" />
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-bold mt-1">
+                    {tokenA.balance > 1000 ? (tokenA.balance / 1000).toFixed(1) + 'k' : tokenA.balance.toFixed(2)} available
                   </span>
                 </div>
-                <ChevronDown size={16} className="text-slate-500" />
             </button>
         </div>
         <div className="mt-3 text-xs text-slate-600 font-black flex items-center gap-1">
@@ -383,4 +386,213 @@ const SwapView = () => {
       </div>
       
       {/* Reversal Button */}
-      <div className="flex justify-center -my-6
+      <div className="flex justify-center -my-6 relative z-10">
+        <button 
+            onClick={reverseSwap}
+            className="bg-slate-900 border-[6px] border-slate-950 p-3.5 rounded-[1.5rem] text-cyan-400 hover:text-white transition-all shadow-2xl shadow-cyan-900/40 active:scale-90 group"
+        >
+            <ArrowDownUp size={24} className={`transition-transform duration-300 ${isReversing ? 'rotate-180' : 'group-hover:scale-110'}`} />
+        </button>
+      </div>
+      
+      {/* Token B Input - Receives */}
+      <div className={`bg-slate-950 rounded-[2rem] p-6 border border-slate-800 hover:border-slate-700 transition-all group pt-10 ${isReversing ? 'opacity-50 scale-95' : ''}`}>
+        <div className="flex justify-between text-[10px] font-black text-slate-500 mb-4 uppercase tracking-widest">
+            <span>You Receive (Estimated)</span>
+            <span className="flex items-center gap-1 text-slate-400">
+                <Wallet size={10} /> {tokenB.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            </span>
+        </div>
+        <div className="flex justify-between items-center">
+            <input 
+                type="text" 
+                value={amountB} 
+                readOnly 
+                placeholder="0.0"
+                className="bg-transparent text-4xl font-black text-emerald-400 outline-none w-1/2 placeholder-slate-900 cursor-default" 
+            />
+            <button 
+                onClick={() => setShowSelector('B')}
+                className="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 p-2.5 pl-3 pr-4 rounded-2xl border border-slate-700 shadow-xl transition-all active:scale-95 group/btn"
+            >
+                <div className="w-10 h-10 flex items-center justify-center p-2 bg-slate-900 rounded-xl group-hover/btn:scale-105 transition-transform">{tokenB.icon}</div>
+                <div className="flex flex-col text-left">
+                  <div className="flex items-center gap-1">
+                    <span className="font-black text-white text-base leading-none tracking-tight">{tokenB.symbol}</span>
+                    <ChevronDown size={14} className="text-slate-500" />
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-bold mt-1">
+                    {tokenB.balance > 1000 ? (tokenB.balance / 1000).toFixed(1) + 'k' : tokenB.balance.toFixed(2)} held
+                  </span>
+                </div>
+            </button>
+        </div>
+        <div className="mt-3 text-xs text-slate-600 font-black">
+            ≈ ${(parseFloat(amountB || '0') * tokenB.price).toLocaleString()}
+        </div>
+      </div>
+      
+      {/* Swap Details */}
+      <div className="p-5 bg-slate-950/40 rounded-2xl text-[11px] font-black space-y-3 border border-slate-800/50 shadow-inner">
+        <div className="flex justify-between items-center">
+            <span className="text-slate-500 flex items-center gap-1.5"><Zap size={12} className="text-yellow-500"/> Exchange Rate</span>
+            <span className="text-white">1 {tokenA.symbol} = {(tokenA.price / tokenB.price).toFixed(6)} {tokenB.symbol}</span>
+        </div>
+        <div className="flex justify-between items-center">
+            <span className="text-slate-500 flex items-center gap-1.5"><TrendingUp size={12} className="text-cyan-500"/> Price Impact</span>
+            <span className="text-emerald-400 font-black">0.02%</span>
+        </div>
+        <div className="flex justify-between items-center">
+            <span className="text-slate-500 flex items-center gap-1.5"><AlertTriangle size={12} className="text-orange-500"/> Minimum Received</span>
+            <span className="text-slate-200">{(parseFloat(amountB || '0') * (1 - slippage/100)).toFixed(4)} {tokenB.symbol}</span>
+        </div>
+      </div>
+
+      {/* Action Button */}
+      <button 
+        disabled={!amountA || isSwapping}
+        onClick={handleSwap}
+        className={`w-full py-5 bg-gradient-to-br from-cyan-400 via-cyan-600 to-blue-700 hover:brightness-110 text-slate-950 font-black text-xl rounded-3xl shadow-2xl shadow-cyan-950/40 transition-all active:scale-[0.97] disabled:opacity-30 disabled:grayscale flex items-center justify-center gap-3 mt-4 group`}
+      >
+        {isSwapping ? <Loader2 className="animate-spin" size={24} /> : <ArrowRightLeft size={24} className="group-hover:rotate-180 transition-transform duration-500" />}
+        {isSwapping ? 'Executing Swap...' : (amountA ? 'Swap Now' : 'Enter an Amount')}
+      </button>
+
+      <div className="flex items-center justify-center gap-4 mt-6">
+          <p className="text-[10px] text-slate-700 font-black uppercase tracking-widest flex items-center gap-1.5">
+             <Globe size={10}/> Powered by Fluid Smart Router
+          </p>
+          <div className="h-1 w-1 bg-slate-800 rounded-full"></div>
+          <p className="text-[10px] text-slate-700 font-black uppercase tracking-widest hover:text-cyan-500 cursor-help transition-colors">
+             Route: Fluid AMM v2
+          </p>
+      </div>
+    </div>
+  );
+};
+
+const LiquidityView = () => {
+  const [tokenA, setTokenA] = useState(TOKENS[1]); // ETH
+  const [tokenB, setTokenB] = useState(TOKENS[0]); // FLUID
+  const [amountA, setAmountA] = useState('1');
+  const [amountB, setAmountB] = useState('');
+  const [showSelector, setShowSelector] = useState<'A' | 'B' | null>(null);
+
+  useEffect(() => {
+    if (!amountA || !tokenA || !tokenB) { setAmountB(''); return; }
+    const val = parseFloat(amountA); if (isNaN(val)) return;
+    setAmountB((val * (tokenA.price / tokenB.price)).toFixed(4));
+  }, [amountA, tokenA, tokenB]);
+
+  return (
+    <div className="animate-fade-in-up space-y-4">
+      <TokenSelectorModal 
+        isOpen={!!showSelector} 
+        onClose={() => setShowSelector(null)} 
+        currentToken={showSelector === 'A' ? tokenA : tokenB}
+        onSelect={(t) => showSelector === 'A' ? setTokenA(t) : setTokenB(t)}
+      />
+      
+      <div className="text-center mb-8 px-6">
+        <h3 className="text-2xl font-black text-white tracking-tight">Add Liquidity</h3>
+        <p className="text-sm text-slate-500 mt-2 font-medium">Pool your assets to facilitate decentralized trades and earn 0.3% protocol fees.</p>
+      </div>
+      
+      <div className="bg-slate-950 rounded-[2rem] p-6 border border-slate-800 space-y-6">
+          {/* Token A Input */}
+          <div className="space-y-4">
+            <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <span>Input</span>
+                <span>Balance: {tokenA.balance.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center">
+                <input type="number" value={amountA} onChange={e => setAmountA(e.target.value)} className="bg-transparent text-3xl font-black text-white outline-none w-1/2" />
+                <button onClick={() => setShowSelector('A')} className="flex items-center gap-2 bg-slate-800 p-2.5 px-4 rounded-2xl border border-slate-700 shadow-lg">
+                    <div className="w-6 h-6">{tokenA.icon}</div>
+                    <span className="font-black text-white tracking-tight">{tokenA.symbol}</span>
+                    <ChevronDown size={14} className="text-slate-500" />
+                </button>
+            </div>
+          </div>
+          
+          <div className="flex justify-center -my-2 relative z-10"><Plus size={24} className="text-slate-800 bg-slate-950 rounded-full border border-slate-800" /></div>
+          
+          {/* Token B Input */}
+          <div className="space-y-4">
+            <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <span>Input</span>
+                <span>Balance: {tokenB.balance.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center">
+                <input type="number" value={amountB} readOnly className="bg-transparent text-3xl font-black text-white outline-none w-1/2 cursor-default" />
+                <button onClick={() => setShowSelector('B')} className="flex items-center gap-2 bg-slate-800 p-2.5 px-4 rounded-2xl border border-slate-700 shadow-lg">
+                    <div className="w-6 h-6">{tokenB.icon}</div>
+                    <span className="font-black text-white tracking-tight">{tokenB.symbol}</span>
+                    <ChevronDown size={14} className="text-slate-500" />
+                </button>
+            </div>
+          </div>
+      </div>
+      
+      <div className="p-5 bg-slate-950/50 rounded-2xl text-[10px] space-y-3 border border-slate-800/50 font-black shadow-inner">
+        <div className="flex justify-between items-center"><span className="text-slate-500 uppercase tracking-widest">Estimated Pool Share</span><span className="text-cyan-400 text-sm">0.052%</span></div>
+        <div className="flex justify-between items-center"><span className="text-slate-500 uppercase tracking-widest">LP Tokens to Receive</span><span className="text-white text-sm">1,245.40</span></div>
+      </div>
+      
+      <button className="w-full py-5 bg-white text-slate-950 font-black text-xl rounded-3xl hover:bg-slate-200 transition-all shadow-xl shadow-white/5 active:scale-95 mt-4">Supply Liquidity</button>
+    </div>
+  );
+};
+
+const StakeView = () => {
+  return (
+    <div className="animate-fade-in-up space-y-6">
+       <div className="p-8 bg-slate-950 border border-slate-800 rounded-[2.5rem] relative overflow-hidden group">
+         <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full blur-[80px] transition-all group-hover:bg-cyan-500/10"></div>
+         <div className="flex justify-between items-start mb-8">
+             <div>
+                <h4 className="font-black text-white text-2xl tracking-tighter">Stake FLUID</h4>
+                <p className="text-xs text-slate-500 mt-2 font-medium">Earn a compounding portion of all protocol swap fees.</p>
+             </div>
+             <div className="p-4 bg-cyan-500/10 rounded-2xl text-cyan-400 border border-cyan-500/20 shadow-lg"><BarChart2 size={28}/></div>
+         </div>
+         
+         <div className="grid grid-cols-2 gap-4 mb-8">
+             <div className="bg-slate-900/50 p-5 rounded-2xl border border-slate-800 shadow-inner">
+                 <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Variable APY</div>
+                 <div className="text-3xl font-black text-emerald-400">12.55%</div>
+             </div>
+             <div className="bg-slate-900/50 p-5 rounded-2xl border border-slate-800 shadow-inner">
+                 <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Your Staked</div>
+                 <div className="text-3xl font-black text-white">10,500</div>
+             </div>
+         </div>
+
+         <div className="flex gap-3">
+            <div className="flex-[2] bg-slate-900 border border-slate-800 rounded-2xl px-5 flex items-center shadow-inner group focus-within:border-cyan-500 transition-all">
+                <input type="number" placeholder="0.0" className="w-full bg-transparent font-black text-white outline-none text-lg" />
+                <span className="text-[10px] font-black text-slate-500 ml-2 uppercase tracking-tighter">FLUID</span>
+            </div>
+            <button className="flex-1 py-4 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-black rounded-2xl shadow-2xl shadow-cyan-900/20 transition-all active:scale-95">Stake</button>
+         </div>
+       </div>
+
+       {/* Secondary Staking Card */}
+       <div className="p-8 bg-slate-950/30 border border-slate-800 border-dashed rounded-[2.5rem] relative overflow-hidden group">
+         <div className="flex justify-between items-start mb-8">
+             <div className="opacity-40">
+                <h4 className="font-black text-white text-2xl tracking-tighter">Stake LP Tokens</h4>
+                <p className="text-xs text-slate-500 mt-2 font-medium uppercase tracking-widest font-black">Coming Soon</p>
+             </div>
+             <div className="p-4 bg-slate-800 rounded-2xl text-slate-600 shadow-lg"><Lock size={28}/></div>
+         </div>
+         <div className="h-2.5 w-full bg-slate-900/50 rounded-full overflow-hidden border border-slate-800">
+             <div className="h-full bg-slate-800 w-[35%] rounded-full shadow-[0_0_10px_rgba(255,255,255,0.05)]"></div>
+         </div>
+         <p className="text-[10px] text-slate-700 font-black uppercase mt-4 tracking-tighter">Ecosystem expansion scheduled for Q1 2026</p>
+       </div>
+    </div>
+  );
+};
+
+export default DexPage;
