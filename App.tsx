@@ -59,6 +59,9 @@ function App() {
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     
+    // Disable swiping if we are on the wallet page because it has its own internal horizontal nav/gestures potentially
+    if (currentPage === 'wallet') return;
+
     const distanceX = touchStart.x - touchEnd.x;
     const distanceY = touchStart.y - touchEnd.y;
     const isLeftSwipe = distanceX > minSwipeDistance;

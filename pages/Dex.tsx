@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowDownUp, Settings, ChevronDown, RefreshCw, Zap, TrendingUp, Globe, CheckCircle, ExternalLink, Loader2, Lock, ArrowRight, Wallet, Clock, ArrowRightLeft } from 'lucide-react';
-import { AreaChart, Area, Tooltip, ResponsiveContainer } from 'recharts';
+import React, { useState, useEffect, useMemo } from 'react';
+import { 
+  ArrowDownUp, Settings, ChevronDown, RefreshCw, Zap, TrendingUp, 
+  Globe, CheckCircle, ExternalLink, Loader2, Lock, ArrowRight, 
+  Wallet, Clock, ArrowRightLeft, Plus, Droplets, Minus, BarChart2, 
+  Search, X, Info, AlertTriangle 
+} from 'lucide-react';
 
 // --- Types & Data ---
 interface Token {
@@ -9,6 +13,7 @@ interface Token {
   icon: React.ReactNode;
   price: number;
   balance: number;
+  color: string;
 }
 
 const FluidLogo = ({ className = "w-6 h-6" }: { className?: string }) => (
@@ -20,461 +25,409 @@ const FluidLogo = ({ className = "w-6 h-6" }: { className?: string }) => (
 );
 
 const TOKENS: Token[] = [
-    { symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026" className="w-full h-full" alt="ETH" />, price: 1840, balance: 4.20 },
-    { symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026" className="w-full h-full" alt="USDC" />, price: 1, balance: 25000.00 },
-    { symbol: 'FLUID', name: 'Fluid', icon: <FluidLogo className="w-full h-full text-cyan-400" />, price: 0.05, balance: 150000.00 },
-];
-
-// Mock Data for Chart
-const data = [
-  { name: '10:00', price: 1840 },
-  { name: '11:00', price: 1855 },
-  { name: '12:00', price: 1848 },
-  { name: '13:00', price: 1870 },
-  { name: '14:00', price: 1865 },
-  { name: '15:00', price: 1885 },
-  { name: '16:00', price: 1890 },
+    { symbol: 'FLUID', name: 'Fluid', icon: <FluidLogo className="w-full h-full text-cyan-400" />, price: 0.85, balance: 150000.00, color: 'text-cyan-400' },
+    { symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026" className="w-full h-full" alt="ETH" />, price: 3450, balance: 12.5, color: 'text-blue-500' },
+    { symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026" className="w-full h-full" alt="USDC" />, price: 1, balance: 25000.00, color: 'text-blue-400' },
+    { symbol: 'SOL', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=026" className="w-full h-full" alt="SOL" />, price: 145, balance: 88, color: 'text-purple-500' },
+    { symbol: 'USDT', name: 'Tether', icon: <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=026" className="w-full h-full" alt="USDT" />, price: 1, balance: 63852, color: 'text-emerald-500' },
 ];
 
 const DexPage: React.FC = () => {
-  // Navigation State
-  const [activeTab, setActiveTab] = useState<'swap' | 'limit' | 'bridge'>('swap');
+  const [activeTab, setActiveTab] = useState<'swap' | 'liquidity' | 'stake'>('swap');
   
-  // Swap/Limit/Bridge Input State
-  const [payAmount, setPayAmount] = useState<string>('1.5');
-  const [receiveAmount, setReceiveAmount] = useState<string>('');
-  const [limitPrice, setLimitPrice] = useState<string>('1900'); // Default target price for limit
-  
-  // Token selection state
-  const [payToken, setPayToken] = useState<Token>(TOKENS[0]);
-  const [receiveToken, setReceiveToken] = useState<Token>(TOKENS[1]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalFor, setModalFor] = useState<'pay' | 'receive' | null>(null);
+  return (
+    <div className="min-h-screen pt-28 pb-16 bg-slate-950 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold text-white mb-4">Fluid DEX</h1>
+          <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+            High-performance trading, deep liquidity pools, and sustainable yield farming.
+          </p>
+        </div>
 
-  // Process State
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processStatus, setProcessStatus] = useState<'idle' | 'approving' | 'processing' | 'success'>('idle');
-  
-  // DApp Connectivity State
-  const [activeDapp, setActiveDapp] = useState<string | null>(null);
+        <div className="max-w-lg mx-auto bg-slate-900 border border-slate-800 rounded-[2.5rem] p-6 shadow-2xl relative">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl -z-10"></div>
+          
+          {/* Tabs */}
+          <div className="flex gap-1 p-1 bg-slate-950 rounded-2xl mb-6 border border-slate-800">
+            <button onClick={() => setActiveTab('swap')} className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'swap' ? 'bg-slate-800 text-white shadow-lg border border-slate-700' : 'text-slate-500 hover:text-white'}`}><RefreshCw size={14} /> Swap</button>
+            <button onClick={() => setActiveTab('liquidity')} className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'liquidity' ? 'bg-slate-800 text-white shadow-lg border border-slate-700' : 'text-slate-500 hover:text-white'}`}><Droplets size={14} /> Liquidity</button>
+            <button onClick={() => setActiveTab('stake')} className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeTab === 'stake' ? 'bg-slate-800 text-white shadow-lg border border-slate-700' : 'text-slate-500 hover:text-white'}`}><BarChart2 size={14} /> Stake</button>
+          </div>
 
-  // Auto-calculate receive amount based on mode
-  useEffect(() => {
-    if (!payAmount || !payToken || !receiveToken) {
-        setReceiveAmount('');
-        return;
-    }
-    const val = parseFloat(payAmount);
-    if (isNaN(val)) return;
+          {/* Tab Content */}
+          <div className="min-h-[400px]">
+            {activeTab === 'swap' && <SwapView />}
+            {activeTab === 'liquidity' && <LiquidityView />}
+            {activeTab === 'stake' && <StakeView />}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-    if (activeTab === 'swap') {
-        const rate = payToken.price / receiveToken.price;
-        setReceiveAmount((val * rate).toFixed(4));
-    } else if (activeTab === 'limit') {
-        const price = parseFloat(limitPrice) || 0;
-        setReceiveAmount((val * price).toFixed(2));
-    } else if (activeTab === 'bridge') {
-        setReceiveAmount((val * 0.999).toFixed(4));
-    }
-  }, [payAmount, payToken, receiveToken, activeTab, limitPrice]);
+// --- Sub-components for each tab ---
 
-  const handleAction = () => {
-    setIsProcessing(true);
-    setProcessStatus('approving');
+const TokenSelectorModal = ({ isOpen, onClose, onSelect, currentToken }: { isOpen: boolean, onClose: () => void, onSelect: (t: Token) => void, currentToken: Token }) => {
+    const [search, setSearch] = useState('');
     
-    setTimeout(() => setProcessStatus('processing'), 1500);
-    setTimeout(() => setProcessStatus('success'), 3500);
-    setTimeout(() => {
-        setIsProcessing(false);
-        setProcessStatus('idle');
-        setPayAmount(''); 
-    }, 5500);
-  };
+    const filteredTokens = useMemo(() => {
+        return TOKENS.filter(t => 
+            t.name.toLowerCase().includes(search.toLowerCase()) || 
+            t.symbol.toLowerCase().includes(search.toLowerCase())
+        );
+    }, [search]);
 
-  const handleSelectToken = (token: Token) => {
-    if (modalFor === 'pay') {
-        if (token.symbol === receiveToken.symbol) {
-            setReceiveToken(payToken); // Swap them
-        }
-        setPayToken(token);
-    } else {
-        if (token.symbol === payToken.symbol) {
-            setPayToken(receiveToken); // Swap them
-        }
-        setReceiveToken(token);
-    }
-    setIsModalOpen(false);
-  };
+    if (!isOpen) return null;
 
-  const handleSwapTokens = () => {
-    const tempPay = payToken;
-    setPayToken(receiveToken);
-    setReceiveToken(tempPay);
-  };
-
-  const getButtonLabel = () => {
-      if (processStatus === 'idle') {
-          if (activeTab === 'swap') return 'Swap';
-          if (activeTab === 'limit') return 'Place Limit Order';
-          if (activeTab === 'bridge') return 'Bridge Assets';
-      }
-      if (processStatus === 'approving') return 'Approving...';
-      if (processStatus === 'processing') {
-          if (activeTab === 'swap') return 'Swapping...';
-          if (activeTab === 'limit') return 'Creating Order...';
-          if (activeTab === 'bridge') return 'Bridging...';
-      }
-      return 'Success!';
-  };
-
-  const dapps = [
-      { name: 'Uniswap', category: 'DeFi', icon: '🦄', url: 'https://app.uniswap.org' },
-      { name: 'OpenSea', category: 'NFT', icon: '🌊', url: 'https://opensea.io' },
-      { name: 'Aave', category: 'Lending', icon: '👻', url: 'https://app.aave.com' },
-      { name: 'Compound', category: 'Finance', icon: '🟢', url: 'https://compound.finance' }
-  ];
-
-  const TokenSelectModal = () => {
-    if (!isModalOpen) return null;
     return (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in-up" onClick={() => setIsModalOpen(false)}>
-            <div className="bg-slate-900 p-4 rounded-2xl w-full max-w-sm border border-slate-800" onClick={e => e.stopPropagation()}>
-                <h3 className="text-white font-bold mb-4 px-2">Select a token</h3>
-                <div className="space-y-1">
-                    {TOKENS.map(token => (
-                        <button
-                            key={token.symbol}
-                            onClick={() => handleSelectToken(token)}
-                            className="w-full flex items-center gap-4 p-3 rounded-lg hover:bg-slate-800 transition-colors text-left"
-                        >
-                            <div className="w-8 h-8 flex items-center justify-center">{token.icon}</div>
-                            <div>
-                                <div className="text-white font-bold">{token.symbol}</div>
-                                <div className="text-slate-400 text-sm">{token.name}</div>
-                            </div>
-                        </button>
-                    ))}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in-up">
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
+                <div className="p-6 border-b border-slate-800 flex justify-between items-center">
+                    <h3 className="text-xl font-bold text-white">Select a token</h3>
+                    <button onClick={onClose} className="p-2 text-slate-500 hover:text-white transition-colors"><X size={20}/></button>
+                </div>
+                <div className="p-6">
+                    <div className="relative mb-6">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                        <input 
+                            type="text" 
+                            placeholder="Search by name or symbol" 
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full bg-slate-950 border border-slate-800 rounded-xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-cyan-500 transition-colors"
+                        />
+                    </div>
+                    <div className="space-y-1 overflow-y-auto pr-2 custom-scrollbar">
+                        {filteredTokens.map(t => (
+                            <button 
+                                key={t.symbol} 
+                                onClick={() => { onSelect(t); onClose(); }}
+                                className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${currentToken.symbol === t.symbol ? 'bg-cyan-500/10 border border-cyan-500/30' : 'hover:bg-slate-800 border border-transparent'}`}
+                            >
+                                <div className="flex items-center gap-3 text-left">
+                                    <div className="w-10 h-10 rounded-full bg-slate-800 p-2">{t.icon}</div>
+                                    <div>
+                                        <div className="font-bold text-white leading-none mb-1">{t.symbol}</div>
+                                        <div className="text-xs text-slate-500">{t.name}</div>
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-sm font-bold text-white">{t.balance.toLocaleString()}</div>
+                                    <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Balance</div>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
     );
+};
+
+const SwapView = () => {
+  const [tokenA, setTokenA] = useState(TOKENS[1]); // ETH
+  const [tokenB, setTokenB] = useState(TOKENS[0]); // FLUID
+  const [amountA, setAmountA] = useState('');
+  const [amountB, setAmountB] = useState('');
+  const [showSelector, setShowSelector] = useState<'A' | 'B' | null>(null);
+  const [slippage, setSlippage] = useState(0.5);
+  const [showSettings, setShowSettings] = useState(false);
+  const [isSwapping, setIsSwapping] = useState(false);
+
+  useEffect(() => {
+    if (!amountA || parseFloat(amountA) === 0) {
+      setAmountB('');
+      return;
+    }
+    const val = parseFloat(amountA);
+    if (!isNaN(val)) {
+        setAmountB((val * (tokenA.price / tokenB.price)).toFixed(4));
+    }
+  }, [amountA, tokenA, tokenB]);
+
+  const reverseSwap = () => {
+    const tempT = tokenA;
+    setTokenA(tokenB);
+    setTokenB(tempT);
+    setAmountA('');
+    setAmountB('');
+  };
+
+  const handleSwap = () => {
+    if (!amountA) return;
+    setIsSwapping(true);
+    setTimeout(() => {
+        setIsSwapping(false);
+        alert(`Successfully swapped ${amountA} ${tokenA.symbol} for ${amountB} ${tokenB.symbol}`);
+        setAmountA('');
+    }, 2000);
   };
 
   return (
-    <div className="min-h-screen pt-28 pb-16">
-      <TokenSelectModal />
+    <div className="animate-fade-in-up space-y-4">
+      <TokenSelectorModal 
+        isOpen={!!showSelector} 
+        onClose={() => setShowSelector(null)} 
+        currentToken={showSelector === 'A' ? tokenA : tokenB}
+        onSelect={(t) => showSelector === 'A' ? setTokenA(t) : setTokenB(t)}
+      />
+
+      <div className="flex justify-between items-center mb-2 px-1">
+          <h3 className="text-lg font-bold text-white">Swap</h3>
+          <button 
+            onClick={() => setShowSettings(!showSettings)}
+            className={`p-2 rounded-xl transition-all ${showSettings ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-500 hover:text-white'}`}
+          >
+              <Settings size={20} />
+          </button>
+      </div>
+
+      {showSettings && (
+          <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl animate-fade-in-up mb-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
+                  <Clock size={12} /> Slippage Tolerance
+              </div>
+              <div className="flex gap-2">
+                  {[0.1, 0.5, 1.0].map(s => (
+                      <button 
+                        key={s} 
+                        onClick={() => setSlippage(s)}
+                        className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all border ${slippage === s ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'}`}
+                      >
+                          {s}%
+                      </button>
+                  ))}
+                  <div className="flex-1 flex items-center bg-slate-900 border border-slate-800 rounded-lg px-2">
+                      <input 
+                        type="number" 
+                        value={slippage} 
+                        onChange={e => setSlippage(parseFloat(e.target.value))}
+                        className="w-full bg-transparent text-xs font-bold text-white text-right outline-none" 
+                      />
+                      <span className="text-[10px] text-slate-500 font-bold ml-1">%</span>
+                  </div>
+              </div>
+          </div>
+      )}
       
-      {/* Header */}
-      <div className="text-center mb-16 px-4">
-        <span className="text-cyan-400 font-bold uppercase tracking-widest text-sm">Decentralized Exchange</span>
-        <h1 className="text-5xl font-extrabold text-white mt-2 mb-4">Fluid DEX</h1>
-        <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-          Trade instantly with zero slippage. Connect to any DApp via WalletConnect.
-        </p>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-start mb-24">
-            
-            {/* Left Column: Interactive Interface */}
-            <div className="relative z-10">
-                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden transition-all duration-300">
-                    {/* Background Glow based on Mode */}
-                    <div className={`absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -z-10 transition-colors duration-500 ${
-                        activeTab === 'swap' ? 'bg-cyan-500/5' : activeTab === 'limit' ? 'bg-purple-500/5' : 'bg-emerald-500/5'
-                    }`}></div>
-
-                    {/* Tabs */}
-                    <div className="flex justify-between items-center mb-6">
-                       <div className="flex gap-1 p-1 bg-slate-950 rounded-xl w-full sm:w-auto">
-                          {['Swap', 'Limit', 'Bridge'].map((tab) => (
-                              <button 
-                                key={tab}
-                                onClick={() => setActiveTab(tab.toLowerCase() as any)}
-                                className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                                    activeTab === tab.toLowerCase() 
-                                    ? 'bg-slate-800 text-white shadow-sm' 
-                                    : 'text-slate-500 hover:text-white'
-                                }`}
-                              >
-                                {tab}
-                              </button>
-                          ))}
-                       </div>
-                       <button className="text-slate-400 hover:text-white p-2 hover:bg-slate-800 rounded-full transition-colors"><Settings size={20} /></button>
-                    </div>
-
-                    {/* --- Input Section: Pay --- */}
-                    <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-2 relative group focus-within:border-slate-600 transition-colors">
-                       <div className="flex justify-between text-xs font-bold text-slate-500 mb-2">
-                          <span>{activeTab === 'bridge' ? 'From Network' : 'You pay'}</span>
-                          <span>Balance: {payToken.balance.toLocaleString()} {payToken.symbol}</span>
-                       </div>
-                       
-                       {activeTab === 'bridge' && (
-                           <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-800">
-                                <div className="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs">🌐</div>
-                                <span className="text-white font-bold">Ethereum Mainnet</span>
-                                <ChevronDown size={14} className="text-slate-500 ml-auto" />
-                           </div>
-                       )}
-
-                       <div className="flex justify-between items-center">
-                          <input 
-                            type="number" 
-                            placeholder="0.00" 
-                            className="bg-transparent text-3xl font-bold text-white outline-none w-1/2 placeholder-slate-700"
-                            value={payAmount}
-                            onChange={(e) => setPayAmount(e.target.value)}
-                            disabled={isProcessing}
-                          />
-                          <button onClick={() => { setModalFor('pay'); setIsModalOpen(true); }} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-full transition-colors border border-slate-700">
-                             <div className="w-6 h-6 rounded-full flex items-center justify-center">
-                                {payToken.icon}
-                             </div>
-                             <span className="font-bold text-white text-lg">{payToken.symbol}</span>
-                             <ChevronDown size={16} className="text-slate-400" />
-                          </button>
-                       </div>
-                    </div>
-
-                    {/* --- Middle Section: Limit Price or Arrow --- */}
-                    {activeTab === 'limit' && (
-                        <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-2 mt-2 relative animate-fade-in-up">
-                            <div className="flex justify-between text-xs font-bold text-slate-500 mb-2">
-                                <span>Sell {payToken.symbol} at rate</span>
-                                <span className="text-cyan-500 cursor-pointer">Set to Market</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <input 
-                                    type="number" 
-                                    value={limitPrice}
-                                    onChange={(e) => setLimitPrice(e.target.value)}
-                                    className="bg-transparent text-xl font-bold text-white outline-none w-full placeholder-slate-700"
-                                />
-                                <span className="text-xs font-bold text-slate-500">{receiveToken.symbol}</span>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="flex justify-center -my-3 relative z-10">
-                       <button onClick={handleSwapTokens} className="bg-slate-900 border-4 border-slate-900 p-2 rounded-xl text-slate-400 cursor-pointer hover:text-white hover:bg-slate-800 transition-all shadow-lg disabled:cursor-not-allowed" disabled={activeTab === 'bridge'}>
-                          {activeTab === 'bridge' ? <ArrowRight size={20} className="rotate-90" /> : <ArrowDownUp size={20} />}
-                       </button>
-                    </div>
-
-                    {/* --- Input Section: Receive --- */}
-                    <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-4 pt-6">
-                       <div className="flex justify-between text-xs font-bold text-slate-500 mb-2">
-                          <span>{activeTab === 'bridge' ? 'To Network' : 'You receive'}</span>
-                          <span>Balance: {receiveToken.balance.toLocaleString()} {receiveToken.symbol}</span>
-                       </div>
-
-                       {activeTab === 'bridge' && (
-                           <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-800">
-                                <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-500 flex items-center justify-center text-xs">⚡</div>
-                                <span className="text-white font-bold">Fluid Chain</span>
-                                <ChevronDown size={14} className="text-slate-500 ml-auto" />
-                           </div>
-                       )}
-
-                       <div className="flex justify-between items-center">
-                          <input 
-                            type="number" 
-                            placeholder="0.00" 
-                            className={`bg-transparent text-3xl font-bold outline-none w-1/2 placeholder-slate-700 ${activeTab === 'limit' ? 'text-purple-400' : 'text-emerald-400'}`}
-                            value={receiveAmount}
-                            readOnly
-                          />
-                          <button onClick={() => { setModalFor('receive'); setIsModalOpen(true); }} disabled={activeTab === 'bridge'} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-full transition-colors border border-slate-700 disabled:cursor-not-allowed">
-                             <div className="w-6 h-6 rounded-full flex items-center justify-center">
-                                {activeTab === 'bridge' ? payToken.icon : receiveToken.icon}
-                             </div>
-                             <span className="font-bold text-white text-lg">{activeTab === 'bridge' ? payToken.symbol : receiveToken.symbol}</span>
-                             <ChevronDown size={16} className="text-slate-400" />
-                          </button>
-                       </div>
-                    </div>
-
-                    {/* Info Footer */}
-                    <div className="bg-slate-950/50 rounded-xl p-3 border border-slate-800/50 mb-6 space-y-2">
-                        {activeTab === 'bridge' ? (
-                             <>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-slate-500">Bridge Time</span>
-                                    <span className="text-slate-300">~2 mins</span>
-                                </div>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-slate-500">Cross-chain Fee</span>
-                                    <span className="text-slate-300">0.1%</span>
-                                </div>
-                             </>
-                        ) : (
-                            <>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-slate-500 flex items-center gap-1">Rate <RefreshCw size={10}/></span>
-                                    <span className="text-slate-300">1 {payToken.symbol} = {(payToken.price / receiveToken.price).toLocaleString(undefined, {maximumFractionDigits: 4})} {receiveToken.symbol}</span>
-                                </div>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-slate-500 flex items-center gap-1">Network Cost <Zap size={10}/></span>
-                                    <span className="text-slate-300">~$2.45</span>
-                                </div>
-                                {activeTab === 'limit' && (
-                                    <div className="flex justify-between text-xs">
-                                        <span className="text-slate-500">Expiry</span>
-                                        <span className="text-slate-300">Never</span>
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
-
-                    <button 
-                        onClick={handleAction}
-                        disabled={isProcessing || !payAmount}
-                        className={`w-full font-bold text-lg py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 ${
-                            isProcessing 
-                            ? 'bg-slate-800 text-slate-400 cursor-not-allowed' 
-                            : activeTab === 'limit'
-                              ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white shadow-purple-500/20'
-                              : activeTab === 'bridge'
-                                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-emerald-500/20'
-                                : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-cyan-500/20'
-                        }`}
-                    >
-                       {processStatus !== 'idle' && processStatus !== 'success' && <Loader2 className="animate-spin" />}
-                       {processStatus === 'success' && <CheckCircle className="text-white" />}
-                       {getButtonLabel()}
-                    </button>
-                 </div>
-            </div>
-
-            {/* Right Column: Chart & DApps */}
-            <div className="space-y-8">
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl h-[300px] flex flex-col">
-                    <div className="flex justify-between items-start mb-4">
-                        <div>
-                            <div className="flex items-center gap-2">
-                                <div className="w-6 h-6">{payToken.icon}</div>
-                                <h3 className="text-xl font-bold text-white">{payToken.name}</h3>
-                            </div>
-                            <div className="text-xs text-slate-500">{payToken.symbol}/{receiveToken.symbol}</div>
-                        </div>
-                        <div className="text-right">
-                           <div className="text-xl font-bold text-white">${payToken.price.toLocaleString()}</div>
-                           <div className="text-xs text-emerald-500 font-bold">+2.1%</div>
-                        </div>
-                    </div>
-                    <div className="flex-1 -mx-6 -mb-6">
-                        <ResponsiveContainer width="100%" height="100%">
-                           <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                              <defs>
-                                <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#22d3ee" stopOpacity={0.4}/>
-                                    <stop offset="95%" stopColor="#22d3ee" stopOpacity={0}/>
-                                </linearGradient>
-                               </defs>
-                              <Tooltip 
-                                 contentStyle={{ 
-                                     background: 'rgba(2, 6, 23, 0.8)', 
-                                     border: '1px solid #334155', 
-                                     borderRadius: '0.5rem',
-                                     color: '#fff'
-                                 }}
-                                 itemStyle={{ color: '#fff' }}
-                                 labelStyle={{ color: '#94a3b8' }}
-                              />
-                              <Area type="monotone" dataKey="price" stroke="#22d3ee" strokeWidth={2} fillOpacity={1} fill="url(#colorPrice)" />
-                           </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                           <Globe size={20} className="text-purple-400" /> DApp Browser
-                        </h3>
-                        <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-full">
-                           Connected
-                        </span>
-                    </div>
-
-                    <div className="space-y-3">
-                        {dapps.map((dapp, i) => (
-                           <div 
-                                key={i}
-                                className={`flex items-center justify-between p-3 rounded-xl transition-all cursor-pointer ${
-                                    activeDapp === dapp.name ? 'bg-slate-800' : 'bg-slate-950/50 hover:bg-slate-800/50'
-                                }`}
-                                onClick={() => setActiveDapp(dapp.name)}
-                            >
-                              <div className="flex items-center gap-4">
-                                 <div className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center text-lg">{dapp.icon}</div>
-                                 <div>
-                                    <div className="font-bold text-white">{dapp.name}</div>
-                                    <div className="text-xs text-slate-500">{dapp.category}</div>
-                                 </div>
-                              </div>
-                              {activeDapp === dapp.name ? (
-                                <button className="text-sm font-bold text-red-500 hover:text-red-400">Disconnect</button>
-                              ) : (
-                                <button className="text-sm font-bold text-cyan-500 hover:text-cyan-400">Connect</button>
-                              )}
-                           </div>
-                        ))}
-                    </div>
-
-                    {activeDapp && (
-                        <div className="mt-6 p-4 bg-black/30 rounded-xl border border-slate-800 animate-fade-in-up">
-                           <h4 className="text-sm font-bold text-white mb-2">Connection Details</h4>
-                           <div className="text-xs text-slate-400 space-y-1">
-                              <p><strong>App:</strong> {activeDapp}</p>
-                              <p><strong>Permissions:</strong> View Address, Request Transactions</p>
-                              <a href={dapps.find(d => d.name === activeDapp)?.url} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline flex items-center gap-1">
-                                 Visit Site <ExternalLink size={12}/>
-                              </a>
-                           </div>
-                        </div>
-                    )}
-                </div>
-            </div>
+      {/* Token A Input */}
+      <div className="bg-slate-950 rounded-3xl p-6 border border-slate-800 hover:border-slate-700 transition-all group">
+        <div className="flex justify-between text-[10px] font-bold text-slate-500 mb-4 uppercase tracking-widest">
+            <span>You Sell</span>
+            <span className="flex items-center gap-1 cursor-pointer hover:text-cyan-400 transition-colors" onClick={() => setAmountA(tokenA.balance.toString())}>
+                <Wallet size={10} /> Balance: {tokenA.balance.toLocaleString()}
+            </span>
         </div>
-
-        <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Recent Activity</h2>
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-               <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
-                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-purple-500/10 text-purple-400 rounded-full flex items-center justify-center"><ArrowRightLeft size={18} /></div>
-                        <div>
-                           <div className="font-bold text-white">Limit Sell ETH</div>
-                           <div className="text-xs text-slate-500 flex items-center gap-1">Order Placed <Clock size={10}/></div>
-                        </div>
-                     </div>
-                     <div className="text-right">
-                        <div className="font-bold text-white">-0.5 ETH</div>
-                        <div className="text-xs text-slate-500">+$950.00 USDC</div>
-                     </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
-                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center"><Wallet size={18} /></div>
-                        <div>
-                           <div className="font-bold text-white">Received USDC</div>
-                           <div className="text-xs text-slate-500 flex items-center gap-1">From 0x123...abc <CheckCircle size={10}/></div>
-                        </div>
-                     </div>
-                     <div className="text-right">
-                        <div className="font-bold text-emerald-400">+2,000 USDC</div>
-                        <div className="text-xs text-slate-500">~$2,000.00</div>
-                     </div>
-                  </div>
-               </div>
-            </div>
+        <div className="flex justify-between items-center">
+            <input 
+                type="number" 
+                value={amountA} 
+                onChange={e => setAmountA(e.target.value)} 
+                placeholder="0.0"
+                className="bg-transparent text-4xl font-bold text-white outline-none w-1/2 placeholder-slate-800" 
+            />
+            <button 
+                onClick={() => setShowSelector('A')}
+                className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-2xl border border-slate-700 shadow-sm transition-all"
+            >
+                <div className="w-6 h-6">{tokenA.icon}</div>
+                <span className="font-bold text-white">{tokenA.symbol}</span>
+                <ChevronDown size={14} className="text-slate-500" />
+            </button>
+        </div>
+        <div className="mt-2 text-xs text-slate-500 font-bold">
+            ≈ ${(parseFloat(amountA || '0') * tokenA.price).toLocaleString()}
         </div>
       </div>
+      
+      <div className="flex justify-center -my-6 relative z-10">
+        <button 
+            onClick={reverseSwap}
+            className="bg-slate-900 border-4 border-slate-950 p-3 rounded-[1.25rem] text-cyan-400 hover:text-white transition-all shadow-xl shadow-cyan-900/20 active:scale-95"
+        >
+            <ArrowDownUp size={24} />
+        </button>
+      </div>
+      
+      {/* Token B Input */}
+      <div className="bg-slate-950 rounded-3xl p-6 border border-slate-800 hover:border-slate-700 transition-all group pt-8">
+        <div className="flex justify-between text-[10px] font-bold text-slate-500 mb-4 uppercase tracking-widest">
+            <span>You Buy (Estimated)</span>
+            <span className="flex items-center gap-1">
+                <Wallet size={10} /> Balance: {tokenB.balance.toLocaleString()}
+            </span>
+        </div>
+        <div className="flex justify-between items-center">
+            <input 
+                type="number" 
+                value={amountB} 
+                readOnly 
+                placeholder="0.0"
+                className="bg-transparent text-4xl font-bold text-emerald-400 outline-none w-1/2 placeholder-slate-800 cursor-default" 
+            />
+            <button 
+                onClick={() => setShowSelector('B')}
+                className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-2xl border border-slate-700 shadow-sm transition-all"
+            >
+                <div className="w-6 h-6">{tokenB.icon}</div>
+                <span className="font-bold text-white">{tokenB.symbol}</span>
+                <ChevronDown size={14} className="text-slate-500" />
+            </button>
+        </div>
+        <div className="mt-2 text-xs text-slate-500 font-bold">
+            ≈ ${(parseFloat(amountB || '0') * tokenB.price).toLocaleString()}
+        </div>
+      </div>
+      
+      <div className="p-4 bg-slate-950/50 rounded-2xl text-[11px] font-bold space-y-2 border border-slate-800/50">
+        <div className="flex justify-between">
+            <span className="text-slate-500 flex items-center gap-1"><Zap size={10}/> Rate</span>
+            <span className="text-white">1 {tokenA.symbol} = {(tokenA.price / tokenB.price).toFixed(6)} {tokenB.symbol}</span>
+        </div>
+        <div className="flex justify-between">
+            <span className="text-slate-500 flex items-center gap-1"><TrendingUp size={10}/> Price Impact</span>
+            <span className="text-emerald-400">&lt; 0.01%</span>
+        </div>
+        <div className="flex justify-between">
+            <span className="text-slate-500 flex items-center gap-1"><AlertTriangle size={10}/> Minimum Received</span>
+            <span className="text-white">{(parseFloat(amountB || '0') * (1 - slippage/100)).toFixed(4)} {tokenB.symbol}</span>
+        </div>
+      </div>
+
+      <button 
+        disabled={!amountA || isSwapping}
+        onClick={handleSwap}
+        className={`w-full py-5 bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white font-extrabold text-lg rounded-3xl shadow-xl shadow-cyan-950/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:grayscale flex items-center justify-center gap-3`}
+      >
+        {isSwapping ? <Loader2 className="animate-spin" /> : <ArrowRightLeft size={22} />}
+        {isSwapping ? 'Processing Swap...' : (amountA ? 'Swap Now' : 'Enter an amount')}
+      </button>
+
+      <p className="text-[10px] text-center text-slate-600 font-bold uppercase tracking-widest mt-2">
+          Powered by Fluid Smart Router
+      </p>
+    </div>
+  );
+};
+
+const LiquidityView = () => {
+  const [tokenA, setTokenA] = useState(TOKENS[1]); // ETH
+  const [tokenB, setTokenB] = useState(TOKENS[0]); // FLUID
+  const [amountA, setAmountA] = useState('1');
+  const [amountB, setAmountB] = useState('');
+  const [showSelector, setShowSelector] = useState<'A' | 'B' | null>(null);
+
+  useEffect(() => {
+    if (!amountA || !tokenA || !tokenB) { setAmountB(''); return; }
+    const val = parseFloat(amountA); if (isNaN(val)) return;
+    setAmountB((val * (tokenA.price / tokenB.price)).toFixed(4));
+  }, [amountA, tokenA, tokenB]);
+
+  return (
+    <div className="animate-fade-in-up space-y-4">
+      <TokenSelectorModal 
+        isOpen={!!showSelector} 
+        onClose={() => setShowSelector(null)} 
+        currentToken={showSelector === 'A' ? tokenA : tokenB}
+        onSelect={(t) => showSelector === 'A' ? setTokenA(t) : setTokenB(t)}
+      />
+      
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-bold text-white">Add Liquidity</h3>
+        <p className="text-sm text-slate-500 mt-1">Earn 0.3% of all trades proportional to your share.</p>
+      </div>
+      
+      {/* Token A Input */}
+      <div className="bg-slate-950 rounded-3xl p-6 border border-slate-800">
+        <div className="flex justify-between text-[10px] font-bold text-slate-500 mb-3 uppercase tracking-widest">
+            <span>Input</span>
+            <span>Balance: {tokenA.balance.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between items-center">
+            <input type="number" value={amountA} onChange={e => setAmountA(e.target.value)} className="bg-transparent text-3xl font-bold text-white outline-none w-1/2" />
+            <button onClick={() => setShowSelector('A')} className="flex items-center gap-2 bg-slate-800 p-2 px-3 rounded-2xl border border-slate-700">
+                <div className="w-6 h-6">{tokenA.icon}</div>
+                <span className="font-bold text-white">{tokenA.symbol}</span>
+                <ChevronDown size={14} className="text-slate-500" />
+            </button>
+        </div>
+      </div>
+      
+      <div className="flex justify-center -my-2 relative z-10"><Plus size={24} className="text-slate-700" /></div>
+      
+      {/* Token B Input */}
+      <div className="bg-slate-950 rounded-3xl p-6 border border-slate-800">
+        <div className="flex justify-between text-[10px] font-bold text-slate-500 mb-3 uppercase tracking-widest">
+            <span>Input</span>
+            <span>Balance: {tokenB.balance.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between items-center">
+            <input type="number" value={amountB} readOnly className="bg-transparent text-3xl font-bold text-white outline-none w-1/2 cursor-default" />
+            <button onClick={() => setShowSelector('B')} className="flex items-center gap-2 bg-slate-800 p-2 px-3 rounded-2xl border border-slate-700">
+                <div className="w-6 h-6">{tokenB.icon}</div>
+                <span className="font-bold text-white">{tokenB.symbol}</span>
+                <ChevronDown size={14} className="text-slate-500" />
+            </button>
+        </div>
+      </div>
+      
+      <div className="p-4 bg-slate-950/50 rounded-2xl text-[10px] space-y-2 border border-slate-800/50 font-bold">
+        <div className="flex justify-between"><span className="text-slate-500">ESTIMATED POOL SHARE</span><span className="text-cyan-400">0.05%</span></div>
+        <div className="flex justify-between"><span className="text-slate-500">FLUID/ETH PER LP TOKEN</span><span className="text-white">125.40</span></div>
+      </div>
+      
+      <button className="w-full py-5 bg-white text-black font-extrabold text-lg rounded-3xl hover:bg-slate-200 transition-all shadow-xl shadow-white/5 active:scale-95">Supply Liquidity</button>
+    </div>
+  );
+};
+
+const StakeView = () => {
+  return (
+    <div className="animate-fade-in-up space-y-6">
+       <div className="p-8 bg-slate-950 border border-slate-800 rounded-[2rem] relative overflow-hidden group">
+         <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl transition-all group-hover:bg-cyan-500/10"></div>
+         <div className="flex justify-between items-start mb-6">
+             <div>
+                <h4 className="font-bold text-white text-xl">Stake FLUID</h4>
+                <p className="text-xs text-slate-500 mt-1">Earn a portion of protocol fees.</p>
+             </div>
+             <div className="p-3 bg-cyan-500/10 rounded-2xl text-cyan-400 border border-cyan-500/20"><BarChart2 size={24}/></div>
+         </div>
+         
+         <div className="grid grid-cols-2 gap-4 mb-8">
+             <div className="bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                 <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">APY</div>
+                 <div className="text-2xl font-black text-emerald-400">12.5%</div>
+             </div>
+             <div className="bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                 <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">STAKED</div>
+                 <div className="text-2xl font-black text-white">10.5k</div>
+             </div>
+         </div>
+
+         <div className="flex gap-2">
+            <div className="flex-1 bg-slate-900 border border-slate-800 rounded-2xl px-4 flex items-center">
+                <input type="number" placeholder="0.0" className="w-full bg-transparent font-bold text-white outline-none" />
+                <span className="text-[10px] font-black text-slate-500 ml-2">FLD</span>
+            </div>
+            <button className="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold rounded-2xl shadow-lg transition-all active:scale-95">Stake</button>
+         </div>
+       </div>
+
+       <div className="p-8 bg-slate-950 border border-slate-800 rounded-[2rem] relative overflow-hidden group border-dashed">
+         <div className="flex justify-between items-start mb-6">
+             <div>
+                <h4 className="font-bold text-white text-xl opacity-60">Stake LP Tokens</h4>
+                <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest font-black">Coming Soon</p>
+             </div>
+             <div className="p-3 bg-slate-800 rounded-2xl text-slate-600"><Lock size={24}/></div>
+         </div>
+         <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden">
+             <div className="h-full bg-slate-800 w-[40%] rounded-full"></div>
+         </div>
+       </div>
     </div>
   );
 };

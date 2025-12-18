@@ -1,380 +1,609 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Play, Apple, ArrowUpRight, ArrowDownLeft, Repeat, Plus, 
-  CreditCard, Lock, Settings, Globe, Server, 
-  Search, Cloud, Wifi, ChevronRight, Activity, Smartphone,
-  ShieldCheck, Zap, MoreHorizontal, ArrowDownUp, RefreshCw, 
-  TrendingUp, CheckCircle, ExternalLink, Loader2, ArrowRightLeft,
-  Sliders, ShoppingBag, Layers, Wallet as WalletIcon, X, Copy, QrCode, Eye, EyeOff, Trash2, Ban,
-  // Fix: Added missing 'Check', 'Music', and 'Tv' icons to the import.
-  Check, Music, Tv
+  ArrowUpRight, ArrowDownLeft, X, Copy, QrCode, Check, Loader2, CheckCircle, Wallet as WalletIcon, 
+  ArrowLeft, ChevronRight, Search, AppWindow, Landmark, SlidersHorizontal, LogOut, ShieldCheck, Bell, Palette,
+  Globe, Briefcase, Minus, Plus, Building, Network, AlertTriangle, RefreshCw, CreditCard, 
+  ArrowDownUp, Droplets, BarChart2, Zap, Eye, EyeOff, Ban, Trash2, Smartphone, ShoppingBag, Music, Tv,
+  ChevronDown, Wifi, ExternalLink, Shield, HardDrive, Smartphone as PhoneIcon, Tablet, Monitor
 } from 'lucide-react';
-import { AreaChart, Area, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 
-
-// --- MOCK DATA & TYPES ---
+// --- Shared Types ---
 interface Token {
-  id: string; symbol: string; name: string; icon: React.ReactNode; price: number; balance: number; color: string;
+  id: string; symbol: string; name: string; icon: React.ReactNode; price: number; balance: number; color: string; network: string;
 }
-interface Transaction { id: string; type: 'sent' | 'received'; amount: string; symbol: string; date: string; }
+
 interface CardTransaction { id: string; vendor: string; amount: number; date: string; icon: React.ReactNode; }
 
-// --- Shared Fluid Logo Component ---
-const FluidLogo = ({ className = "w-8 h-8" }: { className?: string }) => (
-    <svg viewBox="0 0 100 100" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
-        <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" />
-        <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" />
-        <path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" />
-    </svg>
+const FLUID_LOGO_SVG = (
+  <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+    <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" />
+    <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" />
+    <path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" />
+  </svg>
 );
 
 const TOKENS: Token[] = [
-    { id: 'fluid', symbol: 'FLD', name: 'Fluid', icon: <FluidLogo className="w-full h-full text-cyan-400" />, price: 0.50, balance: 45000, color: '#22d3ee' },
-    { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026" className="w-full h-full" alt="ETH" />, price: 3824, balance: 12.5, color: '#6366f1' },
-    { id: 'tether', symbol: 'USDT', name: 'Tether', icon: <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=026" className="w-full h-full" alt="USDT" />, price: 1, balance: 63852, color: '#10b981' },
+  { id: 'fluid', symbol: 'FLD', name: 'Fluid', icon: <div className="text-cyan-400">{FLUID_LOGO_SVG}</div>, price: 0.85, balance: 45200, color: '#22d3ee', network: 'Fluid' },
+  { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-full" />, price: 3450, balance: 4.25, color: '#6366f1', network: 'Ethereum' },
+  { id: 'usdc', symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" className="w-full" />, price: 1, balance: 12500, color: '#2775ca', network: 'Ethereum' },
+  { id: 'solana', symbol: 'SOL', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png" className="w-full" />, price: 145, balance: 120, color: '#14f195', network: 'Solana' },
 ];
 
+// --- Sub-Components ---
 
-// --- MODAL COMPONENT ---
-const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode; }> = ({ isOpen, onClose, title, children }) => {
-    if (!isOpen) return null;
-    return (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in-up" onClick={onClose}>
-            <div className="bg-slate-900 p-6 rounded-2xl w-full max-w-md border border-slate-800 shadow-2xl" onClick={e => e.stopPropagation()}>
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-white font-bold text-lg">{title}</h3>
-                    <button onClick={onClose} className="p-2 text-slate-500 hover:text-white transition-colors rounded-full"><X size={20} /></button>
-                </div>
-                {children}
-            </div>
-        </div>
-    );
-};
-
-
-// --- TAB 1: PORTFOLIO VIEW ---
-const PortfolioView: React.FC<{ onNavigateToDex: () => void }> = ({ onNavigateToDex }) => {
-    const [selectedToken, setSelectedToken] = useState<Token | null>(null);
-    const [modal, setModal] = useState<'send' | 'receive' | null>(null);
-    const [sendAmount, setSendAmount] = useState('');
-    const [sendAddress, setSendAddress] = useState('');
-    const [sendStep, setSendStep] = useState(0); // 0: input, 1: confirming, 2: success
-    const [isCopied, setIsCopied] = useState(false);
-
-    const portfolioValue = TOKENS.reduce((acc, token) => acc + token.balance * token.price, 0);
-
-    const handleSend = () => {
-        setSendStep(1);
-        setTimeout(() => setSendStep(2), 2000);
-        setTimeout(() => {
-            setModal(null);
-            setSendStep(0);
-            setSendAmount('');
-            setSendAddress('');
-        }, 4000);
-    };
-    
-    const handleCopy = () => {
-        navigator.clipboard.writeText("0x1a2b...c3d4");
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
-    };
-
-    const SendModalContent = () => (
-        <>
-           {sendStep === 0 && (
-              <div className="space-y-4">
-                  <div className="p-3 bg-slate-800 rounded-lg flex items-center gap-3">
-                      <div className="w-8 h-8">{selectedToken?.icon}</div>
-                      <div>
-                          <div className="text-sm text-slate-400">Asset</div>
-                          <div className="font-bold text-white">{selectedToken?.name}</div>
-                      </div>
-                  </div>
-                  <input type="text" value={sendAddress} onChange={e => setSendAddress(e.target.value)} placeholder="Recipient Address" className="w-full bg-slate-800 p-3 rounded-lg text-white border border-slate-700 focus:border-cyan-500 focus:outline-none" />
-                  <input type="number" value={sendAmount} onChange={e => setSendAmount(e.target.value)} placeholder="Amount" className="w-full bg-slate-800 p-3 rounded-lg text-white border border-slate-700 focus:border-cyan-500 focus:outline-none" />
-                  <button onClick={handleSend} className="w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-lg transition-colors">Confirm Send</button>
-              </div>
-           )}
-           {sendStep === 1 && <div className="text-center py-8"><Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400 mb-4" /><p className="text-slate-300">Sending transaction...</p></div>}
-           {sendStep === 2 && <div className="text-center py-8"><CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" /><h4 className="text-xl font-bold text-white">Transaction Sent!</h4><p className="text-slate-400">Your funds are on their way.</p></div>}
-        </>
-    );
-    
-    const ReceiveModalContent = () => (
-        <div className="flex flex-col items-center gap-4">
-            <div className="p-4 bg-white rounded-xl"><QrCode size={160} className="text-black" /></div>
-            <div className="w-full p-3 bg-slate-800 rounded-lg text-center font-mono text-sm text-slate-300 break-all">0x1a2b...c3d4</div>
-            <button onClick={handleCopy} className="w-full py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2">{isCopied ? <><Check size={18}/> Copied!</> : <><Copy size={16}/> Copy Address</>}</button>
-        </div>
-    );
-    
-    return (
-        <div className="animate-fade-in-up">
-            <Modal isOpen={!!selectedToken} onClose={() => setSelectedToken(null)} title={selectedToken?.name || ''}>
-                {selectedToken && (
-                    <div className="space-y-4">
-                        <div className="h-40 -mx-6 -mt-4">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={Array.from({length: 20}, (_, i) => ({ n: i, p: selectedToken.price * (1 + (Math.random() - 0.5) * 0.1) }))}><defs><linearGradient id="chartColor" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor={selectedToken.color} stopOpacity={0.4}/><stop offset="95%" stopColor={selectedToken.color} stopOpacity={0}/></linearGradient></defs><Tooltip contentStyle={{ background: '#0f172a', border: '1px solid #334155'}} /><Area type="monotone" dataKey="p" stroke={selectedToken.color} strokeWidth={2} fill="url(#chartColor)" /></AreaChart>
-                            </ResponsiveContainer>
-                        </div>
-                        <div className="flex justify-between items-center p-3 bg-slate-800 rounded-lg">
-                            <span className="text-slate-400">Balance</span>
-                            <span className="font-bold text-white">{selectedToken.balance} {selectedToken.symbol}</span>
-                        </div>
-                         <div className="flex justify-between items-center p-3 bg-slate-800 rounded-lg">
-                            <span className="text-slate-400">Value</span>
-                            <span className="font-bold text-white">${(selectedToken.balance * selectedToken.price).toLocaleString()}</span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-3 pt-2">
-                           <button onClick={() => { setSelectedToken(null); setTimeout(() => setModal('send'), 100); }} className="py-3 bg-cyan-500/10 text-cyan-400 font-bold rounded-lg hover:bg-cyan-500/20">Send</button>
-                           <button onClick={() => { setSelectedToken(null); setTimeout(() => setModal('receive'), 100); }} className="py-3 bg-emerald-500/10 text-emerald-400 font-bold rounded-lg hover:bg-emerald-500/20">Receive</button>
-                        </div>
-                    </div>
-                )}
-            </Modal>
-            <Modal isOpen={modal === 'send'} onClose={() => setModal(null)} title={`Send ${selectedToken?.symbol || 'Crypto'}`}><SendModalContent /></Modal>
-            <Modal isOpen={modal === 'receive'} onClose={() => setModal(null)} title="Receive Crypto"><ReceiveModalContent /></Modal>
-            
-            <div className="text-center mb-12">
-                <span className="text-slate-400 text-sm font-bold uppercase tracking-widest">Total Balance</span>
-                <h2 className="text-5xl font-bold text-white mt-2 mb-2">${portfolioValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
-                <div className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-bold">
-                    <ArrowUpRight size={14} /> +${(portfolioValue * 0.024).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (2.4%) Today
-                </div>
-            </div>
-
-            <div className="flex justify-center gap-4 mb-12">
-               {[ { icon: ArrowUpRight, label: "Send", action: () => setModal('send') }, { icon: ArrowDownLeft, label: "Receive", action: () => setModal('receive') }, { icon: RefreshCw, label: "Swap", action: onNavigateToDex }, { icon: Plus, label: "Buy", action: () => alert("Fiat on-ramp coming soon!") }
-               ].map((action, i) => (
-                  <div key={i} className="flex flex-col items-center gap-2">
-                     <button onClick={action.action} className="w-16 h-16 rounded-full bg-slate-800 hover:bg-cyan-500 hover:text-black transition-colors flex items-center justify-center text-white border border-slate-700/50 shadow-lg">
-                        <action.icon size={24} />
-                     </button>
-                     <span className="text-xs font-medium text-slate-400">{action.label}</span>
-                  </div>
-               ))}
-            </div>
-
-            <div className="max-w-2xl mx-auto space-y-3">
-               <h3 className="text-sm font-bold text-slate-500 px-2">Assets</h3>
-               {TOKENS.map((token) => (
-                  <div key={token.id} onClick={() => setSelectedToken(token)} className="flex items-center justify-between p-4 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:bg-slate-800/50 transition-colors cursor-pointer">
-                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold" style={{ color: token.color }}>
-                           {token.icon}
-                        </div>
-                        <div>
-                           <div className="font-bold text-white">{token.name}</div>
-                           <div className="text-sm text-slate-500">{token.balance} {token.symbol}</div>
-                        </div>
-                     </div>
-                     <div className="text-right">
-                        <div className="font-bold text-white">${(token.balance * token.price).toLocaleString()}</div>
-                        <div className="text-xs text-emerald-500">+1.2%</div>
-                     </div>
-                  </div>
-               ))}
-            </div>
-        </div>
-    );
-};
-
-
-// --- TAB 2: DEX VIEW ---
-const DexView: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<'swap' | 'limit' | 'bridge'>('swap');
-    const [payAmount, setPayAmount] = useState<string>('1.5');
-    const [receiveAmount, setReceiveAmount] = useState<string>('');
-    const [payToken, setPayToken] = useState<Token>(TOKENS[1]);
-    const [receiveToken, setReceiveToken] = useState<Token>(TOKENS[2]);
-    const [isProcessing, setIsProcessing] = useState(false);
-    const [processStatus, setProcessStatus] = useState<'idle' | 'approving' | 'processing' | 'success'>('idle');
-    const [modalFor, setModalFor] = useState<'pay' | 'receive' | null>(null);
-
-    const chartData = [ { name: '10:00', price: 3840 }, { name: '11:00', price: 3855 }, { name: '12:00', price: 3848 }, { name: '13:00', price: 3870 }, { name: '14:00', price: 3865 }, { name: '15:00', price: 3885 }, { name: '16:00', price: 3890 } ];
-
-    useEffect(() => {
-        if (!payAmount || !payToken || !receiveToken) { setReceiveAmount(''); return; }
-        const val = parseFloat(payAmount); if (isNaN(val)) return;
-        setReceiveAmount((val * (payToken.price / receiveToken.price)).toFixed(4));
-    }, [payAmount, payToken, receiveToken]);
-
-    const handleAction = () => {
-        setIsProcessing(true); setProcessStatus('approving');
-        setTimeout(() => setProcessStatus('processing'), 1500);
-        setTimeout(() => setProcessStatus('success'), 3500);
-        setTimeout(() => { setIsProcessing(false); setProcessStatus('idle'); setPayAmount(''); }, 5500);
-    };
-
-    const handleSelectToken = (token: Token) => {
-        if (modalFor === 'pay') {
-            if (token.id === receiveToken.id) setReceiveToken(payToken); // Swap
-            setPayToken(token);
-        } else {
-            if (token.id === payToken.id) setPayToken(receiveToken); // Swap
-            setReceiveToken(token);
-        }
-        setModalFor(null);
-    };
-
-    const getButtonLabel = () => {
-        if (processStatus === 'idle') return 'Swap';
-        if (processStatus === 'approving') return 'Approving...';
-        if (processStatus === 'processing') return 'Swapping...';
-        return 'Success!';
-    };
-
-    return (
-        <div className="animate-fade-in-up">
-            <Modal isOpen={!!modalFor} onClose={() => setModalFor(null)} title="Select Token">
-                <div className="space-y-2">
-                    {TOKENS.map(token => <button key={token.id} onClick={() => handleSelectToken(token)} className="w-full flex items-center gap-4 p-3 rounded-lg hover:bg-slate-800 transition-colors"><div className="w-8 h-8">{token.icon}</div><div><div className="font-bold text-white text-left">{token.name}</div><div className="text-sm text-slate-400">{token.symbol}</div></div></button>)}
-                </div>
-            </Modal>
-            <div className="text-center mb-12">
-                <h2 className="text-3xl font-extrabold text-white mt-2 mb-2">Trade instantly with zero slippage.</h2>
-                <p className="text-slate-400 max-w-2xl mx-auto">Connect to any DApp via WalletConnect.</p>
-            </div>
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-                   <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-2">
-                       <div className="flex justify-between text-xs font-bold text-slate-500 mb-2"><span>You pay</span><span>Balance: {payToken.balance.toLocaleString()} {payToken.symbol}</span></div>
-                       <div className="flex justify-between items-center"><input type="number" placeholder="0.00" className="bg-transparent text-3xl font-bold text-white outline-none w-1/2" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} disabled={isProcessing} /><button onClick={() => setModalFor('pay')} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-full transition-colors border border-slate-700"><div className="w-6 h-6">{payToken.icon}</div><span className="font-bold text-white text-lg">{payToken.symbol}</span><ChevronRight size={16} className="text-slate-400" /></button></div>
-                    </div>
-                    <div className="flex justify-center -my-3 relative z-10"><button onClick={() => {const temp=payToken; setPayToken(receiveToken); setReceiveToken(temp);}} className="bg-slate-900 border-4 border-slate-900 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all shadow-lg"><ArrowDownUp size={20} /></button></div>
-                    <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 mb-4 pt-6">
-                       <div className="flex justify-between text-xs font-bold text-slate-500 mb-2"><span>You receive</span><span>Balance: {receiveToken.balance.toLocaleString()} {receiveToken.symbol}</span></div>
-                       <div className="flex justify-between items-center"><input type="number" placeholder="0.00" className="bg-transparent text-3xl font-bold text-emerald-400 outline-none w-1/2" value={receiveAmount} readOnly /><button onClick={() => setModalFor('receive')} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-full transition-colors border border-slate-700"><div className="w-6 h-6">{receiveToken.icon}</div><span className="font-bold text-white text-lg">{receiveToken.symbol}</span><ChevronRight size={16} className="text-slate-400" /></button></div>
-                    </div>
-                    <button onClick={handleAction} disabled={isProcessing || !payAmount} className={`w-full font-bold text-lg py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-cyan-500/20`}><>
-                       {processStatus !== 'idle' && processStatus !== 'success' && <Loader2 className="animate-spin" />}
-                       {processStatus === 'success' && <CheckCircle className="text-white" />}
-                       {getButtonLabel()}</>
-                    </button>
-                </div>
-                <div className="space-y-8">
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl h-[300px] flex flex-col">
-                        <div className="flex justify-between items-start mb-4">
-                           <div><h3 className="text-xl font-bold text-white">{payToken.name}</h3><div className="text-xs text-slate-500">{payToken.symbol}/{receiveToken.symbol}</div></div>
-                           <div className="text-right"><div className="text-xl font-bold text-white">${payToken.price.toLocaleString()}</div><div className="text-xs text-emerald-500 font-bold">+2.1%</div></div>
-                        </div>
-                        <div className="flex-1 -mx-6 -mb-6">
-                            <ResponsiveContainer width="100%" height="100%"><AreaChart data={chartData}><defs><linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#22d3ee" stopOpacity={0.4}/><stop offset="95%" stopColor="#22d3ee" stopOpacity={0}/></linearGradient></defs><Tooltip contentStyle={{ background: 'rgba(2, 6, 23, 0.8)', border: '1px solid #334155' }}/><Area type="monotone" dataKey="price" stroke="#22d3ee" strokeWidth={2} fillOpacity={1} fill="url(#colorPrice)" /></AreaChart></ResponsiveContainer>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-
-// --- TAB 3: CARDS VIEW ---
-const CardsView: React.FC = () => {
-    const [showVDetails, setShowVDetails] = useState(false);
-    const [isVFrozen, setIsVFrozen] = useState(false);
-    const [pCardState, setPCardState] = useState<'none' | 'requested' | 'active'>('none');
-    const [showPPin, setShowPPin] = useState(false);
-    
-    const cardTransactions: CardTransaction[] = [
-        { id: '1', vendor: 'Spotify', amount: 9.99, date: 'May 20', icon: <Music /> },
-        { id: '2', vendor: 'Amazon', amount: 45.50, date: 'May 19', icon: <ShoppingBag /> },
-        { id: '3', vendor: 'Netflix', amount: 15.49, date: 'May 18', icon: <Tv /> },
-    ];
-    
-    return (
-        <div className="animate-fade-in-up">
-            <Modal isOpen={pCardState === 'requested'} onClose={() => {}} title="Physical Card">
-                <div className="text-center py-8"><Loader2 className="w-8 h-8 animate-spin mx-auto text-cyan-400 mb-4" /><h4 className="font-bold text-white text-xl">Your Card is on its way!</h4><p className="text-slate-400">Est. delivery: 5-7 business days.</p><button onClick={() => setPCardState('active')} className="mt-4 px-4 py-2 bg-cyan-500 text-black rounded-lg font-bold">Simulate Arrival & Activate</button></div>
-            </Modal>
-            <div className="text-center mb-16"><h2 className="text-3xl font-extrabold text-white mt-2 mb-2">One Wallet. <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Two Realities.</span></h2><p className="text-slate-400 max-w-2xl mx-auto">Instantly generate virtual cards for secure online spending, or order the premium metal card for the physical world.</p></div>
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-                {/* Virtual Card */}
-                <div className="space-y-6">
-                    <div className={`relative group w-full max-w-[380px] h-[240px] transition-all duration-500 mx-auto ${isVFrozen ? 'opacity-50' : ''}`}>
-                        <div className="relative h-full w-full rounded-2xl bg-white/5 backdrop-blur-xl border border-white/20 shadow-2xl p-6 flex flex-col justify-between overflow-hidden"><div className="flex justify-between items-start z-10"><span className="font-bold text-xl text-white tracking-tighter flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500"></div>fluid <span className="text-[10px] uppercase font-normal text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded">Virtual</span></span><Wifi size={24} className="text-white/50 rotate-90" /></div><div className="z-10"><div className="font-mono text-xl text-white tracking-widest mb-3 text-shadow-sm">{showVDetails ? '1234 5678 9012 8842' : '•••• •••• •••• 8842'}</div><div className="flex justify-between items-end"><div><span className="text-[9px] text-cyan-200/70 uppercase block mb-0.5">Card Holder</span><span className="text-sm text-white font-bold tracking-wider">HOLDER'S NAME</span></div><div className="flex flex-col items-end"><span className="text-[9px] text-white/50 font-bold mb-1">{showVDetails ? 'CVV 123' : 'CVV •••'} / EXP 12/28</span><FluidLogo className="w-7 h-7" /></div></div></div></div>
-                    </div>
-                    <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-800 grid grid-cols-2 gap-2 text-center">
-                        <button onClick={() => setShowVDetails(!showVDetails)} className="flex items-center justify-center gap-2 py-2 px-3 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-bold text-white transition-colors">{showVDetails ? <EyeOff size={14}/> : <Eye size={14} />} {showVDetails ? 'Hide' : 'Show'} Details</button>
-                        <button onClick={() => setIsVFrozen(!isVFrozen)} className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition-colors ${isVFrozen ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30' : 'bg-slate-800 hover:bg-slate-700 text-white'}`}><Ban size={14}/> {isVFrozen ? 'Unfreeze' : 'Freeze'}</button>
-                        <button onClick={() => confirm('Are you sure?') && alert('Card Deactivated!')} className="flex items-center justify-center gap-2 py-2 px-3 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-bold text-white transition-colors"><X size={14}/> Deactivate</button>
-                        <button onClick={() => confirm('This is permanent!') && alert('Card Deleted!')} className="flex items-center justify-center gap-2 py-2 px-3 bg-red-950/50 hover:bg-red-900/50 rounded-lg text-xs font-bold text-red-500 transition-colors"><Trash2 size={14}/> Delete</button>
-                    </div>
-                </div>
-                {/* Physical Card & Transactions */}
-                <div className="space-y-6">
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center">
-                        <h3 className="text-xl font-bold text-white mb-4">Physical Metal Card</h3>
-                        {pCardState === 'none' && <><p className="text-slate-400 text-sm mb-4">Order your premium 18g metal card for worldwide spending.</p><button onClick={() => setPCardState('requested')} className="w-full py-3 bg-white text-black rounded-lg font-bold">Request Card</button></>}
-                        {pCardState === 'active' && <><div className="font-mono text-slate-400 mb-2">•••• •••• •••• 5678</div><button onClick={() => setShowPPin(!showPPin)} className="text-sm text-cyan-400 font-bold">{showPPin ? `PIN: ${'1234'}` : 'View PIN'}</button></>}
-                    </div>
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-                        <h3 className="text-xl font-bold text-white mb-4">Recent Transactions</h3>
-                        <div className="space-y-3">{cardTransactions.map(tx => <div key={tx.id} className="flex justify-between items-center"><div className="flex items-center gap-3"><div className="w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center text-slate-400">{tx.icon}</div><div><div className="font-bold text-white">{tx.vendor}</div><div className="text-xs text-slate-500">{tx.date}</div></div></div><div className="font-bold text-white">-${tx.amount.toFixed(2)}</div></div>)}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-
-// --- MAIN WALLET PAGE COMPONENT ---
-const WalletPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'wallet' | 'dex' | 'cards'>('wallet');
-
+const SimulationOverlay = ({ show, title, sub, icon: Icon, onDone }: any) => {
+  if (!show) return null;
   return (
-    <div className="min-h-screen pt-24 pb-12 bg-[#0a0a16] text-white overflow-hidden">
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px]"></div>
-          <div className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px]"></div>
+    <div className="absolute inset-0 z-[200] bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-8 animate-fade-in-up rounded-[inherit]">
+      <div className="w-24 h-24 bg-cyan-500/10 rounded-3xl flex items-center justify-center text-cyan-400 mb-6 relative">
+        <Icon size={40} className={onDone ? '' : 'animate-spin'} />
+        {!onDone && <div className="absolute inset-0 border-4 border-cyan-500/20 border-t-cyan-500 rounded-3xl animate-spin"></div>}
       </div>
-
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
-         <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight">
-            The Super App for <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">Decentralized Living</span>
-         </h1>
-         <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Manage your entire digital life in one place. From high-frequency trading and fiat spending to deploying censorship-resistant websites.
-         </p>
-      </section>
-
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-          <div className="bg-slate-950/50 border border-slate-800 rounded-3xl p-4 md:p-8 backdrop-blur-xl">
-              <div className="flex justify-center mb-8">
-                  <div className="flex gap-2 p-2 bg-slate-900 rounded-2xl border border-slate-800">
-                      {[ { id: 'wallet', label: 'Wallet', icon: WalletIcon }, { id: 'dex', label: 'DEX', icon: RefreshCw }, { id: 'cards', label: 'Cards', icon: CreditCard }
-                      ].map(tab => (
-                          <button key={tab.id} onClick={() => setActiveTab(tab.id as any)} className={`flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-sm font-bold transition-all ${activeTab === tab.id ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'}`}>
-                              <tab.icon size={16} /><span className="hidden sm:inline">{tab.label}</span>
-                          </button>
-                      ))}
-                  </div>
-              </div>
-              
-              <div>
-                  {activeTab === 'wallet' && <PortfolioView onNavigateToDex={() => setActiveTab('dex')} />}
-                  {activeTab === 'dex' && <DexView />}
-                  {activeTab === 'cards' && <CardsView />}
-              </div>
-          </div>
-      </section>
-      
-      <section className="max-w-7xl mx-auto px-4 py-20 border-t border-slate-800/50">
-         <div className="grid md:grid-cols-3 gap-12">
-            <div className="space-y-4 text-center flex flex-col items-center"><div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400 mb-4"><ShieldCheck size={24} /></div><h3 className="text-2xl font-bold text-white">Non-Custodial Security</h3><p className="text-slate-400 leading-relaxed">Your private keys are encrypted on your device and never shared with our servers.</p></div>
-            <div className="space-y-4 text-center flex flex-col items-center"><div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 mb-4"><Zap size={24} /></div><h3 className="text-2xl font-bold text-white">Lightning Fast</h3><p className="text-slate-400 leading-relaxed">Built on Fluid Chain, transactions confirm in milliseconds, not minutes.</p></div>
-            <div className="space-y-4 text-center flex flex-col items-center"><div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-400 mb-4"><Globe size={24} /></div><h3 className="text-2xl font-bold text-white">Truly Decentralized</h3><p className="text-slate-400 leading-relaxed">Access DApps directly and host content permanently on Parmaweb.</p></div>
-         </div>
-      </section>
+      <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
+      <p className="text-slate-400 text-center mb-8">{sub}</p>
+      {onDone && (
+        <button onClick={onDone} className="px-8 py-3 bg-white text-black font-bold rounded-xl">Continue</button>
+      )}
     </div>
   );
 };
 
-// Fix: Removed local dummy icon definitions; they are now imported from lucide-react.
+// --- TABS ---
 
+const PortfolioTab = () => {
+  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
+  const [modalType, setModalType] = useState<'send' | 'receive' | null>(null);
+  const [simState, setSimState] = useState<any>(null);
+
+  const totalValue = TOKENS.reduce((acc, t) => acc + (t.balance * t.price), 0);
+
+  const handleSend = () => {
+    setSimState({ title: 'Sending Assets...', sub: 'Confirming on Fluid Mainnet', icon: RefreshCw });
+    setTimeout(() => {
+      setSimState({ title: 'Transfer Complete!', sub: 'Transaction hash: 0x8a2...4f9', icon: CheckCircle, done: true });
+    }, 2000);
+  };
+
+  return (
+    <div className="p-4 space-y-8 pb-28 animate-fade-in-up relative h-full overflow-y-auto custom-scrollbar">
+      <SimulationOverlay 
+        show={!!simState} 
+        title={simState?.title} 
+        sub={simState?.sub} 
+        icon={simState?.icon} 
+        onDone={simState?.done ? () => {setSimState(null); setModalType(null); setSelectedToken(null);} : null} 
+      />
+
+      <div className="text-center pt-4">
+        <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Total Assets</p>
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tighter">${totalValue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h2>
+        <div className="flex items-center justify-center gap-1 mt-2 text-emerald-400 text-sm font-bold">
+          <ArrowUpRight size={16} /> +$1,240.55 (1.4%) Today
+        </div>
+      </div>
+
+      <div className="flex justify-center gap-4">
+        <button onClick={() => setModalType('send')} className="flex-1 max-w-[100px] md:max-w-[120px] flex flex-col items-center gap-2 group">
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-cyan-500 text-slate-950 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg shadow-cyan-500/20"><ArrowUpRight size={24}/></div>
+          <span className="text-xs font-bold text-slate-400">Send</span>
+        </button>
+        <button onClick={() => setModalType('receive')} className="flex-1 max-w-[100px] md:max-w-[120px] flex flex-col items-center gap-2 group">
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-slate-800 text-white border border-slate-700 flex items-center justify-center group-hover:scale-105 transition-transform"><ArrowDownLeft size={24}/></div>
+          <span className="text-xs font-bold text-slate-400">Receive</span>
+        </button>
+        <button className="flex-1 max-w-[100px] md:max-w-[120px] flex flex-col items-center gap-2 group">
+          <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-slate-800 text-white border border-slate-700 flex items-center justify-center group-hover:scale-105 transition-transform"><Plus size={24}/></div>
+          <span className="text-xs font-bold text-slate-400">Buy</span>
+        </button>
+      </div>
+
+      <div className="space-y-3">
+        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest px-2">Assets</h3>
+        {TOKENS.map(token => (
+          <button 
+            key={token.id} 
+            onClick={() => setSelectedToken(token)}
+            className="w-full flex items-center justify-between p-4 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-slate-800 rounded-2xl p-2 group-hover:scale-110 transition-transform">{token.icon}</div>
+              <div className="text-left">
+                <div className="font-bold text-white leading-none mb-1">{token.name}</div>
+                <div className="text-xs text-slate-500 font-medium">{token.balance.toLocaleString()} {token.symbol}</div>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="font-bold text-white mb-1 text-sm md:text-base">${(token.balance * token.price).toLocaleString()}</div>
+              <div className="text-[10px] text-emerald-400 font-bold">+1.2%</div>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* --- MODALS --- */}
+      {selectedToken && !modalType && (
+        <div className="absolute inset-0 z-[150] bg-slate-950/90 flex flex-col animate-fade-in-up rounded-[inherit]">
+           <header className="p-4 border-b border-slate-800 flex justify-between items-center">
+              <button onClick={() => setSelectedToken(null)}><ArrowLeft/></button>
+              <h3 className="font-bold">{selectedToken.name}</h3>
+              <div className="w-6 h-6"></div>
+           </header>
+           <div className="flex-1 p-6 space-y-8 overflow-y-auto">
+              <div className="text-center">
+                 <p className="text-3xl font-extrabold">${(selectedToken.balance * selectedToken.price).toLocaleString()}</p>
+                 <p className="text-slate-400">{selectedToken.balance} {selectedToken.symbol}</p>
+              </div>
+              <div className="h-48 bg-slate-900/50 rounded-3xl border border-slate-800 flex items-center justify-center italic text-slate-600">
+                 [Interactive Chart Simulation]
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                 <button onClick={() => setModalType('send')} className="py-4 bg-cyan-600 text-white font-bold rounded-2xl">Send</button>
+                 <button onClick={() => setModalType('receive')} className="py-4 bg-slate-800 text-white font-bold rounded-2xl">Receive</button>
+              </div>
+           </div>
+        </div>
+      )}
+
+      {modalType === 'send' && (
+        <div className="absolute inset-0 z-[150] bg-slate-950 flex flex-col animate-fade-in-up p-6 rounded-[inherit]">
+           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)}><X/></button><h3 className="font-bold">Send Crypto</h3><div className="w-6"/>header>
+           <div className="space-y-6">
+              <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800">
+                 <label className="text-xs text-slate-500 uppercase font-bold mb-2 block">Recipient</label>
+                 <input type="text" placeholder="0x... or ENS" className="w-full bg-transparent text-white outline-none font-medium" />
+              </div>
+              <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800">
+                 <label className="text-xs text-slate-500 uppercase font-bold mb-2 block">Amount</label>
+                 <div className="flex justify-between items-center">
+                    <input type="number" placeholder="0.00" className="w-2/3 bg-transparent text-2xl md:text-3xl font-bold outline-none" />
+                    <button className="flex items-center gap-2 bg-slate-800 px-3 py-1 rounded-full text-xs font-bold">FLD <ChevronDown size={14}/></button>
+                 </div>
+              </div>
+              <button onClick={handleSend} className="w-full py-4 bg-cyan-600 text-white font-bold rounded-2xl shadow-xl">Review & Send</button>
+           </div>
+        </div>
+      )}
+
+      {modalType === 'receive' && (
+        <div className="absolute inset-0 z-[150] bg-slate-950 flex flex-col animate-fade-in-up p-6 rounded-[inherit]">
+           <header className="flex justify-between mb-8"><button onClick={() => setModalType(null)}><X/></button><h3 className="font-bold">Receive</h3><div className="w-6"/>header>
+           <div className="flex flex-col items-center gap-8 py-8 text-center overflow-y-auto">
+              <div className="p-4 bg-white rounded-3xl shadow-2xl">
+                 <QrCode size={180} className="text-slate-950" />
+              </div>
+              <div className="w-full p-4 bg-slate-900 rounded-2xl border border-slate-800 flex justify-between items-center">
+                 <span className="font-mono text-xs text-slate-400 truncate pr-4">0x71C7656EC7ab88b098defB751B7401B5f6d8976F</span>
+                 <button className="text-cyan-400"><Copy size={20}/></button>
+              </div>
+              <p className="text-xs text-slate-500">Only send assets supported by Fluid Network to this address. Using incorrect networks may result in permanent loss.</p>
+           </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const TradeTab = () => {
+  const [subTab, setSubTab] = useState<'swap' | 'pool' | 'stake'>('swap');
+  const [payAmount, setPayAmount] = useState('1.0');
+  const [simState, setSimState] = useState<any>(null);
+
+  const handleSwap = () => {
+    setSimState({ title: 'Swapping...', sub: 'Finding best route via Fluid DEX', icon: RefreshCw });
+    setTimeout(() => {
+      setSimState({ title: 'Swap Successful!', sub: 'Received 12,450.55 FLD', icon: CheckCircle, done: true });
+    }, 2000);
+  };
+
+  return (
+    <div className="p-4 space-y-6 pb-28 animate-fade-in-up h-full overflow-y-auto custom-scrollbar relative">
+      <SimulationOverlay 
+        show={!!simState} 
+        title={simState?.title} 
+        sub={simState?.sub} 
+        icon={simState?.icon} 
+        onDone={simState?.done ? () => setSimState(null) : null} 
+      />
+
+      <div className="flex p-1 bg-slate-950 rounded-2xl border border-slate-800">
+        {(['swap', 'pool', 'stake'] as const).map(t => (
+          <button 
+            key={t} 
+            onClick={() => setSubTab(t)} 
+            className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all capitalize ${subTab === t ? 'bg-slate-800 text-white shadow-lg' : 'text-slate-500'}`}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {subTab === 'swap' && (
+        <div className="space-y-4">
+          <div className="bg-slate-950 border border-slate-800 rounded-3xl p-6 space-y-8">
+            <div className="space-y-2">
+              <div className="flex justify-between text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                <span>Pay</span>
+                <span>Balance: 4.25 ETH</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <input type="number" value={payAmount} onChange={e => setPayAmount(e.target.value)} className="bg-transparent text-3xl md:text-4xl font-bold text-white outline-none w-1/2" />
+                <button className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-5 h-5"/> <span className="font-bold text-sm">ETH</span> <ChevronDown size={14}/>
+                </button>
+              </div>
+            </div>
+            <div className="flex justify-center -my-3 relative z-10">
+              <div className="bg-slate-900 border-4 border-slate-950 p-2 rounded-2xl text-cyan-400 shadow-xl"><ArrowDownUp size={20}/></div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                <span>Receive</span>
+                <span>Balance: 45k FLD</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <input type="number" readOnly value={(parseFloat(payAmount) * 4058).toFixed(2)} className="bg-transparent text-3xl md:text-4xl font-bold text-emerald-400 outline-none w-1/2" />
+                <button className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                  <div className="w-5 h-5 text-cyan-400">{FLUID_LOGO_SVG}</div> <span className="font-bold text-sm">FLD</span> <ChevronDown size={14}/>
+                </button>
+              </div>
+            </div>
+          </div>
+          <button onClick={handleSwap} className="w-full py-4 md:py-5 bg-gradient-to-r from-cyan-600 to-blue-700 text-white font-extrabold text-lg rounded-3xl shadow-xl shadow-cyan-900/20 active:scale-95 transition-all">Swap Assets</button>
+        </div>
+      )}
+
+      {subTab === 'pool' && (
+        <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-8 text-center space-y-4">
+           <Droplets size={48} className="text-blue-400 mx-auto" />
+           <h4 className="text-xl font-bold text-white">Liquidity Pools</h4>
+           <p className="text-sm text-slate-400">Add assets to the Fluid AMM and earn 0.3% fees on all protocol swaps.</p>
+           <button className="w-full py-4 bg-white text-black font-bold rounded-2xl">Create New Position</button>
+        </div>
+      )}
+
+      {subTab === 'stake' && (
+        <div className="bg-indigo-600/10 border border-indigo-500/20 rounded-3xl p-6 md:p-8 space-y-6">
+           <div className="flex justify-between items-center">
+              <h4 className="text-xl font-bold text-white">FLD Staking</h4>
+              <Zap size={24} className="text-indigo-400" />
+           </div>
+           <div className="grid grid-cols-2 gap-4 text-center">
+              <div className="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
+                 <p className="text-[10px] text-slate-500 font-bold mb-1">APY</p>
+                 <p className="text-xl font-bold text-emerald-400">12.4%</p>
+              </div>
+              <div className="bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
+                 <p className="text-[10px] text-slate-500 font-bold mb-1">STAKED</p>
+                 <p className="text-xl font-bold text-white">15,000</p>
+              </div>
+           </div>
+           <button className="w-full py-4 bg-indigo-600 text-white font-bold rounded-2xl">Stake FLD</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CardsTab = () => {
+  const [showDetails, setShowDetails] = useState(false);
+  const [isFrozen, setIsFrozen] = useState(false);
+  const [cardStatus, setCardStatus] = useState<'active' | 'deleted'>('active');
+  const [simState, setSimState] = useState<any>(null);
+
+  const handleOrder = () => {
+    setSimState({ title: 'Verifying Identity...', sub: 'Processing Physical Metal Card Request', icon: ShieldCheck });
+    setTimeout(() => {
+      setSimState({ title: 'Card Ordered!', sub: 'Shipping to your registered address in 5-7 days.', icon: CheckCircle, done: true });
+    }, 2000);
+  };
+
+  if (cardStatus === 'deleted') {
+    return (
+      <div className="p-8 text-center space-y-6 animate-fade-in-up h-full flex flex-col justify-center">
+        <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto text-slate-500"><CreditCard size={40}/></div>
+        <h3 className="text-2xl font-bold text-white">No Active Cards</h3>
+        <p className="text-slate-400">Request a virtual or physical card to start spending your crypto globally.</p>
+        <button onClick={() => setCardStatus('active')} className="w-full py-4 bg-cyan-600 text-white font-bold rounded-2xl">Create Virtual Card</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 space-y-8 pb-28 animate-fade-in-up h-full overflow-y-auto custom-scrollbar relative">
+      <SimulationOverlay 
+        show={!!simState} 
+        title={simState?.title} 
+        sub={simState?.sub} 
+        icon={simState?.icon} 
+        onDone={simState?.done ? () => setSimState(null) : null} 
+      />
+
+      <div className={`relative w-full max-w-[340px] h-[200px] md:h-[214px] mx-auto perspective-1000 transition-all duration-700 ${isFrozen ? 'grayscale opacity-50 blur-[1px]' : ''}`}>
+        <div className="relative h-full w-full rounded-3xl bg-gradient-to-br from-slate-800 to-slate-950 border border-slate-700 p-6 md:p-8 shadow-2xl overflow-hidden">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl"></div>
+          <div className="flex justify-between items-start mb-6 md:mb-10">
+            <div className="flex items-center gap-1.5"><div className="w-5 h-5 md:w-6 md:h-6 text-white">{FLUID_LOGO_SVG}</div><span className="font-bold text-lg md:text-xl italic text-white">fluid</span></div>
+            <Wifi size={24} className="text-slate-600 rotate-90" />
+          </div>
+          <div className="space-y-4">
+            <div className="font-mono text-lg md:text-xl tracking-widest text-white">{showDetails ? '4532 8842 1234 5678' : '•••• •••• •••• 5678'}</div>
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-[8px] text-slate-500 uppercase font-bold mb-1">Holder</p>
+                <p className="text-[10px] md:text-xs text-white font-bold">MARCUS FLUID</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[8px] text-slate-500 uppercase font-bold mb-1">EXP / CVV</p>
+                <p className="text-[10px] md:text-xs text-white font-bold">12/28 • {showDetails ? '842' : '•••'}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <button onClick={() => setShowDetails(!showDetails)} className="flex items-center justify-center gap-2 py-3 bg-slate-900 border border-slate-800 rounded-2xl text-[10px] md:text-xs font-bold text-white">
+           {showDetails ? <EyeOff size={16}/> : <Eye size={16}/>} {showDetails ? 'Hide' : 'Reveal'} Details
+        </button>
+        <button onClick={() => setIsFrozen(!isFrozen)} className={`flex items-center justify-center gap-2 py-3 border rounded-2xl text-[10px] md:text-xs font-bold transition-all ${isFrozen ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 'bg-slate-900 border-slate-800 text-white'}`}>
+           <Ban size={16}/> {isFrozen ? 'Unfreeze' : 'Freeze Card'}
+        </button>
+        <button className="flex items-center justify-center gap-2 py-3 bg-slate-900 border border-slate-800 rounded-2xl text-[10px] md:text-xs font-bold text-white"><SlidersHorizontal size={16}/> Controls</button>
+        <button onClick={() => setCardStatus('deleted')} className="flex items-center justify-center gap-2 py-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl text-[10px] md:text-xs font-bold"><Trash2 size={16}/> Delete</button>
+      </div>
+
+      <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900 border border-white/5 rounded-3xl p-6 md:p-8 text-center space-y-4">
+         <div className="w-12 h-12 md:w-16 md:h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-2 text-white"><CreditCard size={32}/></div>
+         <h4 className="text-lg md:text-xl font-bold text-white">Physical Metal Card</h4>
+         <p className="text-[10px] md:text-xs text-slate-400">Order your 18g surgical-grade stainless steel card for high-limit global spending.</p>
+         <button onClick={handleOrder} className="w-full py-4 bg-white text-black font-bold rounded-2xl text-sm transition-transform active:scale-95">Upgrade Now - 5,000 FLD</button>
+      </div>
+    </div>
+  );
+};
+
+const BankTab = () => {
+  const [bankLinked, setBankLinked] = useState(false);
+  const [simState, setSimState] = useState<any>(null);
+
+  const handleLink = () => {
+    setSimState({ title: 'Connecting to Bank...', sub: 'Securely authenticating via Plaid', icon: Landmark });
+    setTimeout(() => {
+      setSimState({ title: 'Bank Linked!', sub: 'Chase Personal (**** 8842) added.', icon: CheckCircle, done: true });
+      setBankLinked(true);
+    }, 2000);
+  };
+
+  const rwas = [
+    { name: 'NYC Penthouse Share', value: 125000, yield: '4.2%', icon: <Building/> },
+    { name: 'Gold Bullion (LBMA)', value: 4500, yield: 'N/A', icon: <Briefcase/> }
+  ];
+
+  return (
+    <div className="p-4 space-y-8 pb-28 animate-fade-in-up h-full overflow-y-auto custom-scrollbar relative">
+      <SimulationOverlay 
+        show={!!simState} 
+        title={simState?.title} 
+        sub={simState?.sub} 
+        icon={simState?.icon} 
+        onDone={simState?.done ? () => setSimState(null) : null} 
+      />
+
+      <div className="space-y-4">
+        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest px-2">Fiat Banking</h3>
+        {bankLinked ? (
+          <div className="p-5 bg-slate-900 border border-slate-800 rounded-3xl flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400"><Landmark size={24}/></div>
+              <div>
+                <p className="font-bold text-white text-sm md:text-base">Chase Checking</p>
+                <p className="text-[10px] text-slate-500 uppercase font-bold">**** 8842</p>
+              </div>
+            </div>
+            <p className="text-base md:text-lg font-bold text-white">$12,450.22</p>
+          </div>
+        ) : (
+          <button onClick={handleLink} className="w-full py-8 border-2 border-dashed border-slate-800 rounded-3xl text-slate-500 font-bold flex flex-col items-center justify-center gap-2 hover:border-slate-600 hover:text-white transition-all">
+            <Plus size={24}/>
+            Link Bank or Mobile Banking
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex justify-between items-center px-2">
+          <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Real World Assets (RWA)</h3>
+          <ExternalLink size={14} className="text-slate-500" />
+        </div>
+        <div className="space-y-3">
+          {rwas.map(rwa => (
+            <div key={rwa.name} className="p-5 bg-slate-900 border border-slate-800 rounded-3xl flex justify-between items-center group cursor-pointer hover:border-blue-500/30 transition-all">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-slate-800 rounded-2xl flex items-center justify-center text-blue-400 group-hover:bg-blue-400 group-hover:text-black transition-colors">{rwa.icon}</div>
+                <div>
+                  <p className="font-bold text-white text-sm md:text-base">{rwa.name}</p>
+                  <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Yield: {rwa.yield}</p>
+                </div>
+              </div>
+              <p className="text-base md:text-lg font-bold text-white">${rwa.value.toLocaleString()}</p>
+            </div>
+          ))}
+          <button className="w-full py-4 bg-blue-600/10 text-blue-400 border border-blue-500/20 font-bold rounded-2xl mt-2 text-sm transition-transform active:scale-95">Explore RWA Marketplace</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BrowserTab = () => {
+  const [connectSim, setConnectSim] = useState<any>(null);
+  const dapps = [
+    { name: 'Uniswap v3', category: 'DeFi', icon: '🦄' },
+    { name: 'OpenSea', category: 'NFT Marketplace', icon: '🌊' },
+    { name: 'Aave', category: 'Lending', icon: '👻' },
+    { name: 'Curve', category: 'Stable DEX', icon: '🌈' },
+  ];
+
+  return (
+    <div className="p-4 space-y-6 pb-28 animate-fade-in-up h-full overflow-y-auto custom-scrollbar relative">
+      <SimulationOverlay 
+        show={!!connectSim} 
+        title={connectSim?.title} 
+        sub={connectSim?.sub} 
+        icon={connectSim?.icon} 
+        onDone={connectSim?.done ? () => setConnectSim(null) : null} 
+      />
+
+      <div className="relative">
+        <input type="text" placeholder="Search DApps or Enter URL" className="w-full bg-slate-900 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-cyan-500 outline-none transition-colors text-sm" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18}/>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 md:gap-4">
+        {dapps.map(dapp => (
+          <button 
+            key={dapp.name} 
+            onClick={() => setConnectSim({ title: `Connecting to ${dapp.name}...`, sub: 'Approving connection request', icon: ShieldCheck, done: true })}
+            className="p-4 md:p-6 bg-slate-900 border border-slate-800 rounded-3xl flex flex-col items-center gap-3 hover:border-cyan-500/30 transition-all group"
+          >
+            <div className="text-3xl md:text-4xl group-hover:scale-110 transition-transform">{dapp.icon}</div>
+            <div className="text-center">
+              <p className="font-bold text-white text-xs md:text-sm">{dapp.name}</p>
+              <p className="text-[9px] md:text-[10px] text-slate-500 uppercase font-bold tracking-widest">{dapp.category}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <div className="p-6 bg-slate-950/50 border border-slate-800 rounded-3xl space-y-4">
+         <h4 className="font-bold text-white flex items-center gap-2"><HardDrive size={18} className="text-cyan-400"/> Parmaweb Hosting</h4>
+         <p className="text-[10px] md:text-xs text-slate-500">Your decentralized files and frontends are deployed globally with 100% uptime.</p>
+         <button className="w-full py-3 bg-slate-800 text-white text-xs font-bold rounded-xl">Manage Hosting</button>
+      </div>
+    </div>
+  );
+};
+
+// --- Main App Presentation Layer ---
+
+const WalletPage = () => {
+  const [activeTab, setActiveTab] = useState<'wallet' | 'trade' | 'cards' | 'browser' | 'bank'>('wallet');
+  const [viewMode, setViewMode] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
+
+  const navItems = [
+    { id: 'wallet', label: 'Wallet', icon: WalletIcon },
+    { id: 'trade', label: 'Trade', icon: RefreshCw },
+    { id: 'cards', label: 'Cards', icon: CreditCard },
+    { id: 'browser', label: 'Browser', icon: AppWindow },
+    { id: 'bank', label: 'Bank', icon: Landmark },
+  ] as const;
+
+  const renderContent = () => {
+    switch(activeTab) {
+      case 'wallet': return <PortfolioTab />;
+      case 'trade': return <TradeTab />;
+      case 'cards': return <CardsTab />;
+      case 'browser': return <BrowserTab />;
+      case 'bank': return <BankTab />;
+    }
+  };
+
+  // Viewport sizes for simulation
+  const viewportStyles = {
+    mobile: "w-[375px] h-[812px] rounded-[3rem] border-[12px] border-slate-900 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]",
+    tablet: "w-[768px] h-[1024px] rounded-[2.5rem] border-[16px] border-slate-900 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]",
+    desktop: "w-full min-h-[800px] border-none shadow-none"
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white pt-32 pb-20 overflow-x-hidden">
+      
+      {/* Presentation Header */}
+      <div className="max-w-7xl mx-auto px-4 text-center mb-12">
+          <span className="text-cyan-500 font-bold uppercase tracking-widest text-xs">Product Demo</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mt-4 mb-6">Experience the Super App</h2>
+          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 text-lg">
+             The Fluid Super App combines banking, DeFi, and RWA management into a unified mobile experience. Test the interactive simulation below.
+          </p>
+          
+          {/* Simulation Controls */}
+          <div className="flex justify-center gap-2 p-1.5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 w-max mx-auto shadow-xl">
+             <button 
+                onClick={() => setViewMode('mobile')}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'mobile' ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-700 dark:hover:text-white'}`}
+             >
+                <Smartphone size={14}/> Mobile
+             </button>
+             <button 
+                onClick={() => setViewMode('tablet')}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'tablet' ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-700 dark:hover:text-white'}`}
+             >
+                <Tablet size={14}/> Tablet
+             </button>
+             <button 
+                onClick={() => setViewMode('desktop')}
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${viewMode === 'desktop' ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-700 dark:hover:text-white'}`}
+             >
+                <Monitor size={14}/> Desktop
+             </button>
+          </div>
+      </div>
+
+      {/* Simulator Container */}
+      <div className="max-w-7xl mx-auto px-4 flex justify-center perspective-2000">
+        <div className={`transition-all duration-700 ease-in-out overflow-hidden relative bg-slate-950 border-slate-900 ${viewportStyles[viewMode]}`}>
+            
+            {/* The "Internal" App Body */}
+            <div className="h-full flex flex-col pt-16 relative">
+                {/* Internal Notch for mobile/tablet */}
+                {(viewMode === 'mobile' || viewMode === 'tablet') && (
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-2xl z-[60]"></div>
+                )}
+
+                {/* Header (App Bar) */}
+                <header className="absolute top-0 left-0 right-0 p-4 flex items-center justify-between bg-slate-950/80 backdrop-blur-xl border-b border-slate-900 z-50">
+                    <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center text-cyan-400 shadow-lg">
+                            <div className="w-4 h-4">{FLUID_LOGO_SVG}</div>
+                        </div>
+                        <div className={`${viewMode === 'mobile' ? 'hidden sm:block' : 'block'}`}>
+                            <h1 className="text-xs font-bold text-white leading-none">Fluid Super App</h1>
+                            <p className="text-[8px] text-emerald-400 font-bold uppercase tracking-tighter mt-0.5 flex items-center gap-1">
+                                <span className="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span> Mainnet
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex gap-1.5">
+                        <button className="p-1.5 bg-slate-900 rounded-lg border border-slate-800 text-slate-400 hover:text-white transition-colors"><Bell size={14}/></button>
+                        <button className="p-1.5 bg-slate-900 rounded-lg border border-slate-800 text-slate-400 hover:text-white transition-colors"><SlidersHorizontal size={14}/></button>
+                    </div>
+                </header>
+
+                {/* Tab Content */}
+                <main className="flex-1 overflow-hidden">
+                    {renderContent()}
+                </main>
+
+                {/* Internal Bottom Nav */}
+                <nav className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-slate-900/80 backdrop-blur-2xl border border-slate-800 rounded-[2rem] p-1.5 flex justify-between z-[100] shadow-2xl">
+                    {navItems.map(item => (
+                        <button 
+                            key={item.id} 
+                            onClick={() => setActiveTab(item.id)} 
+                            className={`flex flex-col items-center gap-1 py-2 px-3 rounded-2xl transition-all ${activeTab === item.id ? 'text-cyan-400 bg-cyan-500/5' : 'text-slate-500 hover:text-slate-300'}`}
+                        >
+                            <item.icon size={18} className={activeTab === item.id ? 'scale-110 drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]' : ''}/>
+                            <span className="text-[8px] font-bold uppercase tracking-widest leading-none">{viewMode === 'mobile' ? item.label.charAt(0) : item.label}</span>
+                        </button>
+                    ))}
+                </nav>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  );
+};
 
 export default WalletPage;
