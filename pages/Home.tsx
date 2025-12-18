@@ -91,13 +91,22 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                         <ArrowRight size={14} className="text-emerald-400 group-hover:translate-x-1 transition-transform" />
                       </button>
 
+                      <div className="flex items-center justify-center gap-3 mb-6 animate-fade-in-up">
+                        <svg width="50" height="50" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-slate-900 dark:text-white">
+                            <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" />
+                            <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" />
+                            <path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" />
+                        </svg>
+                        <span className="font-extrabold text-6xl tracking-tighter text-slate-900 dark:text-white">Fluid</span>
+                      </div>
+
                       <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight animate-fade-in-up leading-tight">
-                        Scalable Blockchain. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400">Permanent Hosting.</span>
+                        Store. Spend. Host<br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400">Infinitely & Eternally</span>
                       </h1>
 
-                      <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up">
-                        The first Layer-1 delivering 2M+ TPS and censorship-resistant storage. Manage assets with our non-custodial multi-chain wallet.
+                      <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in-up">
+                        The first Layer-1 blockchain delivering 2M+ TPS with zero-downtime hosting. Secure, Multichain Non-Custodial Crypto Wallet.
                       </p>
 
                       <div className="flex flex-col sm:flex-row gap-4 w-full justify-center animate-fade-in-up">
