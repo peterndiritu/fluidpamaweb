@@ -114,7 +114,7 @@ const Footer: React.FC = () => {
             <button onClick={handleDownloadLogo} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Brand Kit</button>
           </div>
 
-          <p className="text-slate-500 dark:text-slate-500 text-sm font-medium">© 2024 Fluid Finance. All rights reserved.</p>
+          <p className="text-slate-500 dark:text-slate-500 text-sm font-medium">© {new Date().getFullYear()} Fluid Finance. All rights reserved.</p>
       </div>
     </footer>
   );

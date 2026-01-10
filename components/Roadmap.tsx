@@ -30,7 +30,7 @@ const roadmapData = [
   },
   {
     phase: 3,
-    stage: 2,
+    stage: 3,
     quarter: "Q3 - 2027",
     title: "Fiat-to-Node Payouts & Institutional Vaults",
     items: [
@@ -43,7 +43,7 @@ const roadmapData = [
   },
   {
     phase: 4,
-    stage: 2,
+    stage: 4,
     quarter: "Q4 - 2027",
     title: "Parmaweb CDN & Edge Delivery",
     items: [
@@ -56,7 +56,7 @@ const roadmapData = [
   },
   {
     phase: 5,
-    stage: 2,
+    stage: 5,
     quarter: "Q1 - 2028",
     title: "Cross-Chain Liquid Staking",
     items: [
@@ -69,7 +69,7 @@ const roadmapData = [
   },
   {
     phase: 6,
-    stage: 2,
+    stage: 6,
     quarter: "Q2 - 2028",
     title: "Global Physical Card Rollout",
     items: [
@@ -82,7 +82,7 @@ const roadmapData = [
   },
   {
     phase: 7,
-    stage: 2,
+    stage: 7,
     quarter: "H2 - 2028",
     title: "Autonomous DAO & Sovereign Identity",
     items: [

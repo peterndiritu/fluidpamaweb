@@ -7,7 +7,8 @@ import {
   Search, ExternalLink, ShieldCheck, History, DollarSign, ArrowRight, Lock,
   Download, Clock, Trash2, Eye, EyeOff, MoreHorizontal, Unlock, Zap, Users, Database, Star, Globe, 
   Shield, Sliders, Wifi, Building2, Copy, ArrowRightLeft, CreditCard as CardIcon,
-  AlertCircle, Share2, Info, HardDrive, Cpu, Layers, Fingerprint, ShieldAlert, Key, ChevronUp, Settings, Link, Activity, MousePointer2
+  AlertCircle, Share2, Info, HardDrive, Cpu, Layers, Fingerprint, ShieldAlert, Key, ChevronUp, Settings, Link, Activity, MousePointer2,
+  Server, HardDrive as StorageIcon, Terminal, Globe2
 } from 'lucide-react';
 
 interface Token {
@@ -89,12 +90,12 @@ const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigat
   const [showBalance, setShowBalance] = useState(true);
   const [toast, setToast] = useState('');
 
-  const totalValue = tokens.reduce((acc: number, t: Token) => acc + (t.balance * t.price), 0);
-
   const triggerToast = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(''), 2000);
   };
+
+  const totalValue = tokens.reduce((acc: number, t: Token) => acc + (t.balance * t.price), 0);
 
   const handleAction = (type: string) => {
     if ((type === 'send' || type === 'buy') && !amount) return;
@@ -674,6 +675,12 @@ const DAppsTab = () => {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   
+  const [toast, setToast] = useState('');
+  const triggerToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(''), 2000);
+  };
+
   const categories = ["All", "DeFi", "Games", "Social", "Tools"];
   const apps = [
     { id: 1, name: "Fluid Stake", category: "DeFi", icon: <Zap className="text-yellow-400"/>, desc: "High yield native staking on Fluid L1", url: "stake.fluid", users: "12.4k" },
@@ -698,6 +705,7 @@ const DAppsTab = () => {
   if (selectedApp) {
     return (
       <div className="flex flex-col h-full bg-slate-950 animate-fade-in-up">
+        <Toast message={toast} show={!!toast} />
         <div className="p-4 border-b border-slate-900 flex justify-between items-center bg-slate-900/50">
           <button onClick={() => {setSelectedApp(null); setConnectionStep('request');}} className="p-2 bg-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors"><X size={18}/></button>
           <div className="flex flex-col items-center">
@@ -808,6 +816,7 @@ const DAppsTab = () => {
 
   return (
     <div className="p-4 space-y-6 h-full overflow-y-auto pb-32 animate-fade-in-up">
+      <Toast message={toast} show={!!toast} />
       <div className="pt-4 text-center">
         <h3 className="text-lg font-black text-white tracking-tighter uppercase mb-1">Explore DApps</h3>
         <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Fluid Parmaweb Nodes</p>
@@ -852,6 +861,127 @@ const DAppsTab = () => {
           <div className="text-center py-12 text-slate-700 uppercase font-black text-xs tracking-widest">No DApps found</div>
         )}
       </div>
+    </div>
+  );
+};
+
+const HostingTab = () => {
+  const [toast, setToast] = useState('');
+  const [activeSubTab, setActiveSubTab] = useState<'deployments' | 'domains'>('deployments');
+  
+  const triggerToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(''), 2000);
+  };
+
+  const deployments = [
+    { id: 1, name: 'Fluid DEX UI', domain: 'trade.fluid', status: 'Healthy', storage: '240MB', nodes: 12, expiry: 'Eternal' },
+    { id: 2, name: 'Personal Blog', domain: 'alex.fluid', status: 'Healthy', storage: '12MB', nodes: 8, expiry: 'Eternal' }
+  ];
+
+  return (
+    <div className="p-4 space-y-6 h-full overflow-y-auto pb-32 animate-fade-in-up">
+      <Toast message={toast} show={!!toast} />
+      <div className="pt-4 text-center">
+        <h3 className="text-lg font-black text-white tracking-tighter uppercase mb-1">Parmaweb Ops</h3>
+        <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Permanent Shard Storage</p>
+      </div>
+
+      <div className="bg-slate-900 border border-slate-800 rounded-[2rem] p-6 shadow-inner relative overflow-hidden group">
+         <div className="absolute inset-0 bg-tech-grid opacity-[0.03] pointer-events-none"></div>
+         <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400"><Server size={20}/></div>
+              <div>
+                <h4 className="text-xs font-black text-white uppercase">Storage Status</h4>
+                <p className="text-[8px] text-emerald-400 font-bold uppercase">Linked to mainnet</p>
+              </div>
+            </div>
+            <Activity className="text-indigo-500 animate-pulse" size={16} />
+         </div>
+         <div className="grid grid-cols-2 gap-4">
+            <div className="bg-slate-950 p-4 rounded-2xl border border-white/5">
+               <span className="text-[7px] font-black text-slate-600 uppercase tracking-widest block mb-1">Total Hosted</span>
+               <span className="text-sm font-black text-white">2 Assets</span>
+            </div>
+            <div className="bg-slate-950 p-4 rounded-2xl border border-white/5">
+               <span className="text-[7px] font-black text-slate-600 uppercase tracking-widest block mb-1">Endowment Share</span>
+               <span className="text-sm font-black text-cyan-400">0.002%</span>
+            </div>
+         </div>
+      </div>
+
+      <div className="flex gap-2 p-1 bg-slate-900 rounded-2xl border border-slate-800">
+        <button 
+          onClick={() => setActiveSubTab('deployments')} 
+          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeSubTab === 'deployments' ? 'bg-slate-800 text-indigo-400 shadow-lg' : 'text-slate-500'}`}
+        >Deployments</button>
+        <button 
+          onClick={() => setActiveSubTab('domains')} 
+          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeSubTab === 'domains' ? 'bg-slate-800 text-indigo-400 shadow-lg' : 'text-slate-500'}`}
+        >Domains</button>
+      </div>
+
+      {activeSubTab === 'deployments' ? (
+        <div className="space-y-3">
+          {deployments.map(d => (
+            <div key={d.id} className="bg-slate-900 border border-slate-800 p-4 rounded-[2rem] flex flex-col gap-4 group hover:border-indigo-500/30 transition-all cursor-pointer">
+              <div className="flex justify-between items-start">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-slate-950 rounded-2xl flex items-center justify-center text-slate-500 group-hover:text-indigo-400 transition-colors border border-white/5"><Globe2 size={20}/></div>
+                  <div>
+                    <h5 className="text-sm font-black text-white uppercase tracking-tight">{d.name}</h5>
+                    <div className="flex items-center gap-1.5 text-[9px] text-slate-500 font-bold uppercase">
+                      <Lock size={10} className="text-emerald-400" /> {d.domain}
+                    </div>
+                  </div>
+                </div>
+                <button onClick={() => triggerToast(`Deploying ${d.name} update...`)} className="p-2 bg-slate-950 rounded-xl text-slate-600 hover:text-white transition-colors border border-white/5"><Terminal size={14}/></button>
+              </div>
+              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800/50">
+                 <div className="text-center">
+                    <span className="text-[7px] font-black text-slate-600 uppercase block">Storage</span>
+                    <span className="text-[10px] font-bold text-slate-300">{d.storage}</span>
+                 </div>
+                 <div className="text-center">
+                    <span className="text-[7px] font-black text-slate-600 uppercase block">Nodes</span>
+                    <span className="text-[10px] font-bold text-slate-300">{d.nodes}</span>
+                 </div>
+                 <div className="text-center">
+                    <span className="text-[7px] font-black text-slate-600 uppercase block">Cycle</span>
+                    <span className="text-[10px] font-bold text-emerald-400 uppercase">{d.expiry}</span>
+                 </div>
+              </div>
+            </div>
+          ))}
+          <button className="w-full py-4 bg-slate-950 border border-dashed border-slate-800 rounded-3xl flex items-center justify-center gap-3 group hover:border-indigo-500/50 transition-all">
+             <Plus size={18} className="text-slate-700 group-hover:text-indigo-400" />
+             <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest group-hover:text-white">New Deployment</span>
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-4">
+           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4">
+              <Globe size={48} className="mx-auto text-indigo-500/20" />
+              <h4 className="text-sm font-black text-white uppercase tracking-tight">Fluid Name Service</h4>
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-relaxed">Claim your sharded identity on the permanent web.</p>
+              <div className="relative">
+                 <input type="text" placeholder="your-name" className="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-white font-bold outline-none focus:border-indigo-500 transition-all pr-20 text-xs" />
+                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-600 uppercase">.fluid</span>
+              </div>
+              <button onClick={() => triggerToast('Registry connecting...')} className="w-full py-4 bg-indigo-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-widest hover:bg-indigo-500 transition-all">Register Domain</button>
+           </div>
+           
+           <div className="px-2"><h5 className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Your Identities</h5></div>
+           <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                 <div className="w-8 h-8 bg-slate-950 rounded-lg flex items-center justify-center text-indigo-400 border border-white/5 shadow-lg font-black text-[10px]">F</div>
+                 <span className="text-xs font-bold text-white tracking-tight">trade.fluid</span>
+              </div>
+              <span className="text-[8px] font-black text-indigo-500 bg-indigo-500/10 px-2 py-1 rounded uppercase tracking-widest">Primary</span>
+           </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -974,10 +1104,17 @@ const HistoryTab = ({ transactions }: { transactions: Transaction[] }) => {
 };
 
 const WalletPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'cards' | 'apps' | 'history' | 'bank' | 'swap'>('portfolio');
+  const [activeTab, setActiveTab] = useState<'portfolio' | 'cards' | 'apps' | 'history' | 'bank' | 'swap' | 'hosting'>('portfolio');
   const [deviceSize, setDeviceSize] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
   const [tokens, setTokens] = useState<Token[]>(INITIAL_TOKENS);
   const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+
+  const [toast, setToast] = useState('');
+  const triggerToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(''), 2000);
+  };
 
   const addTransaction = (data: Partial<Transaction>) => {
       const now = Date.now();
@@ -994,6 +1131,26 @@ const WalletPage: React.FC = () => {
           ...data
       };
       setTransactions([newTx, ...transactions]);
+  };
+
+  const mainTabs = [
+    { id: 'portfolio', icon: WalletIcon, label: 'Vault' },
+    { id: 'swap', icon: RefreshCw, label: 'Swap' },
+    { id: 'cards', icon: CardIcon, label: 'Cards' },
+    { id: 'apps', icon: Compass, label: 'Explore' },
+  ];
+
+  const moreTabs = [
+    { id: 'hosting', icon: Server, label: 'Hosting' },
+    { id: 'bank', icon: Building2, label: 'Bank' },
+    { id: 'history', icon: History, label: 'History' }
+  ];
+
+  const isMoreActive = moreTabs.some(tab => tab.id === activeTab);
+
+  const handleTabChange = (id: any) => {
+    setActiveTab(id);
+    setIsMoreOpen(false);
   };
 
   const capabilities = [
@@ -1037,6 +1194,7 @@ const WalletPage: React.FC = () => {
 
   return (
     <div className="min-h-screen pt-28 pb-16 bg-slate-950 text-white selection:bg-cyan-500/30">
+      <Toast message={toast} show={!!toast} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-slate-900/80 border border-white/10 mb-10 backdrop-blur-xl animate-fade-in-up">
@@ -1055,14 +1213,14 @@ const WalletPage: React.FC = () => {
 
         <div className="flex justify-center perspective-2000 pb-20">
           <div className={`relative transition-all duration-700 ease-in-out border-[12px] border-slate-900 rounded-[3.5rem] bg-slate-950 shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden ${deviceSize === 'mobile' ? 'w-full max-w-[360px] h-[720px]' : deviceSize === 'tablet' ? 'w-full max-w-[600px] h-[800px]' : 'w-full max-w-5xl h-[700px]'}`}>
-            <header className="pt-10 px-6 pb-4 flex justify-between items-center bg-slate-950/80 backdrop-blur-md sticky top-0 z-[200]">
-                <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('portfolio')}>
+            <header className="pt-10 px-6 pb-4 flex items-center justify-end bg-slate-950/80 backdrop-blur-md sticky top-0 z-[200] h-20">
+                <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 cursor-pointer z-10" onClick={() => handleTabChange('portfolio')}>
                   <div className="w-8 h-8 text-white">{FLUID_LOGO_SVG}</div>
                   <span className="font-black text-lg text-white tracking-tighter leading-none uppercase italic">Fluid</span>
                 </div>
-                <div className="flex gap-2">
-                    <button className="p-2.5 bg-slate-900 rounded-2xl text-slate-500 hover:text-white transition-colors"><Bell size={18}/></button>
-                    <button className="p-2.5 bg-slate-900 rounded-2xl text-slate-500 hover:text-white transition-colors"><User size={18}/></button>
+                <div className="flex gap-2 relative z-20">
+                    <button onClick={() => triggerToast('Notifications coming soon')} className="p-2.5 bg-slate-900 rounded-2xl text-slate-500 hover:text-white transition-colors"><Bell size={18}/></button>
+                    <button onClick={() => triggerToast('Profile settings coming soon')} className="p-2.5 bg-slate-900 rounded-2xl text-slate-500 hover:text-white transition-colors"><User size={18}/></button>
                 </div>
             </header>
 
@@ -1073,19 +1231,54 @@ const WalletPage: React.FC = () => {
                {activeTab === 'apps' && <DAppsTab />}
                {activeTab === 'bank' && <BankTab />}
                {activeTab === 'history' && <HistoryTab transactions={transactions} />}
+               {activeTab === 'hosting' && <HostingTab />}
             </div>
 
-            <nav className="absolute bottom-0 left-0 w-full bg-slate-950/90 backdrop-blur-xl border-t border-slate-900 px-2 py-5 flex justify-between items-center z-[300]">
-                {[
-                    { id: 'portfolio', icon: WalletIcon, label: 'Vault' },
-                    { id: 'swap', icon: RefreshCw, label: 'Swap' },
-                    { id: 'cards', icon: CardIcon, label: 'Cards' },
-                    { id: 'apps', icon: Compass, label: 'Explore' },
-                    { id: 'bank', icon: Building2, label: 'Bank' },
-                    { id: 'history', icon: History, label: 'History' }
-                ].map(item => (
-                    <button key={item.id} onClick={() => setActiveTab(item.id as any)} className={`flex flex-col items-center gap-1.5 transition-all flex-1 ${activeTab === item.id ? 'text-cyan-400 scale-110' : 'text-slate-600 hover:text-slate-400'}`}><item.icon size={deviceSize === 'mobile' ? 20 : 22} strokeWidth={activeTab === item.id ? 2.5 : 2} className={item.id === 'swap' && activeTab === 'swap' ? 'animate-spin-slow' : ''} /><span className="text-[7px] font-black tracking-widest uppercase">{item.label}</span></button>
+            {/* More Menu Overlay */}
+            {isMoreOpen && (
+              <div className="absolute inset-0 z-[400] bg-slate-950/60 backdrop-blur-sm animate-fade-in flex flex-col justify-end">
+                  <div onClick={() => setIsMoreOpen(false)} className="flex-1"></div>
+                  <div className="bg-slate-900 border-t border-slate-800 rounded-t-[2.5rem] p-6 pb-12 animate-fade-in-up shadow-[0_-20px_40px_rgba(0,0,0,0.5)]">
+                      <div className="w-12 h-1 bg-slate-800 rounded-full mx-auto mb-8"></div>
+                      <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-6 text-center">Protocol Resources</h4>
+                      <div className="grid grid-cols-3 gap-4">
+                        {moreTabs.map(tab => (
+                          <button key={tab.id} onClick={() => handleTabChange(tab.id as any)} className={`flex flex-col items-center gap-3 p-4 rounded-3xl transition-all ${activeTab === tab.id ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : 'bg-slate-950 border border-white/5 text-slate-500 hover:text-white'}`}>
+                            <tab.icon size={24} />
+                            <span className="text-[8px] font-black uppercase tracking-widest">{tab.label}</span>
+                          </button>
+                        ))}
+                        <button onClick={() => triggerToast('Wallet Settings')} className="flex flex-col items-center gap-3 p-4 rounded-3xl bg-slate-950 border border-white/5 text-slate-500 hover:text-white">
+                           <Settings size={24} />
+                           <span className="text-[8px] font-black uppercase tracking-widest">Setup</span>
+                        </button>
+                        <button onClick={() => triggerToast('Security Audit')} className="flex flex-col items-center gap-3 p-4 rounded-3xl bg-slate-950 border border-white/5 text-slate-500 hover:text-white">
+                           <Shield size={24} />
+                           <span className="text-[8px] font-black uppercase tracking-widest">Verify</span>
+                        </button>
+                        <button onClick={() => setIsMoreOpen(false)} className="flex flex-col items-center gap-3 p-4 rounded-3xl bg-rose-500/10 border border-rose-500/20 text-rose-500">
+                           <X size={24} />
+                           <span className="text-[8px] font-black uppercase tracking-widest">Close</span>
+                        </button>
+                      </div>
+                  </div>
+              </div>
+            )}
+
+            <nav className="absolute bottom-0 left-0 w-full bg-slate-950/90 backdrop-blur-xl border-t border-slate-900 px-1 py-5 flex justify-between items-center z-[300]">
+                {mainTabs.map(item => (
+                    <button key={item.id} onClick={() => handleTabChange(item.id as any)} className={`flex flex-col items-center gap-1.5 transition-all flex-1 ${activeTab === item.id ? 'text-cyan-400 scale-110' : 'text-slate-600 hover:text-slate-400'}`}>
+                      <item.icon size={deviceSize === 'mobile' ? 18 : 20} strokeWidth={activeTab === item.id ? 2.5 : 2} className={item.id === 'swap' && activeTab === 'swap' ? 'animate-spin-slow' : ''} />
+                      <span className="text-[6px] font-black tracking-widest uppercase">{item.label}</span>
+                    </button>
                 ))}
+                <button onClick={() => setIsMoreOpen(!isMoreOpen)} className={`flex flex-col items-center gap-1.5 transition-all flex-1 ${isMoreActive || isMoreOpen ? 'text-cyan-400 scale-110' : 'text-slate-600 hover:text-slate-400'}`}>
+                  <div className="relative">
+                    <MoreHorizontal size={deviceSize === 'mobile' ? 18 : 20} strokeWidth={(isMoreActive || isMoreOpen) ? 2.5 : 2} />
+                    {isMoreActive && !isMoreOpen && <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>}
+                  </div>
+                  <span className="text-[6px] font-black tracking-widest uppercase">More</span>
+                </button>
             </nav>
           </div>
         </div>
