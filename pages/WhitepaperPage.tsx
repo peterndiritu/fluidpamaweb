@@ -1,33 +1,20 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import WhitepaperDocs from '../components/WhitepaperDocs';
-import { FileText, ChevronRight, Download, Share2, Printer, Loader2 } from 'lucide-react';
+import { Download, Share2, Printer, Loader2, ChevronUp } from 'lucide-react';
 
 const WhitepaperPage: React.FC = () => {
-  const [activeSection, setActiveSection] = useState('wp-abstract');
   const [isDownloading, setIsDownloading] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['wp-abstract', 'wp-blockchain', 'wp-tokenomics', 'wp-hosting', 'wp-revenue', 'wp-wallet'];
-      const current = sections.find(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          return rect.top >= -100 && rect.top <= 500;
-        }
-        return false;
-      });
-      if (current) setActiveSection(current);
+      setShowScrollTop(window.scrollY > 400);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setActiveSection(id);
-  };
 
   const handleDownloadPDF = async () => {
     if (!pdfRef.current || isDownloading) return;
@@ -35,7 +22,6 @@ const WhitepaperPage: React.FC = () => {
     setIsDownloading(true);
     const element = pdfRef.current;
     
-    // Check if html2pdf is available globally
     if (!(window as any).html2pdf) {
         console.warn('html2pdf library not loaded, falling back to print');
         window.print();
@@ -50,7 +36,7 @@ const WhitepaperPage: React.FC = () => {
       filename:     'Fluid-Protocol-Specification.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { 
-          scale: 1.5, // Reduced slightly for better performance
+          scale: 1.5,
           useCORS: true, 
           letterRendering: true,
           logging: false 
@@ -60,11 +46,9 @@ const WhitepaperPage: React.FC = () => {
     };
 
     try {
-      // Create a clean clone for PDF generation if needed, but here we use the ref
       await worker.set(opt).from(element).save();
     } catch (err) {
       console.error('PDF Generation failed:', err);
-      // Fallback to native print
       window.print();
     } finally {
       setIsDownloading(false);
@@ -88,21 +72,13 @@ const WhitepaperPage: React.FC = () => {
     }
   };
 
-  const menuItems = [
-    { id: 'wp-abstract', label: '01. Purpose & Scope' },
-    { id: 'wp-blockchain', label: '02. Blockchain Features' },
-    { id: 'wp-wallet', label: '03. Wallet Ecosystem' },
-    { id: 'wp-hosting', label: '04. Endowment Economy' },
-    { id: 'wp-tokenomics', label: '05. Token Economics' },
-  ];
-
   return (
     <div className="min-h-screen pt-32 pb-24 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-12">
         
-        {/* Title Header */}
-        <div className="mb-20 animate-fade-in-up no-print">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-8 border-b border-slate-200 dark:border-white/5">
+        {/* Title Header - Now Full Width */}
+        <div className="mb-12 animate-fade-in-up no-print max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-slate-200 dark:border-white/5">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-600/10 border border-blue-600/20 text-blue-600 dark:text-cyan-400 text-[10px] font-black uppercase tracking-widest">
                 Protocol Specification V1.0
@@ -141,45 +117,9 @@ const WhitepaperPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-16">
-          
-          {/* Sticky Navigation Sidebar */}
-          <aside className="lg:w-80 shrink-0 no-print">
-            <div className="lg:sticky lg:top-32 space-y-8">
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-[3rem] p-8 shadow-2xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-tech-grid opacity-[0.02] pointer-events-none"></div>
-                <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.3em] mb-8">Table of Contents</h4>
-                <nav className="space-y-1 relative z-10">
-                  {menuItems.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => scrollTo(item.id)}
-                      className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl text-left font-bold transition-all group ${
-                        activeSection === item.id 
-                        ? 'bg-blue-600 dark:bg-cyan-500 text-white shadow-lg scale-[1.02]' 
-                        : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
-                      }`}
-                    >
-                      <span className="text-xs uppercase tracking-widest">{item.label}</span>
-                      <ChevronRight size={14} className={`transition-transform duration-300 ${activeSection === item.id ? 'translate-x-0' : '-translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0'}`} />
-                    </button>
-                  ))}
-                </nav>
-              </div>
-
-              <div className="p-10 bg-slate-900 rounded-[3rem] border border-white/5 shadow-2xl relative overflow-hidden group">
-                <div className="absolute inset-0 bg-tech-grid opacity-[0.05]"></div>
-                <div className="relative z-10">
-                  <FileText className="text-cyan-400 mb-6" size={32} />
-                  <h5 className="text-white font-black uppercase tracking-tight italic mb-3">Audited Protocol</h5>
-                  <p className="text-xs text-slate-400 leading-relaxed font-medium">All technical data flow models and consensus parameters have been cryptographically validated for Fluid Mainnet launch.</p>
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          {/* Detailed Document Content */}
-          <main className="flex-1 max-w-4xl" id="whitepaper-content" ref={pdfRef}>
+        <div className="flex flex-col items-center">
+          {/* Main Content Area - Expanded to Full Width with Max-7xl for Readability */}
+          <main className="w-full max-w-7xl" id="whitepaper-content" ref={pdfRef}>
             <div className="bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-white/5 rounded-[4rem] p-8 md:p-16 lg:p-24 shadow-2xl relative overflow-hidden print:p-0 print:border-none print:bg-transparent">
                {/* Print-only title section for PDF generation */}
                <div className="hidden print:block mb-20 text-center border-b pb-10">
@@ -192,6 +132,7 @@ const WhitepaperPage: React.FC = () => {
                <WhitepaperDocs />
             </div>
             
+            {/* Action Footer */}
             <div className="mt-20 p-12 bg-slate-900 dark:bg-slate-900 border border-white/5 rounded-[3rem] text-center shadow-2xl no-print">
                <h4 className="text-white font-black uppercase tracking-tighter italic mb-4">Unstoppable Infrastructure</h4>
                <p className="text-slate-400 text-sm font-medium mb-8">This document represents the immutable foundation of the Fluid sharded ecosystem.</p>
@@ -213,9 +154,18 @@ const WhitepaperPage: React.FC = () => {
                </div>
             </div>
           </main>
-
         </div>
       </div>
+
+      {/* Floating Scroll to Top - for long technical reads */}
+      {showScrollTop && (
+        <button 
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-8 right-8 p-4 bg-blue-600 dark:bg-cyan-500 text-white rounded-full shadow-2xl z-50 animate-fade-in-up transition-transform hover:scale-110 active:scale-95 no-print"
+        >
+          <ChevronUp size={24} />
+        </button>
+      )}
     </div>
   );
 };
