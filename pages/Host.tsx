@@ -1,6 +1,4 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-// Fix: Added Wallet as WalletIcon to the lucide-react imports to resolve 'Cannot find name WalletIcon' error.
 import { Server, Database, Lock, Terminal, Cpu, Globe, ArrowRight, Search, Check, Loader2, Zap, Rocket, Activity, ShieldCheck, Globe2, Infinity as InfinityIcon, HardDrive, Wallet as WalletIcon } from 'lucide-react';
 
 interface TerminalLine {
@@ -234,7 +232,7 @@ const HostPage: React.FC = () => {
             <h3 className="text-4xl font-black text-white uppercase tracking-tighter mb-4 italic leading-tight">Your digital legacy starts here.</h3>
             <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto font-medium">Join 12,000+ developers hosting the future of the internet on Parmaweb.</p>
             <button className="px-12 py-5 bg-white text-slate-950 font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-2xl hover:scale-105 active:scale-95 transition-all">
-               Get Started for 0 FLD
+               Get Started for 0 Fluids
             </button>
          </div>
       </section>

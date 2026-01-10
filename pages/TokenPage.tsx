@@ -26,7 +26,6 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
   const toggleWhitepaper = () => {
     setIsWpVisible(!isWpVisible);
     if (!isWpVisible) {
-      // Small delay to allow state update before scrolling
       setTimeout(() => {
         whitepaperRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -62,13 +61,13 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
   const utilities = [
     {
       title: "Network Fees",
-      desc: "FLUID is the native gas for all transactions, smart contracts, and sharding operations on the Fluid L1.",
+      desc: "Fluids is the native gas for all transactions, smart contracts, and sharding operations on the Fluid L1.",
       icon: Zap,
       color: "text-yellow-500"
     },
     {
       title: "Staking Rewards",
-      desc: "Secure the network by staking FLUID and earn protocol-emitted rewards and a share of transaction fees.",
+      desc: "Secure the network by staking Fluids and earn protocol-emitted rewards and a share of transaction fees.",
       icon: Shield,
       color: "text-emerald-500"
     },
@@ -80,7 +79,7 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
     },
     {
       title: "Permanent Hosting",
-      desc: "A one-time payment in FLUID funds the endowment that hosts your data eternally on Parmaweb.",
+      desc: "A one-time payment in Fluids funds the endowment that hosts your data eternally on Parmaweb.",
       icon: Globe,
       color: "text-blue-500 dark:text-cyan-400"
     }
@@ -88,7 +87,6 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
 
   return (
     <div className="min-h-screen pt-28 pb-16 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300 selection:bg-cyan-500/30">
-      {/* Hero & Presale Combined Section */}
       <section className="max-w-7xl mx-auto px-4 mb-32 relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-blue-600/5 dark:bg-cyan-500/5 rounded-full blur-[140px] -z-10"></div>
         
@@ -105,7 +103,7 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
             </h1>
             
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-xl mb-12 font-medium leading-relaxed tracking-tight">
-              FLUID is the native utility token of the Fluid Layer-1. It powers hyper-scalable transactions, decentralised hosting, and institutional-grade sovereign finance.
+              Fluids is the native utility token of the Fluid Layer-1. It powers hyper-scalable transactions, decentralised hosting, and institutional-grade sovereign finance.
             </p>
 
             <div className="flex flex-wrap gap-8 mb-12">
@@ -131,7 +129,7 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
                   <div className="w-14 h-14 bg-blue-500/10 dark:bg-cyan-500/10 rounded-2xl flex items-center justify-center text-blue-600 dark:text-cyan-400 shadow-sm"><Repeat size={28}/></div>
                   <div>
                     <h4 className="text-base font-black text-slate-900 dark:text-white uppercase mb-1 italic">Native Mainnet Migration</h4>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-500 font-bold leading-relaxed uppercase tracking-widest">Genesis tokens will be swappable 1:1 for native Fluid coins upon mainnet launch.</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-500 font-bold leading-relaxed uppercase tracking-widest">Genesis tokens will be swappable 1:1 for native Fluids upon mainnet launch.</p>
                   </div>
                </div>
             </div>
@@ -144,7 +142,6 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
         </div>
       </section>
 
-      {/* Utility Grid */}
       <section className="max-w-7xl mx-auto px-4 mb-40">
         <div className="text-center mb-24">
           <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 uppercase tracking-tighter italic leading-none">Universal Utility</h2>
@@ -164,15 +161,8 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
         </div>
       </section>
 
-      {/* Tokenomics Integrated Component */}
-      <div className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 mb-20">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 dark:via-white/10 to-transparent"></div>
-        </div>
-        <Tokenomics />
-      </div>
+      <Tokenomics />
 
-      {/* Vesting & Emission Callout */}
       <section className="max-w-5xl mx-auto px-4 mt-20 mb-32">
          <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 rounded-[4rem] p-12 md:p-24 relative overflow-hidden group shadow-2xl">
             <div className="absolute inset-0 bg-tech-grid opacity-[0.05] pointer-events-none"></div>
@@ -218,7 +208,6 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
          </div>
       </section>
 
-      {/* Embedded Technical Whitepaper Section */}
       {isWpVisible && (
         <section ref={whitepaperRef} className="max-w-7xl mx-auto px-4 pb-40 animate-fade-in-up no-print">
            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-[4rem] p-8 md:p-16 lg:p-24 shadow-[0_50px_100px_rgba(0,0,0,0.1)] dark:shadow-[0_50px_100px_rgba(0,0,0,0.5)] relative overflow-hidden ring-1 ring-blue-500/20">
@@ -250,7 +239,6 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
                  </div>
                  
                  <div ref={downloadRef} className="print:p-8">
-                    {/* Only shown during PDF export */}
                     <div className="hidden print:block mb-10 text-center">
                         <h1 className="text-3xl font-black uppercase text-slate-900">Fluid Protocol Specification</h1>
                         <p className="text-[10px] font-bold uppercase text-slate-500 mt-2">V2.4.0-FINAL GENESIS DOCUMENT</p>
@@ -277,7 +265,6 @@ const TokenPage: React.FC<TokenPageProps> = ({ onNavigate, onOpenWhitepaper }) =
   );
 };
 
-// Simple X icon for close button
 const X = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <line x1="18" y1="6" x2="6" y2="18"></line>

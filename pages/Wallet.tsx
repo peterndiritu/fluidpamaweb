@@ -46,23 +46,23 @@ const FLUID_LOGO_SVG = (
 );
 
 const INITIAL_TOKENS: Token[] = [
-  { id: 'fluid', symbol: 'FLD', name: 'Fluid Token', icon: <div className="text-cyan-400">{FLUID_LOGO_SVG}</div>, price: 0.85, balance: 45200, color: '#22d3ee', network: 'Fluid Mainnet' },
-  { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-full" alt="ETH" />, price: 3450, balance: 4.25, color: '#6366f1', network: 'Ethereum' },
-  { id: 'usdc', symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" className="w-full" alt="USDC" />, price: 1, balance: 12500, color: '#2775ca', network: 'Ethereum' },
-  { id: 'solana', symbol: 'SOL', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png" className="w-full" alt="SOL" />, price: 145, balance: 120, color: '#14f195', network: 'Solana' },
-  { id: 'bitcoin', symbol: 'WBTC', name: 'Wrapped BTC', icon: <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" className="w-full" alt="BTC" />, price: 65200, balance: 0.045, color: '#f7931a', network: 'Ethereum' },
-  { id: 'link', symbol: 'LINK', name: 'Chainlink', icon: <img src="https://cryptologos.cc/logos/chainlink-link-logo.png" className="w-full" alt="LINK" />, price: 18.2, balance: 350, color: '#2a5ada', network: 'Ethereum' },
-  { id: 'polygon', symbol: 'POL', name: 'Polygon', icon: <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" className="w-full" alt="POL" />, price: 0.72, balance: 14500, color: '#8247e5', network: 'Polygon' },
+  { id: 'fluid', symbol: 'Fluids', name: 'Fluid Token', icon: <div className="text-cyan-400">{FLUID_LOGO_SVG}</div>, price: 0.85, balance: 45200, color: '#22d3ee', network: 'Fluid Mainnet' },
+  { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=026" className="w-full" alt="ETH" />, price: 3450, balance: 4.25, color: '#6366f1', network: 'Ethereum' },
+  { id: 'usdc', symbol: 'USDC', name: 'USD Coin', icon: <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=026" className="w-full" alt="USDC" />, price: 1, balance: 12500, color: '#2775ca', network: 'Ethereum' },
+  { id: 'solana', symbol: 'SOL', name: 'Solana', icon: <img src="https://cryptologos.cc/logos/solana-sol-logo.png?v=026" className="w-full" alt="SOL" />, price: 145, balance: 120, color: '#14f195', network: 'Solana' },
+  { id: 'bitcoin', symbol: 'WBTC', name: 'Wrapped BTC', icon: <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=026" className="w-full" alt="BTC" />, price: 65200, balance: 0.045, color: '#f7931a', network: 'Ethereum' },
+  { id: 'link', symbol: 'LINK', name: 'Chainlink', icon: <img src="https://cryptologos.cc/logos/chainlink-link-logo.png?v=026" className="w-full" alt="LINK" />, price: 18.2, balance: 350, color: '#2a5ada', network: 'Ethereum' },
+  { id: 'polygon', symbol: 'POL', name: 'Polygon', icon: <img src="https://cryptologos.cc/logos/polygon-matic-logo.png?v=026" className="w-full" alt="POL" />, price: 0.72, balance: 14500, color: '#8247e5', network: 'Polygon' },
 ];
 
 const INITIAL_TRANSACTIONS: Transaction[] = [
-  { id: '1', timestamp: Date.now() - 3600000, date: '2024-05-24 14:20', type: 'Receive', asset: 'FLUID', amount: '+1,200.00', numericAmount: 1200, status: 'Success', hash: '0xabc71f92e123', from: '0x3321...4412' },
-  { id: '2', timestamp: Date.now() - 86400000, date: '2024-05-23 09:15', type: 'Swap', asset: 'ETH ➔ FLD', amount: '-0.50', numericAmount: -0.5, status: 'Success', hash: '0xdef22c42f456' },
+  { id: '1', timestamp: Date.now() - 3600000, date: '2024-05-24 14:20', type: 'Receive', asset: 'Fluids', amount: '+1,200.00', numericAmount: 1200, status: 'Success', hash: '0xabc71f92e123', from: '0x3321...4412' },
+  { id: '2', timestamp: Date.now() - 86400000, date: '2024-05-23 09:15', type: 'Swap', asset: 'ETH ➔ Fluids', amount: '-0.50', numericAmount: -0.5, status: 'Success', hash: '0xdef22c42f456' },
   { id: '3', timestamp: Date.now() - 259200000, date: '2024-05-21 18:45', type: 'Send', asset: 'USDC', amount: '-500.00', numericAmount: -500, status: 'Success', hash: '0xghi33a11a789', to: '0x7122...9901' },
   { id: '4', timestamp: Date.now() - 345600000, date: '2024-05-20 12:10', type: 'Buy', asset: 'USDT', amount: '+2,500.00', numericAmount: 2500, status: 'Pending', hash: '0xjkl44b22b012' },
   { id: '5', timestamp: Date.now() - 518400000, date: '2024-05-18 10:05', type: 'Receive', asset: 'ETH', amount: '+2.15', numericAmount: 2.15, status: 'Success', hash: '0xmno55c33c345', from: '0x8823...1122' },
-  { id: '6', timestamp: Date.now() - 604800000, date: '2024-05-17 15:30', type: 'Swap', asset: 'FLD ➔ SOL', amount: '-450.00', numericAmount: -450, status: 'Success', hash: '0xpqr66d44d678' },
-  { id: '7', timestamp: Date.now() - 864000000, date: '2024-05-14 08:45', type: 'Send', asset: 'FLUID', amount: '-1,000.00', numericAmount: -1000, status: 'Success', hash: '0xstu77e55e901', to: '0x2233...7788' },
+  { id: '6', timestamp: Date.now() - 604800000, date: '2024-05-17 15:30', type: 'Swap', asset: 'Fluids ➔ SOL', amount: '-450.00', numericAmount: -450, status: 'Success', hash: '0xpqr66d44d678' },
+  { id: '7', timestamp: Date.now() - 864000000, date: '2024-05-14 08:45', type: 'Send', asset: 'Fluids', amount: '-1,000.00', numericAmount: -1000, status: 'Success', hash: '0xstu77e55e901', to: '0x2233...7788' },
 ];
 
 const Toast = ({ message, show }: { message: string, show: boolean }) => (
@@ -88,7 +88,193 @@ const ProcessingOverlay = ({ show, title, sub, icon: Icon, onDone }: any) => {
   );
 };
 
-const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigateToSwap }: any) => {
+const WalletPage: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'portfolio' | 'history' | 'cards' | 'settings'>('portfolio');
+  const [tokens, setTokens] = useState<Token[]>(INITIAL_TOKENS);
+  const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS);
+  const [deviceSize, setDeviceSize] = useState<'mobile' | 'desktop'>('desktop');
+
+  useEffect(() => {
+    const handleResize = () => setDeviceSize(window.innerWidth < 1024 ? 'mobile' : 'desktop');
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const addTransaction = (data: Partial<Transaction>) => {
+    const newTx: Transaction = {
+      id: Math.random().toString(36).substr(2, 9),
+      timestamp: Date.now(),
+      date: new Date().toISOString().replace('T', ' ').slice(0, 16),
+      type: data.type || 'Transfer',
+      asset: data.asset || 'Fluids',
+      amount: data.amount || '0',
+      numericAmount: data.numericAmount || 0,
+      status: 'Success',
+      hash: '0x' + Math.random().toString(16).substr(2, 12),
+      ...data
+    };
+    setTransactions([newTx, ...transactions]);
+  };
+
+  return (
+    <div className="min-h-screen pt-24 pb-12 bg-slate-50 dark:bg-slate-950 transition-colors">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+            {/* Sidebar / Nav */}
+            <aside className={`lg:w-72 shrink-0 ${deviceSize === 'mobile' ? 'fixed bottom-0 left-0 right-0 z-[100] px-4 pb-4' : ''}`}>
+                <div className={`bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 p-2 shadow-2xl flex transition-all ${deviceSize === 'mobile' ? 'rounded-3xl flex-row justify-between' : 'rounded-[3rem] flex-col h-[calc(100vh-10rem)] sticky top-32'}`}>
+                    <div className={`flex ${deviceSize === 'mobile' ? 'flex-row w-full gap-1' : 'flex-col gap-2 p-4'}`}>
+                        {[
+                            { id: 'portfolio', label: 'Vault', icon: Database },
+                            { id: 'history', label: 'History', icon: History },
+                            { id: 'cards', label: 'Cards', icon: CardIcon },
+                            { id: 'settings', label: 'Safety', icon: ShieldCheck }
+                        ].map(item => (
+                            <button 
+                                key={item.id}
+                                onClick={() => setActiveTab(item.id as any)}
+                                className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-cyan-500 text-slate-950 shadow-xl' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5'}`}
+                            >
+                                <item.icon size={20} className={activeTab === item.id ? 'scale-110' : 'group-hover:scale-110 transition-transform'} />
+                                <span className={`text-xs font-black uppercase tracking-widest ${deviceSize === 'mobile' ? 'hidden' : 'block'}`}>{item.label}</span>
+                                {activeTab === item.id && deviceSize !== 'mobile' && <div className="absolute right-0 top-0 bottom-0 w-1 bg-white/30"></div>}
+                            </button>
+                        ))}
+                    </div>
+
+                    {deviceSize !== 'mobile' && (
+                        <div className="mt-auto p-4 border-t border-slate-100 dark:border-white/5 space-y-4">
+                            <div className="p-4 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-white/5">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Mainnet Node</span>
+                                </div>
+                                <div className="text-[10px] font-bold text-slate-900 dark:text-white">Fluid Cluster #842</div>
+                            </div>
+                            <button className="w-full flex items-center gap-4 px-6 py-4 text-slate-400 hover:text-rose-500 transition-colors">
+                                <LogOut size={20} />
+                                <span className="text-xs font-black uppercase tracking-widest">Lock Vault</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </aside>
+
+            {/* Main Content Area */}
+            <main className="flex-1 min-w-0">
+                <div className="bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/5 rounded-[4rem] h-full shadow-2xl overflow-hidden relative">
+                    <div className="absolute inset-0 bg-tech-grid opacity-[0.02] pointer-events-none"></div>
+                    
+                    {activeTab === 'portfolio' && (
+                        <PortfolioTab 
+                            tokens={tokens} 
+                            setTokens={setTokens} 
+                            addTransaction={addTransaction} 
+                            deviceSize={deviceSize}
+                        />
+                    )}
+
+                    {activeTab === 'history' && (
+                        <div className="p-8 animate-fade-in-up h-full flex flex-col">
+                             <header className="mb-10 flex justify-between items-end">
+                                <div>
+                                    <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic">Ledger Activity</h2>
+                                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em]">Fluid Shard Consensus History</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-500 hover:text-cyan-500 transition-colors"><Search size={18}/></button>
+                                    <button className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-500 hover:text-cyan-500 transition-colors"><Download size={18}/></button>
+                                </div>
+                             </header>
+
+                             <div className="space-y-3 overflow-y-auto custom-scrollbar pr-2 flex-1 pb-20">
+                                {transactions.map((tx) => (
+                                    <div key={tx.id} className="p-5 bg-white dark:bg-slate-950 border border-slate-100 dark:border-white/5 rounded-3xl flex items-center justify-between group hover:border-cyan-500/30 transition-all shadow-sm">
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner ${
+                                                tx.type === 'Receive' ? 'bg-emerald-500/10 text-emerald-500' : 
+                                                tx.type === 'Send' ? 'bg-rose-500/10 text-rose-500' : 'bg-blue-500/10 text-blue-500'
+                                            }`}>
+                                                {tx.type === 'Receive' ? <ArrowDownLeft size={20}/> : tx.type === 'Send' ? <ArrowUpRight size={20}/> : <RefreshCw size={20}/>}
+                                            </div>
+                                            <div>
+                                                <div className="font-black text-slate-900 dark:text-white text-sm uppercase tracking-tight mb-0.5">{tx.type} {tx.asset}</div>
+                                                <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{tx.date} • {tx.from || tx.to || tx.hash.slice(0, 10)}</div>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className={`font-black text-base tracking-tighter mb-1 ${tx.numericAmount > 0 ? 'text-emerald-500' : 'text-slate-900 dark:text-white'}`}>
+                                                {tx.amount}
+                                            </div>
+                                            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-50 dark:bg-slate-900 text-[8px] font-black text-slate-500 uppercase tracking-widest border border-slate-100 dark:border-white/5">
+                                                <div className="w-1 h-1 rounded-full bg-emerald-500"></div> Confirmed
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                             </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'cards' && (
+                        <div className="p-8 animate-fade-in-up h-full flex flex-col items-center justify-center text-center">
+                            <div className="w-24 h-24 bg-cyan-500/10 rounded-[2.5rem] flex items-center justify-center text-cyan-400 mb-8 border border-cyan-500/20 shadow-2xl">
+                                <CardIcon size={48} />
+                            </div>
+                            <h2 className="text-3xl font-black text-white uppercase tracking-tighter italic mb-4">Card Network</h2>
+                            <p className="text-slate-400 max-w-sm mb-10 leading-relaxed font-medium">Link your vault to virtual and physical Fluid cards. 0% FX fees, instant ramps, and 3% cashback in Fluids.</p>
+                            <button className="px-12 py-5 bg-white text-slate-950 font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-2xl hover:scale-105 active:scale-95 transition-all">Request Genesis Card</button>
+                        </div>
+                    )}
+
+                    {activeTab === 'settings' && (
+                         <div className="p-8 animate-fade-in-up h-full overflow-y-auto custom-scrollbar pb-32">
+                            <header className="mb-12">
+                                <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic">Vault Security</h2>
+                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em]">Protocol Guardian Settings</p>
+                            </header>
+                            
+                            <div className="grid md:grid-cols-2 gap-4">
+                                {[
+                                    { title: 'Biometric Access', desc: 'Secure signing via FIDO2 passkeys.', icon: Fingerprint, status: 'Enabled', color: 'text-cyan-500' },
+                                    { title: 'Social Recovery', desc: 'Shard your key across trusted contacts.', icon: Users, status: 'Setup', color: 'text-blue-500' },
+                                    { title: 'Auto-Lock', desc: 'Automatic vault locking after 10m inactivity.', icon: Lock, status: '10m', color: 'text-purple-500' },
+                                    { title: 'TEE Signing', desc: 'Hardware-isolated transaction execution.', icon: Cpu, status: 'Verified', color: 'text-emerald-500' }
+                                ].map((item, i) => (
+                                    <button key={i} className="p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-white/5 rounded-3xl flex items-center justify-between hover:border-cyan-500/30 transition-all text-left">
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center ${item.color} shadow-inner`}>
+                                                <item.icon size={20} />
+                                            </div>
+                                            <div>
+                                                <div className="font-black text-slate-900 dark:text-white text-sm uppercase tracking-tight mb-0.5">{item.title}</div>
+                                                <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{item.desc}</div>
+                                            </div>
+                                        </div>
+                                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{item.status}</span>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="mt-12 p-8 bg-rose-500/5 border border-rose-500/20 rounded-[2.5rem] relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform"><ShieldAlert size={80} className="text-rose-500" /></div>
+                                <h3 className="text-xl font-black text-rose-500 uppercase tracking-tighter italic mb-3">Emergency Access</h3>
+                                <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mb-8 leading-relaxed max-w-sm">If you lose your device, use your recovery shards to restore access. Never share your master seed with anyone.</p>
+                                <button className="px-8 py-3 bg-rose-500 text-white font-black rounded-xl text-[10px] uppercase tracking-widest shadow-lg shadow-rose-500/20">View Recovery Shards</button>
+                            </div>
+                         </div>
+                    )}
+                </div>
+            </main>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize }: any) => {
   const [modalType, setModalType] = useState<'send' | 'receive' | 'buy' | 'details' | null>(null);
   const [selectedToken, setSelectedToken] = useState<Token>(tokens[0]);
   const [simState, setSimState] = useState<any>(null);
@@ -128,7 +314,7 @@ const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigat
   };
 
   return (
-    <div className="p-4 space-y-8 pb-32 animate-fade-in-up relative h-full overflow-y-auto custom-scrollbar">
+    <div className="p-4 md:p-8 space-y-8 pb-32 animate-fade-in-up relative h-full overflow-y-auto custom-scrollbar">
       <ProcessingOverlay show={!!simState} title={simState?.title} sub={simState?.sub} icon={simState?.icon} onDone={simState?.done ? () => {setSimState(null); setModalType(null); setAddress(''); setAmount('');} : null} />
       <Toast message={toast} show={!!toast} />
 
@@ -148,13 +334,12 @@ const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigat
       <div className="flex justify-center gap-2 px-2">
         {[
             { id: 'send', icon: ArrowUpRight, label: 'Send', color: 'bg-cyan-500 text-slate-950' },
-            { id: 'receive', icon: ArrowDownLeft, label: 'Receive', color: 'bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800' },
-            { id: 'swap', icon: RefreshCw, label: 'Swap', color: 'bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800', special: onNavigateToSwap },
-            { id: 'buy', icon: Plus, label: 'Buy', color: 'bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800' }
+            { id: 'receive', icon: ArrowDownLeft, label: 'Receive', color: 'bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-white/10' },
+            { id: 'buy', icon: Plus, label: 'Buy', color: 'bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-white/10' }
         ].map(btn => (
-            <button key={btn.id} onClick={() => btn.special ? btn.special() : setModalType(btn.id as any)} className="flex-1 flex flex-col items-center gap-2 group max-w-[80px]">
-                <div className={`w-12 h-12 rounded-2xl ${btn.color} flex items-center justify-center group-hover:scale-105 transition-all shadow-lg`}>
-                  <btn.icon size={22}/>
+            <button key={btn.id} onClick={() => setModalType(btn.id as any)} className="flex-1 flex flex-col items-center gap-2 group max-w-[100px]">
+                <div className={`w-14 h-14 rounded-2xl ${btn.color} flex items-center justify-center group-hover:scale-105 transition-all shadow-lg`}>
+                  <btn.icon size={24}/>
                 </div>
                 <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest group-hover:text-slate-900 dark:group-hover:text-slate-300">{btn.label}</span>
             </button>
@@ -165,29 +350,18 @@ const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigat
         <h3 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] px-1 flex items-center justify-between">
           Assets <span>Market (LIVE)</span>
         </h3>
-        <div className={`grid gap-3 ${deviceSize === 'mobile' ? 'grid-cols-1' : 'grid-cols-2'}`}>
+        <div className={`grid gap-4 ${deviceSize === 'mobile' ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {tokens.map((token: Token) => (
             <button 
               key={token.id} 
               onClick={() => {setSelectedToken(token); setModalType('details');}} 
-              className={`w-full flex flex-col p-5 rounded-[2.5rem] border transition-all group text-left relative overflow-hidden ${
+              className={`w-full flex flex-col p-6 rounded-[2.5rem] border transition-all group text-left relative overflow-hidden ${
                 token.id === 'fluid' 
-                ? 'bg-white dark:bg-slate-900/90 border-cyan-500/50 ring-1 ring-cyan-500/20 shadow-xl scale-[1.03]' 
-                : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800/50 hover:border-cyan-500/30 shadow-md'
+                ? 'bg-white dark:bg-slate-900/90 border-cyan-500/50 ring-1 ring-cyan-500/20 shadow-xl scale-[1.01]' 
+                : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-white/5 hover:border-cyan-500/30 shadow-md'
               }`}
             >
                 <div className="absolute inset-0 bg-tech-grid opacity-[0.04] pointer-events-none"></div>
-                
-                {token.id === 'fluid' && (
-                  <>
-                    <div className="absolute top-0 right-0 p-4 z-20">
-                      <div className="bg-cyan-500 text-slate-950 text-[8px] font-black uppercase px-2.5 py-1 rounded-full border border-white/20 shadow-lg tracking-widest">
-                        Native Ecosystem
-                      </div>
-                    </div>
-                    <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-cyan-400/10 rounded-full blur-[60px] pointer-events-none group-hover:bg-cyan-400/20 transition-all"></div>
-                  </>
-                )}
                 
                 <div className="flex items-center justify-between w-full relative z-10 mb-8">
                     <div className="flex items-center gap-4">
@@ -214,12 +388,6 @@ const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigat
                             {token.balance.toLocaleString()} {token.symbol}
                         </div>
                     </div>
-                    <div className="flex flex-col items-end gap-1.5">
-                        <span className="text-[8px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] leading-none">Current Price</span>
-                        <div className={`text-sm font-black tracking-tight leading-none ${token.id === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-500 dark:text-slate-400'}`}>
-                            ${token.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                        </div>
-                    </div>
                 </div>
             </button>
             ))}
@@ -227,19 +395,19 @@ const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigat
       </div>
 
       {modalType && (
-        <div className="absolute inset-0 z-[500] bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl p-4 flex flex-col animate-fade-in-up rounded-[inherit]">
-          <header className="flex justify-between items-center py-4 mb-4">
-            <button onClick={() => setModalType(null)} className="p-2 bg-slate-100 dark:bg-slate-900 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+        <div className="absolute inset-0 z-[500] bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl p-6 flex flex-col animate-fade-in-up rounded-[inherit]">
+          <header className="flex justify-between items-center py-4 mb-6">
+            <button onClick={() => setModalType(null)} className="p-3 bg-slate-100 dark:bg-slate-800 rounded-2xl text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
               <X size={20} />
             </button>
-            <h4 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-[0.2em]">{modalType} {modalType === 'details' ? selectedToken.name : 'Crypto'}</h4>
+            <h4 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-[0.2em]">{modalType} {modalType === 'details' ? selectedToken.name : 'Crypto'}</h4>
             <div className="w-10"></div>
           </header>
 
-          <div className="flex-1 space-y-6 overflow-y-auto custom-scrollbar pr-1 pb-10">
+          <div className="flex-1 space-y-8 overflow-y-auto custom-scrollbar pr-1 pb-10">
             {modalType === 'send' && (
               <div className="space-y-6">
-                <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
+                <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 space-y-4">
                   <div className="flex justify-between items-center text-[10px] font-black text-slate-500 uppercase tracking-widest">
                     <span>Target Address</span>
                     <button className="text-cyan-600 dark:text-cyan-400">Scan QR</button>
@@ -247,1281 +415,84 @@ const PortfolioTab = ({ tokens, setTokens, addTransaction, deviceSize, onNavigat
                   <input 
                     type="text" 
                     placeholder="0x... or .fluid domain" 
-                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-slate-900 dark:text-white font-bold outline-none focus:border-blue-500 dark:focus:border-cyan-500 transition-all text-sm shadow-inner"
+                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 text-slate-900 dark:text-white font-bold outline-none focus:border-cyan-500 transition-all text-sm shadow-inner"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
+                <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 space-y-4">
                   <div className="flex justify-between items-center text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                    <span>Amount (USD)</span>
-                    <span>Max: ${ (selectedToken.balance * selectedToken.price).toLocaleString() }</span>
+                    <span>Amount ({selectedToken.symbol})</span>
+                    <span>Available: {selectedToken.balance.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <input 
                       type="number" 
                       placeholder="0.00" 
-                      className="flex-1 bg-transparent text-3xl font-black text-slate-900 dark:text-white outline-none"
+                      className="flex-1 bg-transparent text-4xl font-black text-slate-900 dark:text-white outline-none tracking-tighter"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                     />
-                    <div className="px-3 py-1 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">{selectedToken.symbol}</div>
+                    <div className="px-4 py-2 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest shadow-sm">{selectedToken.symbol}</div>
                   </div>
                 </div>
-                <button onClick={() => handleAction('send')} className="w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black rounded-3xl text-sm uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-transform">Confirm Transfer</button>
+                <button onClick={() => handleAction('send')} className="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black rounded-3xl text-sm uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-transform">Initiate Shard Transfer</button>
               </div>
             )}
 
             {modalType === 'receive' && (
-              <div className="flex flex-col items-center justify-center space-y-8 pt-8 text-center">
-                <div className="p-8 bg-white rounded-[2.5rem] shadow-2xl border border-slate-100">
-                  <QrCode size={200} className="text-slate-950" />
+              <div className="flex flex-col items-center justify-center space-y-8 pt-8 text-center max-w-md mx-auto">
+                <div className="p-10 bg-white rounded-[3rem] shadow-2xl border border-slate-100 group relative">
+                  <div className="absolute inset-0 bg-cyan-400/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <QrCode size={240} className="text-slate-950 relative z-10" />
                 </div>
-                <div>
-                  <h5 className="font-black text-slate-900 dark:text-white text-lg tracking-tighter uppercase mb-2">My Vault Address</h5>
-                  <div className="flex items-center gap-2 p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
-                    <code className="text-xs text-slate-500 dark:text-slate-400 font-mono">0x4F12...668A</code>
-                    <button onClick={() => triggerToast('Address Copied')} className="text-cyan-600 dark:text-cyan-400 hover:text-slate-900 dark:hover:text-white transition-colors">
-                      <Copy size={16} />
-                    </button>
+                <div className="w-full">
+                  <h5 className="font-black text-slate-900 dark:text-white text-lg tracking-tighter uppercase mb-2 italic">Non-Custodial Vault ID</h5>
+                  <div className="flex items-center justify-between gap-2 p-5 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full shadow-inner">
+                     <span className="text-xs font-mono text-slate-500 dark:text-slate-400 truncate">0x9F82A7C3...8E21</span>
+                     <button onClick={() => triggerToast('Address copied')} className="p-2 bg-white dark:bg-slate-800 rounded-lg text-slate-500 hover:text-cyan-500 transition-colors shadow-sm"><Copy size={16}/></button>
                   </div>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-4">Send only supported assets on the Fluid/EVM network.</p>
                 </div>
-                <div className="flex gap-4 w-full">
-                  <button className="flex-1 py-4 bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-black rounded-2xl text-[10px] uppercase tracking-widest border border-slate-200 dark:border-slate-800">Save QR</button>
-                  <button className="flex-1 py-4 bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-black rounded-2xl text-[10px] uppercase tracking-widest border border-slate-200 dark:border-slate-800">Share</button>
-                </div>
-              </div>
-            )}
-
-            {modalType === 'buy' && (
-              <div className="space-y-6">
-                 <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 text-center">
-                   <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400 mx-auto mb-4">
-                     <Building2 size={32} />
-                   </div>
-                   <h5 className="text-lg font-black text-slate-900 dark:text-white tracking-tighter uppercase">Instant Fiat On-Ramp</h5>
-                   <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">Bridging legacy rails to Fluid sharding</p>
-                 </div>
-                 <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
-                    <div className="flex justify-between items-center text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                      <span>Deposit Amount</span>
-                      <span>Min: $50</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <input 
-                        type="number" 
-                        placeholder="0.00" 
-                        className="flex-1 bg-transparent text-3xl font-black text-slate-900 dark:text-white outline-none"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                      />
-                      <span className="text-xl font-black text-slate-300 dark:text-slate-700">USD</span>
-                    </div>
-                 </div>
-                 <button onClick={() => handleAction('buy')} className="w-full py-5 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-cyan-500 dark:to-blue-600 text-white font-black rounded-3xl text-sm uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-transform">Continue to Gateway</button>
               </div>
             )}
 
             {modalType === 'details' && (
-              <div className="space-y-8">
-                <div className="flex flex-col items-center pt-4">
-                  <div className={`w-20 h-20 bg-slate-50 dark:bg-slate-900 rounded-[2rem] p-4 mb-6 shadow-2xl border ${selectedToken.id === 'fluid' ? 'border-cyan-500/30' : 'border-slate-200 dark:border-white/5'}`}>{selectedToken.icon}</div>
-                  <h3 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter mb-1 uppercase">{selectedToken.name}</h3>
-                  <p className="text-sm font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">${selectedToken.price.toLocaleString()} <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-black ml-1">+1.2%</span></p>
-                </div>
-                
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden divide-y divide-slate-200 dark:divide-slate-800/50">
-                  <div className="p-5 flex justify-between items-center">
-                    <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Your Balance</span>
-                    <span className="text-sm font-black text-slate-900 dark:text-white tracking-tight">{selectedToken.balance.toLocaleString()} {selectedToken.symbol}</span>
-                  </div>
-                  <div className="p-5 flex justify-between items-center">
-                    <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Network</span>
-                    <span className="text-sm font-black text-blue-600 dark:text-cyan-500 tracking-tight uppercase">{selectedToken.network}</span>
-                  </div>
-                  <div className="p-5 flex justify-between items-center">
-                    <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Equity</span>
-                    <span className="text-sm font-black text-slate-900 dark:text-white tracking-tight">${(selectedToken.balance * selectedToken.price).toLocaleString()}</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <button onClick={() => setModalType('send')} className="py-4 bg-slate-900 dark:bg-slate-900 border border-slate-800 rounded-2xl font-black text-[10px] uppercase tracking-widest text-white flex items-center justify-center gap-2 group hover:bg-slate-800 dark:hover:bg-white dark:hover:text-slate-950 transition-all">
-                    <ArrowUpRight size={16} /> Send
-                  </button>
-                  <button onClick={() => setModalType('receive')} className="py-4 bg-slate-900 dark:bg-slate-900 border border-slate-800 rounded-2xl font-black text-[10px] uppercase tracking-widest text-white flex items-center justify-center gap-2 group hover:bg-slate-800 dark:hover:bg-white dark:hover:text-slate-950 transition-all">
-                    <ArrowDownLeft size={16} /> Receive
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const SwapTab = ({ tokens, setTokens, addTransaction }: any) => {
-    const [tokenA, setTokenA] = useState(tokens[1]);
-    const [tokenB, setTokenB] = useState(tokens[0]);
-    const [amountA, setAmountA] = useState('');
-    const [amountB, setAmountB] = useState('');
-    const [isSwapping, setIsSwapping] = useState(false);
-    const [simState, setSimState] = useState<any>(null);
-
-    useEffect(() => {
-        if (!amountA || isNaN(parseFloat(amountA))) { setAmountB(''); return; }
-        const est = (parseFloat(amountA) * (tokenA.price / tokenB.price)).toFixed(4);
-        setAmountB(est);
-    }, [amountA, tokenA, tokenB]);
-
-    const handleSwap = () => {
-        if (!amountA) return;
-        setSimState({ title: 'Atomic Swap', sub: 'Routing through Fluid sharded pool...', icon: RefreshCw });
-        setTimeout(() => {
-            const numA = parseFloat(amountA);
-            const numB = parseFloat(amountB);
-            setTokens(tokens.map((t: Token) => {
-                if (t.id === tokenA.id) return { ...t, balance: t.balance - numA };
-                if (t.id === tokenB.id) return { ...t, balance: t.balance + numB };
-                return t;
-            }));
-            addTransaction({ type: 'Swap', asset: `${tokenA.symbol} ➔ ${tokenB.symbol}`, amount: `-${numA} / +${numB}`, numericAmount: numB });
-            setSimState({ title: 'Success', sub: 'Exchange settled in 640ms.', icon: CheckCircle, done: true });
-        }, 1500);
-    };
-
-    return (
-        <div className="p-4 space-y-6 h-full overflow-y-auto pb-32 animate-fade-in-up relative custom-scrollbar">
-            <ProcessingOverlay show={!!simState} title={simState?.title} sub={simState?.sub} icon={simState?.icon} onDone={simState?.done ? () => {setSimState(null); setAmountA('');} : null} />
-            <div className="pt-4 text-center">
-                <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-1">Fluid DEX</h3>
-                <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">Sharded atomic swaps</p>
-            </div>
-
-            <div className="space-y-2">
-                <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-[2.5rem] shadow-inner relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-tech-grid opacity-[0.02] pointer-events-none"></div>
-                    <div className="flex justify-between items-center text-[9px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest mb-4">
-                        <span>From</span>
-                        <span>Balance: {tokenA.balance.toFixed(2)}</span>
+                <div className="space-y-8">
+                    <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-800 flex flex-col items-center text-center relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-8 opacity-[0.03]"><selectedToken.icon size={120} /></div>
+                        <div className="w-20 h-20 bg-white dark:bg-slate-950 rounded-3xl p-5 mb-6 shadow-xl border border-slate-100 dark:border-white/5">{selectedToken.icon}</div>
+                        <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-1">{selectedToken.name}</h3>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-6">{selectedToken.network}</p>
+                        <div className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter mb-1">${(selectedToken.balance * selectedToken.price).toLocaleString()}</div>
+                        <div className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">+4.2% Past Month</div>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <input type="number" placeholder="0.00" value={amountA} onChange={e => setAmountA(e.target.value)} className="bg-transparent text-3xl font-black text-slate-900 dark:text-white outline-none w-full placeholder:text-slate-200 dark:placeholder:text-slate-800" />
-                        <button className="flex items-center gap-2 bg-white dark:bg-slate-950 p-2 pr-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                           <div className="w-6 h-6 rounded-lg overflow-hidden">{tokenA.icon}</div>
-                           <span className="font-black text-xs text-slate-900 dark:text-white uppercase">{tokenA.symbol}</span>
-                        </button>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                        <button onClick={() => setModalType('send')} className="flex-1 py-4 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-black rounded-2xl text-[10px] uppercase tracking-widest border border-slate-200 dark:border-white/5 transition-all hover:bg-cyan-500 hover:text-slate-950">Send</button>
+                        <button onClick={() => setModalType('receive')} className="flex-1 py-4 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-black rounded-2xl text-[10px] uppercase tracking-widest border border-slate-200 dark:border-white/5 transition-all hover:bg-cyan-500 hover:text-slate-950">Receive</button>
                     </div>
-                </div>
 
-                <div className="flex justify-center -my-5 relative z-10">
-                    <button onClick={() => { const t = tokenA; setTokenA(tokenB); setTokenB(t); }} className="p-3 bg-white dark:bg-slate-800 rounded-2xl border-4 border-slate-50 dark:border-slate-950 text-blue-600 dark:text-cyan-400 hover:text-blue-500 dark:hover:text-white transition-all shadow-xl active:scale-90">
-                        <ArrowDownUp size={20} />
-                    </button>
-                </div>
-
-                <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-[2.5rem] shadow-inner pt-10">
-                    <div className="flex justify-between items-center text-[9px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest mb-4">
-                        <span>To (Estimated)</span>
-                        <span>Balance: {tokenB.balance.toFixed(2)}</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <input type="text" readOnly placeholder="0.00" value={amountB} className="bg-transparent text-3xl font-black text-emerald-600 dark:text-emerald-400 outline-none w-full" />
-                        <button className="flex items-center gap-2 bg-white dark:bg-slate-950 p-2 pr-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                           <div className="w-6 h-6 rounded-lg overflow-hidden">{tokenB.icon}</div>
-                           <span className="font-black text-xs text-slate-900 dark:text-white uppercase">{tokenB.symbol}</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
-                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-tight">
-                    <span className="text-slate-400 dark:text-slate-500">Slippage Tolerance</span>
-                    <span className="text-blue-600 dark:text-cyan-500">0.5%</span>
-                </div>
-                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-tight">
-                    <span className="text-slate-400 dark:text-slate-500">Protocol Fee</span>
-                    <span className="text-slate-900 dark:text-slate-300">0.01%</span>
-                </div>
-            </div>
-
-            <button onClick={handleSwap} disabled={!amountA} className="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-cyan-500 dark:to-blue-600 text-white font-black rounded-[2rem] text-sm uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-all disabled:opacity-30">Confirm Swap</button>
-        </div>
-    );
-};
-
-const CardsTab = () => {
-  const [activeCard, setActiveCard] = useState<'virtual' | 'physical'>('virtual');
-  const [showDetails, setShowDetails] = useState(false);
-  const [isFrozen, setIsFrozen] = useState(false);
-  const [toast, setToast] = useState('');
-
-  const triggerToast = (msg: string) => {
-    setToast(msg);
-    setTimeout(() => setToast(''), 2000);
-  };
-
-  return (
-    <div className="p-4 space-y-8 pb-32 animate-fade-in-up h-full overflow-y-auto custom-scrollbar">
-      <Toast message={toast} show={!!toast} />
-      <div className="pt-4 text-center">
-        <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-1">Fluid Card</h3>
-        <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">Global Crypto rails</p>
-      </div>
-
-      <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
-        <button 
-          onClick={() => setActiveCard('virtual')} 
-          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeCard === 'virtual' ? 'bg-white text-slate-950 shadow-lg' : 'text-slate-400'}`}
-        >Virtual</button>
-        <button 
-          onClick={() => setActiveCard('physical')} 
-          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeCard === 'physical' ? 'bg-white text-slate-950 shadow-lg' : 'text-slate-400'}`}
-        >Physical</button>
-      </div>
-
-      <div className="perspective-1000">
-        <div className={`relative w-full aspect-[1.6/1] rounded-3xl transition-all duration-700 preserve-3d p-6 flex flex-col justify-between overflow-hidden shadow-2xl ${activeCard === 'virtual' ? 'bg-gradient-to-br from-blue-500/20 to-indigo-600/20 backdrop-blur-xl border border-slate-300 dark:border-white/20' : 'bg-gradient-to-br from-slate-800 to-black border border-slate-700'}`}>
-          <div className="absolute inset-0 bg-tech-grid opacity-20"></div>
-          <div className="flex justify-between items-start relative z-10">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 text-slate-900 dark:text-white">{FLUID_LOGO_SVG}</div>
-              <span className="font-black italic text-lg tracking-tighter text-slate-900 dark:text-white">fluid</span>
-            </div>
-            <Wifi className="text-slate-400 dark:text-white/30 rotate-90" />
-          </div>
-
-          <div className="relative z-10">
-            <div className="text-xl font-mono text-slate-900 dark:text-white tracking-[0.2em] mb-4">
-              {showDetails ? '4532 8842 9901 1245' : '•••• •••• •••• 1245'}
-            </div>
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-[8px] text-slate-500 dark:text-white/40 uppercase font-black tracking-widest mb-0.5">Card Holder</p>
-                <p className="text-sm font-black text-slate-900 dark:text-white tracking-tight">ALEX RIVERA</p>
-              </div>
-              <div className="text-right">
-                <p className="text-[8px] text-slate-500 dark:text-white/40 uppercase font-black tracking-widest mb-0.5">Expiry</p>
-                <p className="text-sm font-black text-slate-900 dark:text-white tracking-tight">05/28</p>
-              </div>
-            </div>
-          </div>
-          {isFrozen && <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center z-20"><Lock className="text-white animate-pulse" size={48} /></div>}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <button onClick={() => { setShowDetails(!showDetails); triggerToast(showDetails ? 'Details Hidden' : 'Details Shown'); }} className="flex flex-col items-center gap-3 p-5 bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 group hover:border-blue-500 dark:hover:border-cyan-500/50 transition-colors shadow-sm">
-          <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center text-slate-400 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">{showDetails ? <EyeOff size={20}/> : <Eye size={20}/>}</div>
-          <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">{showDetails ? 'Hide' : 'Reveal'} Details</span>
-        </button>
-        <button onClick={() => { setIsFrozen(!isFrozen); triggerToast(isFrozen ? 'Card Frozen' : 'Card Frozen'); }} className="flex flex-col items-center gap-3 p-5 bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 group hover:border-rose-500 transition-colors shadow-sm">
-          <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">{isFrozen ? <Unlock size={20}/> : <Lock size={20}/>}</div>
-          <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">{isFrozen ? 'Unfreeze' : 'Freeze'} Card</span>
-        </button>
-      </div>
-
-      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
-        <div className="p-5 border-b border-slate-100 dark:border-slate-800"><h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Card Settings</h4></div>
-        <div className="divide-y divide-slate-100 dark:divide-slate-800">
-           {[
-             { icon: Sliders, label: 'Spending Limits', val: '$5,000/mo' },
-             { icon: Globe, label: 'Online Payments', val: 'Enabled' },
-             { icon: PhoneIcon, label: 'Add to Apple Wallet', val: 'Ready' },
-             { icon: Shield, label: 'Fraud Protection', val: 'Active' },
-             { icon: CardIcon, label: 'Replace Card', val: 'Order' },
-           ].map((opt, i) => (
-             <button key={i} onClick={() => triggerToast(`${opt.label} Selected`)} className="w-full p-5 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group">
-                <div className="flex items-center gap-4">
-                  <opt.icon size={18} className="text-slate-400 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors" />
-                  <span className="text-xs font-bold text-slate-900 dark:text-white tracking-tight">{opt.label}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black text-blue-600 dark:text-cyan-500">{opt.val}</span>
-                  <ArrowRight size={14} className="text-slate-300 dark:text-slate-700" />
-                </div>
-             </button>
-           ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const BankTab = () => {
-  const [activeBankSubTab, setActiveBankSubTab] = useState<'bank' | 'mobile'>('bank');
-  const [simState, setSimState] = useState<any>(null);
-  const [toast, setToast] = useState('');
-
-  const triggerToast = (msg: string) => {
-    setToast(msg);
-    setTimeout(() => setToast(''), 2000);
-  };
-
-  const handleDeposit = () => {
-    setSimState({ title: 'Authenticating', sub: 'Initializing gateway...', icon: Building2 });
-    setTimeout(() => {
-      setSimState({ title: 'Success', sub: 'Funding source verified.', icon: CheckCircle, done: true });
-    }, 2000);
-  };
-
-  const mobileWallets = [
-    { id: 'revolut', name: 'Revolut', status: 'Connected', color: 'bg-slate-900 dark:bg-white text-white dark:text-black' },
-    { id: 'wise', name: 'Wise', status: 'Not Linked', color: 'bg-[#9FE35B] text-[#001D45]' },
-    { id: 'monzo', name: 'Monzo', status: 'Not Linked', color: 'bg-[#FF4D57] text-white' },
-    { id: 'n26', name: 'N26', status: 'Not Linked', color: 'bg-[#36a18b] text-white' },
-    { id: 'paypal', name: 'PayPal', status: 'Connected', color: 'bg-[#003087] text-white' },
-  ];
-
-  return (
-    <div className="p-4 space-y-8 pb-32 animate-fade-in-up h-full overflow-y-auto relative custom-scrollbar">
-      <ProcessingOverlay show={!!simState} title={simState?.title} sub={simState?.sub} icon={simState?.icon} onDone={simState?.done ? () => setSimState(null) : null} />
-      <Toast message={toast} show={!!toast} />
-      
-      <div className="pt-4 text-center">
-        <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-1">Fiat Gateway</h3>
-        <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">IBAN & Mobile Wallets</p>
-      </div>
-
-      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 p-8 text-center shadow-xl relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-8 text-slate-100 dark:text-slate-800/20 pointer-events-none group-hover:text-blue-500/10 transition-colors duration-700"><Landmark size={120} /></div>
-        <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-tight mb-1">Available balance</p>
-        <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter mb-8">€12,500.80</h2>
-        <div className="flex gap-3">
-          <button onClick={handleDeposit} className="flex-1 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black rounded-2xl text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all">Add Funds</button>
-          <button onClick={() => triggerToast('Withdrawal Flow Initiated')} className="flex-1 py-4 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-black rounded-2xl text-[10px] uppercase tracking-widest border border-slate-200 dark:border-slate-800 active:scale-95 transition-all shadow-sm">Withdraw</button>
-        </div>
-      </div>
-
-      <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
-        <button 
-          onClick={() => setActiveBankSubTab('bank')} 
-          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeBankSubTab === 'bank' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400 shadow-lg' : 'text-slate-400 dark:text-slate-500'}`}
-        >Bank Info</button>
-        <button 
-          onClick={() => setActiveBankSubTab('mobile')} 
-          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeBankSubTab === 'mobile' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-cyan-400 shadow-lg' : 'text-slate-400 dark:text-slate-500'}`}
-        >Mobile Wallets</button>
-      </div>
-
-      {activeBankSubTab === 'bank' ? (
-        <div className="space-y-4 animate-fade-in-up">
-          <div className="flex items-center justify-between px-2">
-            <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Account Details</h4>
-            <button onClick={() => triggerToast('Account Info Copied')} className="text-[9px] font-black text-blue-600 dark:text-cyan-500 uppercase tracking-widest flex items-center gap-1 hover:text-blue-700 dark:hover:text-white transition-colors"><Copy size={10}/> Copy All</button>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 p-8 space-y-8 shadow-sm">
-             {[
-               { label: 'Beneficiary', val: 'ALEX RIVERA' },
-               { label: 'IBAN', val: 'LT14 2024 1124 5589 1234' },
-               { label: 'BIC/SWIFT', val: 'FLD LT 21' },
-               { label: 'Bank', val: 'Fluid European Rails' }
-             ].map((item, i) => (
-               <div key={i} onClick={() => triggerToast(`${item.label} Copied`)} className="flex justify-between items-center group cursor-pointer">
-                 <div>
-                   <p className="text-[8px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest mb-1">{item.label}</p>
-                   <p className="text-sm font-bold text-slate-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors">{item.val}</p>
-                 </div>
-                 <Copy size={14} className="text-slate-200 dark:text-slate-700 group-hover:text-blue-600 dark:group-hover:text-cyan-500 transition-colors" />
-               </div>
-             ))}
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-4 animate-fade-in-up pb-10">
-          <div className="flex items-center justify-between px-2">
-            <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Linked Apps</h4>
-            <button onClick={() => triggerToast('Search for apps')} className="text-[9px] font-black text-blue-600 dark:text-cyan-500 uppercase tracking-widest flex items-center gap-1 hover:text-blue-700 dark:hover:text-white transition-colors"><Plus size={10}/> Add New</button>
-          </div>
-
-          <div className="grid gap-3">
-             {mobileWallets.map((wallet) => (
-               <div key={wallet.id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/50 p-4 rounded-3xl flex items-center justify-between group hover:border-blue-500 dark:hover:border-cyan-500/30 transition-all shadow-sm">
-                 <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-2xl ${wallet.color} flex items-center justify-center font-black text-sm shadow-md`}>
-                      {wallet.name[0]}
-                    </div>
-                    <div>
-                      <h5 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">{wallet.name}</h5>
-                      <span className={`text-[9px] font-black uppercase tracking-widest ${wallet.status === 'Connected' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`}>{wallet.status}</span>
-                    </div>
-                 </div>
-                 {wallet.status === 'Connected' ? (
-                   <div className="flex items-center gap-3">
-                     <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase">Primary</span>
-                     <button onClick={() => triggerToast(`Manage ${wallet.name}`)} className="p-2 bg-slate-50 dark:bg-slate-950 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors border border-slate-100 dark:border-white/5"><Settings size={14}/></button>
-                   </div>
-                 ) : (
-                   <button onClick={() => triggerToast(`Linking to ${wallet.name}...`)} className="px-4 py-2 bg-blue-600 dark:bg-cyan-500 text-white dark:text-slate-950 text-[9px] font-black uppercase tracking-widest rounded-xl hover:opacity-90 transition-all">Link App</button>
-                 )}
-               </div>
-             ))}
-          </div>
-          
-          <div className="p-6 bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-200 dark:border-slate-800 rounded-[2rem] flex flex-col items-center justify-center text-center gap-3 group hover:border-blue-500 dark:hover:border-cyan-500/50 transition-colors cursor-pointer" onClick={() => triggerToast('Scanning for banking APIs...')}>
-             <Smartphone className="text-slate-300 dark:text-slate-700 group-hover:text-blue-600 dark:group-hover:text-cyan-500 transition-colors" size={32} />
-             <p className="text-[10px] text-slate-400 dark:text-slate-600 font-bold uppercase tracking-widest">Scan for more mobile banking apps</p>
-          </div>
-        </div>
-      )}
-
-      <div className="p-6 bg-gradient-to-br from-blue-600/10 to-indigo-600/10 dark:from-cyan-600/10 dark:to-blue-600/10 rounded-[2rem] border border-blue-500/20 dark:border-cyan-500/10 flex items-center gap-4 group cursor-pointer hover:border-blue-500/40 dark:hover:border-cyan-500/50 transition-colors shadow-sm">
-        <div className="p-3 bg-blue-500/10 rounded-2xl text-blue-600 dark:text-cyan-400 group-hover:scale-110 transition-transform"><RefreshCw size={24}/></div>
-        <div>
-          <h4 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight mb-1">Instant On-Ramp</h4>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold leading-relaxed tracking-tight">Convert fiat or app balances to FLUID instantly with 0% settlement fees.</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const DAppsTab = () => {
-  const [selectedApp, setSelectedApp] = useState<any>(null);
-  const [connectionStep, setConnectionStep] = useState<'request' | 'connecting' | 'active'>('request');
-  const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
-  
-  const [toast, setToast] = useState('');
-  const triggerToast = (msg: string) => {
-    setToast(msg);
-    setTimeout(() => setToast(''), 2000);
-  };
-
-  const categories = ["All", "DeFi", "Games", "Social", "Tools"];
-  const apps = [
-    { id: 1, name: "Fluid Stake", category: "DeFi", icon: <Zap className="text-yellow-500"/>, desc: "High yield native staking on Fluid L1", url: "stake.fluid", users: "12.4k" },
-    { id: 2, name: "ParmaSwap", category: "DeFi", icon: <RefreshCw className="text-cyan-600 dark:text-cyan-400"/>, desc: "Community governed sharded DEX", url: "swap.fluid", users: "45.2k" },
-    { id: 3, name: "Fluid Social", category: "Social", icon: <Users className="text-purple-600 dark:text-purple-400"/>, desc: "Decentralized messaging protocol", url: "social.fluid", users: "8.9k" },
-    { id: 4, name: "Block Miner", category: "Games", icon: <Database className="text-emerald-600 dark:text-emerald-400"/>, desc: "Play-to-earn mining simulator", url: "miner.fluid", users: "3.2k" },
-    { id: 5, name: "Shard Vaults", category: "DeFi", icon: <Shield className="text-indigo-600 dark:text-indigo-400"/>, desc: "Auto-compounding yield vaults", url: "vaults.fluid", users: "22.1k" },
-    { id: 6, name: "Domain Manager", category: "Tools", icon: <Globe className="text-orange-600 dark:text-orange-400"/>, desc: "Register and manage .fluid IDs", url: "fns.fluid", users: "105k" },
-  ];
-
-  const filteredApps = apps.filter(app => {
-    const matchesSearch = app.name.toLowerCase().includes(search.toLowerCase()) || app.desc.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = activeCategory === 'All' || app.category === activeCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const handleConnect = () => {
-    setConnectionStep('connecting');
-    setTimeout(() => {
-        setConnectionStep('active');
-    }, 2500);
-  };
-
-  if (selectedApp) {
-    return (
-      <div className="flex flex-col h-full bg-white dark:bg-slate-950 animate-fade-in-up">
-        <Toast message={toast} show={!!toast} />
-        <div className="p-4 border-b border-slate-100 dark:border-slate-900 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
-          <button onClick={() => {setSelectedApp(null); setConnectionStep('request');}} className="p-2 bg-white dark:bg-slate-800 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors shadow-sm"><X size={18}/></button>
-          <div className="flex flex-col items-center">
-            <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-1">Secure Sharded Bridge</span>
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 dark:text-white tracking-tight">
-              <Lock size={10} className="text-emerald-500" />
-              {selectedApp.url}
-            </div>
-          </div>
-          <button className="p-2 bg-white dark:bg-slate-800 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors shadow-sm"><ExternalLink size={18}/></button>
-        </div>
-
-        {connectionStep === 'request' && (
-           <div className="flex-1 p-8 flex flex-col items-center justify-center animate-fade-in-up custom-scrollbar overflow-y-auto">
-              <div className="flex items-center gap-6 mb-12">
-                  <div className="w-16 h-16 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-white/5 flex items-center justify-center text-slate-900 dark:text-white shadow-lg">
-                      <div className="w-8 h-8">{FLUID_LOGO_SVG}</div>
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                      <div className="flex gap-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-cyan-400 animate-pulse"></div>
-                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-cyan-400 animate-pulse delay-100"></div>
-                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-cyan-400 animate-pulse delay-200"></div>
-                      </div>
-                  </div>
-                  <div className="w-16 h-16 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-white/5 flex items-center justify-center shadow-lg">
-                      {React.cloneElement(selectedApp.icon as React.ReactElement<any>, { size: 32 })}
-                  </div>
-              </div>
-              
-              <h3 className="text-2xl font-black text-slate-900 dark:text-white text-center mb-4 uppercase tracking-tighter">Connection Request</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-center mb-10 text-sm font-medium leading-relaxed">
-                <span className="text-slate-900 dark:text-white font-bold">{selectedApp.name}</span> wants to connect to your Fluid Vault. This will allow the DApp to view your account address and balances.
-              </p>
-
-              <div className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-[2rem] p-8 mb-10 space-y-6 shadow-inner">
-                  <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 dark:border-white/5"><Activity size={16}/></div>
-                      <span className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">View wallet balance & activity</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center text-slate-400 shadow-sm border border-slate-100 dark:border-white/5"><MousePointer2 size={16}/></div>
-                      <span className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Request approval for transactions</span>
-                  </div>
-              </div>
-
-              <div className="flex flex-col w-full gap-4 pb-10">
-                  <button onClick={handleConnect} className="w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black rounded-2xl text-sm uppercase tracking-widest active:scale-95 transition-all shadow-xl">Connect Vault</button>
-                  <button onClick={() => setSelectedApp(null)} className="w-full py-5 bg-white dark:bg-slate-900 text-slate-500 font-black rounded-2xl text-sm uppercase tracking-widest border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors shadow-sm">Reject</button>
-              </div>
-           </div>
-        )}
-
-        {connectionStep === 'connecting' && (
-          <div className="flex-1 p-8 flex flex-col items-center justify-center text-center">
-            <div className="relative mb-8">
-              <div className="w-24 h-24 bg-slate-50 dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-2xl border border-slate-100 dark:border-white/5 flex items-center justify-center">
-                <RefreshCw size={40} className="animate-spin text-blue-600 dark:text-cyan-400" />
-              </div>
-              <div className="absolute -inset-4 border-2 border-dashed border-blue-500/20 dark:border-cyan-500/20 rounded-[2.5rem] animate-[spin_10s_linear_infinite]"></div>
-            </div>
-            <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-3 tracking-tighter uppercase">Syncing Shard</h2>
-            <p className="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Establishing Parmaweb protocol link...</p>
-            <div className="w-48 h-1.5 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden shadow-inner">
-              <div className="h-full bg-blue-600 dark:bg-cyan-400 animate-[marquee_2s_infinite]"></div>
-            </div>
-          </div>
-        )}
-
-        {connectionStep === 'active' && (
-            <div className="flex-1 p-8 flex flex-col items-center justify-center animate-fade-in-up overflow-y-auto custom-scrollbar">
-                <div className="relative mb-10">
-                    <div className="w-24 h-24 bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 border border-emerald-500/30 shadow-2xl flex items-center justify-center">
-                         {React.cloneElement(selectedApp.icon as React.ReactElement<any>, { size: 40 })}
-                    </div>
-                    <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-emerald-500 rounded-full border-4 border-white dark:border-slate-950 flex items-center justify-center text-white dark:text-slate-950">
-                        <CheckCircle size={20} />
-                    </div>
-                </div>
-
-                <h3 className="text-3xl font-black text-slate-900 dark:text-white text-center mb-2 uppercase tracking-tighter">{selectedApp.name} Connected</h3>
-                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-black text-center mb-12 uppercase tracking-[0.3em]">Active Session Shared</p>
-
-                <div className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-[2rem] p-8 mb-12 space-y-6 shadow-inner">
-                    <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                        <span>Status</span>
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">Live</span>
-                    </div>
-                    <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                        <span>Connection</span>
-                        <span className="text-slate-900 dark:text-white font-bold">Fluid Shard V2</span>
-                    </div>
-                    <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                        <span>Vault UID</span>
-                        <span className="text-blue-600 dark:text-cyan-400 font-mono font-bold">0x4F12...668A</span>
-                    </div>
-                </div>
-
-                <div className="flex flex-col w-full gap-4 pb-10">
-                  <button onClick={() => triggerToast(`Navigating to ${selectedApp.url}...`)} className="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-cyan-400 dark:to-blue-600 text-white font-black rounded-2xl text-sm uppercase tracking-widest shadow-2xl active:scale-95 transition-all">Launch Application</button>
-                  <button onClick={() => {setConnectionStep('request'); setSelectedApp(null);}} className="w-full py-5 bg-white dark:bg-slate-900 text-rose-500 font-black rounded-2xl text-sm uppercase tracking-widest border border-slate-200 dark:border-slate-800 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors shadow-sm">Disconnect Session</button>
-                </div>
-            </div>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div className="p-4 space-y-6 h-full overflow-y-auto pb-32 animate-fade-in-up custom-scrollbar">
-      <Toast message={toast} show={!!toast} />
-      <div className="pt-4 text-center">
-        <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-1">Explore DApps</h3>
-        <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">Fluid Parmaweb Nodes</p>
-      </div>
-      <div className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-600 group-focus-within:text-blue-600 dark:group-focus-within:text-cyan-500 transition-colors" size={16} />
-        <input 
-          type="text" 
-          placeholder="Search decentralized apps..." 
-          className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 pl-12 text-sm text-slate-900 dark:text-white font-bold outline-none focus:border-blue-500 dark:focus:border-cyan-500 transition-all placeholder:text-slate-200 dark:placeholder:text-slate-700 shadow-sm"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-      <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-        {categories.map(cat => (
-          <button 
-            key={cat} 
-            onClick={() => setActiveCategory(cat)}
-            className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap border shadow-sm ${activeCategory === cat ? 'bg-blue-600 dark:bg-cyan-500 text-white dark:text-slate-950 border-blue-500 dark:border-cyan-400' : 'bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'}`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 gap-3 pb-10">
-        {filteredApps.length > 0 ? filteredApps.map(app => (
-          <button key={app.id} onClick={() => setSelectedApp(app)} className="w-full flex items-center justify-between p-5 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 hover:border-blue-500 dark:hover:border-cyan-500/30 transition-all group text-left relative overflow-hidden shadow-sm hover:shadow-lg">
-            <div className="absolute inset-0 bg-tech-grid opacity-[0.02] pointer-events-none"></div>
-            <div className="flex items-center gap-5 relative z-10">
-              <div className="w-14 h-14 bg-slate-50 dark:bg-slate-950 rounded-2xl flex items-center justify-center shadow-md border border-slate-100 dark:border-white/5 group-hover:scale-110 transition-transform">
-                {React.cloneElement(app.icon as React.ReactElement<any>, { size: 24 })}
-              </div>
-              <div>
-                <span className="font-black text-slate-900 dark:text-white tracking-tight text-sm uppercase">{app.name}</span>
-                <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium leading-tight max-w-[160px] tracking-tight uppercase mt-1">{app.desc}</p>
-              </div>
-            </div>
-            <ArrowRight size={14} className="text-slate-200 dark:text-slate-700 group-hover:text-blue-600 dark:group-hover:text-cyan-500 transition-colors" />
-          </button>
-        )) : (
-          <div className="text-center py-12 text-slate-300 dark:text-slate-700 uppercase font-black text-xs tracking-widest">No DApps found</div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const HostingTab = () => {
-  const [toast, setToast] = useState('');
-  const [activeSubTab, setActiveSubTab] = useState<'deployments' | 'domains'>('deployments');
-  
-  const triggerToast = (msg: string) => {
-    setToast(msg);
-    setTimeout(() => setToast(''), 2000);
-  };
-
-  const deployments = [
-    { id: 1, name: 'Fluid DEX UI', domain: 'trade.fluid', status: 'Healthy', storage: '240MB', nodes: 12, expiry: 'Eternal' },
-    { id: 2, name: 'Personal Blog', domain: 'alex.fluid', status: 'Healthy', storage: '12MB', nodes: 8, expiry: 'Eternal' },
-    { id: 3, name: 'NFT Store', domain: 'art.fluid', status: 'Syncing', storage: '1.2GB', nodes: 15, expiry: 'Eternal' },
-    { id: 4, name: 'Protocol Landing', domain: 'main.fluid', status: 'Healthy', storage: '45MB', nodes: 24, expiry: 'Eternal' },
-  ];
-
-  return (
-    <div className="p-4 space-y-6 h-full overflow-y-auto pb-32 animate-fade-in-up custom-scrollbar">
-      <Toast message={toast} show={!!toast} />
-      <div className="pt-4 text-center">
-        <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-1">Parmaweb Ops</h3>
-        <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">Permanent Shard Storage</p>
-      </div>
-
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 shadow-xl relative overflow-hidden group">
-         <div className="absolute inset-0 bg-tech-grid opacity-[0.03] pointer-events-none"></div>
-         <div className="flex justify-between items-center mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm"><Server size={24}/></div>
-              <div>
-                <h4 className="text-sm font-black text-slate-900 dark:text-white uppercase leading-none mb-1">Storage Node</h4>
-                <p className="text-[9px] text-emerald-600 dark:text-emerald-400 font-black uppercase tracking-widest">Mainnet Verified</p>
-              </div>
-            </div>
-            <Activity className="text-indigo-500 animate-pulse" size={20} />
-         </div>
-         <div className="grid grid-cols-2 gap-4">
-            <div className="bg-slate-50 dark:bg-slate-950 p-5 rounded-2xl border border-slate-100 dark:border-white/5 shadow-inner">
-               <span className="text-[7px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest block mb-2">Total Hosted</span>
-               <span className="text-base font-black text-slate-900 dark:text-white">4 Assets</span>
-            </div>
-            <div className="bg-slate-50 dark:bg-slate-950 p-5 rounded-2xl border border-slate-100 dark:border-white/5 shadow-inner">
-               <span className="text-[7px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest block mb-2">Endowment %</span>
-               <span className="text-base font-black text-blue-600 dark:text-cyan-400">0.002%</span>
-            </div>
-         </div>
-      </div>
-
-      <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-inner">
-        <button 
-          onClick={() => setActiveSubTab('deployments')} 
-          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeSubTab === 'deployments' ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-lg' : 'text-slate-400 dark:text-slate-500'}`}
-        >Deployments</button>
-        <button 
-          onClick={() => setActiveSubTab('domains')} 
-          className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeSubTab === 'domains' ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-lg' : 'text-slate-400 dark:text-slate-500'}`}
-        >Domains</button>
-      </div>
-
-      {activeSubTab === 'deployments' ? (
-        <div className="space-y-3 pb-10">
-          {deployments.map(d => (
-            <div key={d.id} className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-[2rem] flex flex-col gap-5 group hover:border-indigo-500 dark:hover:border-indigo-500/30 transition-all cursor-pointer shadow-sm hover:shadow-lg">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-slate-50 dark:bg-slate-950 rounded-2xl flex items-center justify-center text-slate-300 dark:text-slate-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors border border-slate-100 dark:border-white/5 shadow-md"><Globe2 size={24}/></div>
-                  <div>
-                    <h5 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">{d.name}</h5>
-                    <div className="flex items-center gap-1.5 text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mt-0.5">
-                      <Lock size={10} className="text-emerald-500" /> {d.domain}
-                    </div>
-                  </div>
-                </div>
-                <button onClick={() => triggerToast(`Deploying ${d.name} update...`)} className="p-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl text-slate-300 dark:text-slate-600 hover:text-indigo-600 dark:hover:text-white transition-colors border border-slate-100 dark:border-white/5 shadow-sm"><Terminal size={14}/></button>
-              </div>
-              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-50 dark:border-slate-800/50">
-                 <div className="text-center">
-                    <span className="text-[7px] font-black text-slate-300 dark:text-slate-600 uppercase block mb-1">Storage</span>
-                    <span className="text-[10px] font-black text-slate-700 dark:text-slate-300 tracking-tighter">{d.storage}</span>
-                 </div>
-                 <div className="text-center">
-                    <span className="text-[7px] font-black text-slate-300 dark:text-slate-600 uppercase block mb-1">Nodes</span>
-                    <span className="text-[10px] font-black text-slate-700 dark:text-slate-300 tracking-tighter">{d.nodes} SHARDS</span>
-                 </div>
-                 <div className="text-center">
-                    <span className="text-[7px] font-black text-slate-300 dark:text-slate-600 uppercase block mb-1">Cycle</span>
-                    <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">{d.expiry}</span>
-                 </div>
-              </div>
-            </div>
-          ))}
-          <button className="w-full py-5 bg-white dark:bg-slate-950 border border-dashed border-slate-200 dark:border-slate-800 rounded-[2rem] flex items-center justify-center gap-3 group hover:border-indigo-500 transition-all shadow-sm">
-             <Plus size={20} className="text-slate-300 dark:text-slate-700 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
-             <span className="text-[10px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest group-hover:text-slate-900 dark:group-hover:text-white transition-colors">New Deployment</span>
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-6 pb-10">
-           <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[2.5rem] p-8 text-center space-y-6 shadow-xl">
-              <Globe size={48} className="mx-auto text-indigo-500/10" />
-              <h4 className="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight italic">Fluid Identity Registry</h4>
-              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest leading-relaxed">Claim your sharded identity on the permanent web.</p>
-              <div className="relative group">
-                 <input type="text" placeholder="your-unique-name" className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-slate-900 dark:text-white font-black outline-none focus:border-indigo-500 transition-all pr-24 text-xs shadow-inner" />
-                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase">.fluid</span>
-              </div>
-              <button onClick={() => triggerToast('Registry connecting...')} className="w-full py-4 bg-indigo-600 text-white font-black rounded-2xl text-[10px] uppercase tracking-widest hover:opacity-90 transition-all shadow-2xl">Register Name</button>
-           </div>
-           
-           <div className="px-2"><h5 className="text-[9px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest">Active Shards</h5></div>
-           <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-3xl flex items-center justify-between shadow-sm">
-              <div className="flex items-center gap-4">
-                 <div className="w-10 h-10 bg-slate-50 dark:bg-slate-950 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-slate-100 dark:border-white/5 shadow-md font-black text-xs italic">F</div>
-                 <span className="text-sm font-black text-slate-900 dark:text-white tracking-tight italic">trade.fluid</span>
-              </div>
-              <span className="text-[8px] font-black text-indigo-600 bg-indigo-500/10 px-3 py-1.5 rounded-full uppercase tracking-widest border border-indigo-500/20 shadow-sm">Primary</span>
-           </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const HistoryTab = ({ transactions }: { transactions: Transaction[] }) => {
-    const [toast, setToast] = useState('');
-    const [sortField, setSortField] = useState<keyof Transaction>('timestamp');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-
-    const triggerToast = (msg: string) => {
-      setToast(msg);
-      setTimeout(() => setToast(''), 2000);
-    };
-
-    const handleSort = (field: keyof Transaction) => {
-        if (sortField === field) {
-            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-        } else {
-            setSortField(field);
-            setSortDirection('desc');
-        }
-    };
-
-    const sortedTransactions = useMemo(() => {
-        return [...transactions].sort((a, b) => {
-            const valA = a[sortField];
-            const valB = b[sortField];
-            
-            if (typeof valA === 'number' && typeof valB === 'number') {
-                return sortDirection === 'asc' ? valA - valB : valB - valA;
-            }
-            
-            const stringA = String(valA).toLowerCase();
-            const stringB = String(valB).toLowerCase();
-            
-            if (stringA < stringB) return sortDirection === 'asc' ? -1 : 1;
-            if (stringA > stringB) return sortDirection === 'asc' ? 1 : -1;
-            return 0;
-        });
-    }, [transactions, sortField, sortDirection]);
-
-    const SortIcon = ({ field }: { field: keyof Transaction }) => {
-        if (sortField !== field) return <div className="w-3 h-3 opacity-20"><ChevronUp size={12}/></div>;
-        return <div className={`w-3 h-3 transition-transform ${sortDirection === 'desc' ? 'rotate-180' : ''}`}><ChevronUp size={12}/></div>;
-    };
-
-    return (
-        <div className="p-4 space-y-6 h-full overflow-y-auto pb-32 custom-scrollbar">
-            <Toast message={toast} show={!!toast} />
-            
-            <div className="flex justify-between items-end px-2 pt-4">
-              <div>
-                <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-1">Vault Ledger</h3>
-                <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">Sharded Transaction Log</p>
-              </div>
-              <button onClick={() => triggerToast('Log Exported')} className="px-5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[9px] font-black text-blue-600 dark:text-cyan-500 uppercase tracking-widest hover:text-blue-700 dark:hover:text-white transition-colors shadow-sm">Export CSV</button>
-            </div>
-
-            <div className="flex gap-2 px-2 overflow-x-auto no-scrollbar pb-2">
-                {[
-                    { label: 'Date', field: 'timestamp' },
-                    { label: 'Type', field: 'type' },
-                    { label: 'Amount', field: 'numericAmount' },
-                    { label: 'Status', field: 'status' }
-                ].map(item => (
-                    <button 
-                        key={item.label}
-                        onClick={() => handleSort(item.field as keyof Transaction)}
-                        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border shrink-0 shadow-sm ${sortField === item.field ? 'bg-blue-600 dark:bg-cyan-500/10 border-blue-600 dark:border-cyan-500/40 text-white dark:text-cyan-400' : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-500'}`}
-                    >
-                        {item.label} <SortIcon field={item.field as keyof Transaction} />
-                    </button>
-                ))}
-            </div>
-
-            <div className="space-y-3 pb-10">
-              {sortedTransactions.length > 0 ? sortedTransactions.map(tx => ( 
-                <div key={tx.id} onClick={() => { triggerToast(`TX Copied: ${tx.hash}`); navigator.clipboard.writeText(tx.hash); }} className="group relative overflow-hidden">
-                  <div className="p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 rounded-[2rem] flex flex-col gap-4 group-hover:border-blue-500 dark:group-hover:border-cyan-500/30 transition-all cursor-pointer relative z-10 shadow-sm hover:shadow-xl">
-                    <div className="absolute inset-0 bg-tech-grid opacity-[0.02] pointer-events-none"></div>
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-5">
-                            <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center text-slate-300 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors border border-slate-100 dark:border-white/5 shadow-md">
-                                {tx.type === 'Receive' || tx.type === 'Buy' ? <ArrowDownLeft size={28} /> : tx.type === 'Swap' ? <RefreshCw size={24} /> : <ArrowUpRight size={28} />}
-                            </div>
-                            <div>
-                                <div className="font-black text-slate-900 dark:text-white text-base tracking-tight uppercase leading-none mb-2">{tx.type} {tx.asset}</div>
-                                <div className="text-[10px] text-slate-400 dark:text-slate-500 font-bold flex items-center gap-1.5 tracking-tight uppercase"><Clock size={12} /> {tx.date}</div>
-                            </div>
-                        </div>
-                        <div className="text-right">
-                            <div className={`font-black text-lg tracking-tighter ${tx.numericAmount > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>{tx.amount}</div>
-                            <div className="flex items-center gap-1.5 justify-end mt-2">
-                                <div className={`w-1.5 h-1.5 rounded-full ${tx.status === 'Success' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]'}`}></div>
-                                <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest">{tx.status}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="pt-4 border-t border-slate-50 dark:border-slate-800/50 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <span className="text-[9px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest">Shard Log</span>
-                            <code className="text-[10px] text-slate-400 dark:text-slate-500 font-mono tracking-tight bg-slate-50 dark:bg-slate-950 px-3 py-1 rounded-lg border border-slate-100 dark:border-white/5 shadow-inner">{tx.hash}</code>
-                        </div>
-                        <div className="text-blue-600 dark:text-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Copy size={16} />
-                        </div>
-                    </div>
-                  </div>
-                  <div className="absolute inset-x-4 -bottom-1 h-8 bg-blue-500/5 dark:bg-cyan-500/5 blur-xl -z-0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                </div> 
-              )) : (
-                <div className="py-24 text-center flex flex-col items-center gap-4 opacity-20">
-                    <History size={64} className="text-slate-300 dark:text-slate-700" />
-                    <span className="text-xs font-black uppercase tracking-[0.3em]">No transactions recorded</span>
-                </div>
-              )}
-            </div>
-        </div>
-    );
-};
-
-const WalletPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'cards' | 'apps' | 'history' | 'bank' | 'swap' | 'hosting'>('portfolio');
-  const [deviceSize, setDeviceSize] = useState<'mobile' | 'tablet' | 'desktop'>('mobile');
-  const [tokens, setTokens] = useState<Token[]>(INITIAL_TOKENS);
-  const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS);
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
-  const { theme } = useTheme();
-  
-  // Header state
-  const [showHeaderOverlay, setShowHeaderOverlay] = useState<'settings' | 'notifications' | 'profile' | null>(null);
-
-  const [toast, setToast] = useState('');
-  const triggerToast = (msg: string) => {
-    setToast(msg);
-    setTimeout(() => setToast(''), 2000);
-  };
-
-  const addTransaction = (data: Partial<Transaction>) => {
-      const now = Date.now();
-      const newTx: Transaction = {
-          id: Math.random().toString(),
-          timestamp: now,
-          date: new Date(now).toISOString().slice(0, 16).replace('T', ' '),
-          type: 'Transfer', 
-          asset: 'FLD', 
-          amount: '0', 
-          numericAmount: 0,
-          status: 'Success', 
-          hash: `0x${Math.random().toString(16).slice(2, 14)}`, 
-          ...data
-      };
-      setTransactions([newTx, ...transactions]);
-  };
-
-  const mainTabs = [
-    { id: 'portfolio', icon: WalletIcon, label: 'Vault' },
-    { id: 'swap', icon: RefreshCw, label: 'Swap' },
-    { id: 'cards', icon: CardIcon, label: 'Cards' },
-    { id: 'apps', icon: Compass, label: 'Explore' },
-  ];
-
-  const moreTabs = [
-    { id: 'hosting', icon: Server, label: 'Hosting' },
-    { id: 'bank', icon: Building2, label: 'Bank' },
-    { id: 'history', icon: History, label: 'History' }
-  ];
-
-  const isMoreActive = moreTabs.some(tab => tab.id === activeTab);
-
-  const handleTabChange = (id: any) => {
-    setActiveTab(id);
-    setIsMoreOpen(false);
-    setShowHeaderOverlay(null);
-  };
-
-  const capabilities = [
-    {
-      title: "Hardened Security",
-      desc: "Non-custodial vault architecture with AES-256 hardware-level encryption. Your assets, your keys, strictly biometric passkey access.",
-      icon: ShieldCheck,
-      color: "text-emerald-500"
-    },
-    {
-      title: "Universal Vault",
-      desc: "Native support to store, receive, and send assets across Fluid L1, Ethereum, and Solana. Sub-second finality on all sharded transactions.",
-      icon: WalletIcon,
-      color: "text-cyan-600 dark:text-cyan-400"
-    },
-    {
-      title: "Fluid Payment Cards",
-      desc: "Generate virtual disposable cards for online anonymity or order premium metal physical cards for global spending powered by crypto.",
-      icon: CardIcon,
-      color: "text-indigo-600 dark:text-indigo-400"
-    },
-    {
-      title: "Fiat Banking Bridge",
-      desc: "Integrated SEPA/SWIFT ramps with native IBAN support. Deposit fiat directly to your vault or off-ramp to global bank rails instantly.",
-      icon: Landmark,
-      color: "text-blue-600 dark:text-blue-400"
-    },
-    {
-      title: "Institutional DEX",
-      desc: "Built-in sharded decentralized exchange for atomic swaps with 0.01% fee settlement and native liquidity providing incentives.",
-      icon: RefreshCw,
-      color: "text-purple-600 dark:text-purple-400"
-    },
-    {
-      title: "DApp & Hosting Ops",
-      desc: "One-tap deployment of front-ends to Parmaweb. Manage your permanent hosting and browse the sharded internet safely.",
-      icon: Globe,
-      color: "text-orange-600 dark:text-orange-400"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen pt-28 pb-16 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300 selection:bg-cyan-500/30">
-      <Toast message={toast} show={!!toast} />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 mb-10 backdrop-blur-xl shadow-lg">
-                <div className="w-4 h-4 text-blue-600 dark:text-cyan-400">{FLUID_LOGO_SVG}</div>
-                <span className="text-slate-900 dark:text-white text-[10px] font-black tracking-widest uppercase italic leading-none">Wallet Prototype Live</span>
-            </div>
-            <h1 className="text-4xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 tracking-tighter leading-tight max-w-4xl mx-auto uppercase">Your assets, your keys.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 dark:from-cyan-400 dark:via-indigo-400 dark:to-purple-600 italic">Pure Sovereignty.</span></h1>
-            <p className="text-slate-600 dark:text-slate-400 max-w-3xl mx-auto text-lg md:text-xl font-medium leading-relaxed mb-10 tracking-tight">The most advanced multichain wallet for the Fluid ecosystem. Integrated DEX, fiat ramps, and permanent hosting controls.</p>
-        </div>
-
-        <div className="flex justify-center gap-3 mb-12">
-          {(['mobile', 'tablet', 'desktop'] as const).map(size => (
-            <button key={size} onClick={() => setDeviceSize(size)} className={`p-4 rounded-2xl transition-all border shadow-sm ${deviceSize === size ? 'bg-blue-600 dark:bg-cyan-500 text-white dark:text-slate-950 border-blue-500 dark:border-cyan-400 shadow-xl scale-110' : 'bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-slate-300 hover:border-slate-400'}`}>{size === 'mobile' ? <PhoneIcon size={20}/> : size === 'tablet' ? <Tablet size={20}/> : <Monitor size={20}/>}</button>
-          ))}
-        </div>
-
-        <div className="flex justify-center perspective-2000 pb-20">
-          <div className={`relative transition-all duration-700 ease-in-out border-[12px] border-slate-900 rounded-[4rem] bg-white dark:bg-slate-950 shadow-[0_50px_100px_rgba(0,0,0,0.2)] dark:shadow-[0_50px_100px_rgba(0,0,0,0.8)] overflow-hidden ${deviceSize === 'mobile' ? 'w-full max-w-[380px] h-[760px]' : deviceSize === 'tablet' ? 'w-full max-w-[640px] h-[840px]' : 'w-full max-w-5xl h-[720px]'}`}>
-            
-            {/* Simulation Header */}
-            <header className="pt-12 px-8 pb-6 flex items-center justify-between bg-white/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-[200] h-24 border-b border-slate-100 dark:border-white/5 shadow-sm">
-                <div className="flex relative z-20">
-                    <button 
-                      onClick={() => setShowHeaderOverlay(showHeaderOverlay === 'settings' ? null : 'settings')} 
-                      className={`p-3 rounded-2xl transition-all shadow-sm border ${showHeaderOverlay === 'settings' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 border-slate-900 dark:border-white' : 'bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'}`}
-                    >
-                        <Settings size={18} className={showHeaderOverlay === 'settings' ? 'animate-spin-slow' : ''} />
-                    </button>
-                </div>
-                <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 cursor-pointer z-10" onClick={() => handleTabChange('portfolio')}>
-                  <div className="w-8 h-8 text-slate-900 dark:text-white">{FLUID_LOGO_SVG}</div>
-                  <span className="font-black text-xl text-slate-900 dark:text-white tracking-tighter leading-none uppercase italic">Fluid</span>
-                </div>
-                <div className="flex gap-3 relative z-20">
-                    <button 
-                      onClick={() => setShowHeaderOverlay(showHeaderOverlay === 'notifications' ? null : 'notifications')} 
-                      className={`p-3 rounded-2xl transition-all shadow-sm border relative ${showHeaderOverlay === 'notifications' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 border-slate-900 dark:border-white' : 'bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'}`}
-                    >
-                        <Bell size={18} />
-                        <div className="absolute top-3 right-3 w-2 h-2 bg-blue-600 dark:bg-cyan-500 rounded-full border-2 border-white dark:border-slate-900"></div>
-                    </button>
-                    <button 
-                      onClick={() => setShowHeaderOverlay(showHeaderOverlay === 'profile' ? null : 'profile')} 
-                      className={`p-3 rounded-2xl transition-all shadow-sm border ${showHeaderOverlay === 'profile' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 border-slate-900 dark:border-white' : 'bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'}`}
-                    >
-                        <User size={18} />
-                    </button>
-                </div>
-            </header>
-
-            {/* Simulated Content Area */}
-            <div className="h-full overflow-hidden flex flex-col pt-0 bg-white dark:bg-slate-950">
-               {activeTab === 'portfolio' && <PortfolioTab tokens={tokens} setTokens={setTokens} addTransaction={addTransaction} deviceSize={deviceSize} onNavigateToSwap={() => setActiveTab('swap')} />}
-               {activeTab === 'cards' && <CardsTab />}
-               {activeTab === 'swap' && <SwapTab tokens={tokens} setTokens={setTokens} addTransaction={addTransaction} />}
-               {activeTab === 'apps' && <DAppsTab />}
-               {activeTab === 'bank' && <BankTab />}
-               {activeTab === 'history' && <HistoryTab transactions={transactions} />}
-               {activeTab === 'hosting' && <HostingTab />}
-            </div>
-
-            {/* Settings Overlay */}
-            {showHeaderOverlay === 'settings' && (
-              <div className="absolute inset-0 z-[450] bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl animate-fade-in p-8 flex flex-col overflow-y-auto custom-scrollbar">
-                 <div className="flex justify-between items-center mb-10 pt-4">
-                    <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic">Vault Settings</h4>
-                    <button onClick={() => setShowHeaderOverlay(null)} className="p-2 bg-slate-100 dark:bg-slate-900 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-800"><X size={24} /></button>
-                 </div>
-                 <div className="space-y-8 pb-24">
-                    <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-6 space-y-6 shadow-sm">
-                       <h5 className="text-[10px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] px-2">Security protocol</h5>
-                       <div className="space-y-3">
-                          {[
-                            { label: 'Biometric Passkey', icon: Fingerprint, status: 'Active', color: 'text-emerald-600 dark:text-emerald-400' },
-                            { label: 'Shard AES-256', icon: ShieldCheck, status: 'Active', color: 'text-emerald-600 dark:text-emerald-400' },
-                            { label: 'End-to-End Sync', icon: Globe, status: 'Enabled', color: 'text-blue-600 dark:text-cyan-400' },
-                            { label: 'Advanced Lockdown', icon: Smartphone, status: 'Off', color: 'text-slate-400 dark:text-slate-600' },
-                          ].map((item, i) => (
-                             <button key={i} className="w-full flex items-center justify-between p-4 bg-white dark:bg-slate-950/50 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group border border-slate-100 dark:border-transparent">
-                                <div className="flex items-center gap-4">
-                                   <item.icon size={20} className="text-slate-300 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-cyan-400" />
-                                   <span className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-tight">{item.label}</span>
+                    <div className="space-y-4">
+                        <h5 className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">Market Statistics</h5>
+                        <div className="space-y-3">
+                            {[
+                                { label: 'Liquidity Depth', val: '$420M' },
+                                { label: '24h Volume', val: '$12.5M' },
+                                { label: 'Protocol Yield', val: '5.2% APR' }
+                            ].map((s, i) => (
+                                <div key={i} className="flex justify-between items-center p-4 bg-white dark:bg-slate-950 border border-slate-100 dark:border-white/5 rounded-2xl">
+                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{s.label}</span>
+                                    <span className="text-xs font-black text-slate-900 dark:text-white">{s.val}</span>
                                 </div>
-                                <span className={`text-[9px] font-black uppercase tracking-widest ${item.color}`}>{item.status}</span>
-                             </button>
-                          ))}
-                       </div>
+                            ))}
+                        </div>
                     </div>
-
-                    <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-6 space-y-6 shadow-sm">
-                       <h5 className="text-[10px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] px-2">Network Layer</h5>
-                       <div className="p-5 bg-white dark:bg-slate-950 border border-slate-200 dark:border-cyan-500/20 rounded-2xl flex items-center justify-between shadow-sm">
-                          <div>
-                            <p className="text-sm font-black text-slate-900 dark:text-white mb-1 uppercase italic">Fluid Shard 102</p>
-                            <p className="text-[9px] text-blue-600 dark:text-cyan-500 font-black uppercase tracking-widest">Stable Candidate</p>
-                          </div>
-                          <Activity className="text-blue-600 dark:text-cyan-400" size={20} />
-                       </div>
-                    </div>
-
-                    <button onClick={() => triggerToast('Seed access restricted')} className="w-full py-5 bg-rose-500/5 border border-rose-500/20 text-rose-600 dark:text-rose-500 font-black rounded-[2rem] text-xs uppercase tracking-widest hover:bg-rose-500/10 transition-all flex items-center justify-center gap-3">
-                       <ShieldAlert size={20} /> Export Recovery Shards
-                    </button>
-                 </div>
-              </div>
+                </div>
             )}
-
-            {/* Notifications Overlay */}
-            {showHeaderOverlay === 'notifications' && (
-              <div className="absolute inset-0 z-[450] bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl animate-fade-in p-8 flex flex-col">
-                 <div className="flex justify-between items-center mb-10 pt-4">
-                    <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic">Recent Activity</h4>
-                    <button onClick={() => setShowHeaderOverlay(null)} className="p-2 bg-slate-100 dark:bg-slate-900 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-800"><X size={24} /></button>
-                 </div>
-                 <div className="space-y-4 overflow-y-auto custom-scrollbar flex-1 pb-24 pr-1">
-                    {[
-                      { title: 'Swap Confirmed', desc: '0.5 ETH converted to 2,450 FLD', time: '10m ago', icon: RefreshCw, color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' },
-                      { title: 'Security Alert', desc: 'New login from Chrome / MacOS', time: '2h ago', icon: ShieldCheck, color: 'bg-blue-500/10 text-blue-600 dark:text-cyan-400 border-blue-500/20' },
-                      { title: 'Card Transaction', desc: 'Netflix Subscription - $12.99', time: '4h ago', icon: CreditCard, color: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20' },
-                      { title: 'Phase 2 Near', desc: 'Token presale stage 2 in 48 hours', time: '5h ago', icon: Zap, color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
-                      { title: 'Invite Reward', desc: 'You earned 50 FLD from referral', time: '12h ago', icon: Users, color: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20' },
-                      { title: 'Shard Healthy', desc: 'Data replication complete', time: '1d ago', icon: Activity, color: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700' }
-                    ].map((n, i) => (
-                      <div key={i} className={`p-5 bg-white dark:bg-slate-900 border ${n.color} rounded-[2rem] flex items-start gap-5 animate-fade-in-up shadow-sm`} style={{ animationDelay: `${i * 100}ms` }}>
-                         <div className={`p-3.5 rounded-2xl ${n.color.split(' ')[0]} shrink-0 shadow-sm`}><n.icon size={24} /></div>
-                         <div className="flex-1 min-w-0">
-                            <h5 className="text-sm font-black text-slate-900 dark:text-white uppercase italic leading-none mb-1.5">{n.title}</h5>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed truncate">{n.desc}</p>
-                            <span className="text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase mt-3 block tracking-widest">{n.time}</span>
-                         </div>
-                      </div>
-                    ))}
-                 </div>
-                 <button onClick={() => triggerToast('Feed cleared')} className="w-full py-5 mt-4 bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 font-black rounded-2xl text-[10px] uppercase tracking-widest hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-800 shadow-sm transition-all">Dismiss All Notifications</button>
-              </div>
-            )}
-
-            {/* Profile Overlay */}
-            {showHeaderOverlay === 'profile' && (
-              <div className="absolute inset-0 z-[450] bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl animate-fade-in p-8 flex flex-col overflow-y-auto custom-scrollbar">
-                 <div className="flex justify-end pt-4">
-                    <button onClick={() => setShowHeaderOverlay(null)} className="p-2 bg-slate-100 dark:bg-slate-900 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-800 shadow-sm"><X size={24} /></button>
-                 </div>
-                 <div className="flex flex-col items-center mb-12">
-                    <div className="relative mb-6 group">
-                       <div className="w-28 h-28 rounded-[3rem] bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-cyan-400 dark:to-indigo-600 p-1 shadow-2xl">
-                          <div className="w-full h-full bg-white dark:bg-slate-950 rounded-[2.8rem] flex items-center justify-center overflow-hidden border-4 border-white dark:border-slate-950">
-                             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                          </div>
-                       </div>
-                       <div className="absolute -bottom-1 -right-1 w-10 h-10 bg-emerald-500 rounded-full border-4 border-white dark:border-slate-950 flex items-center justify-center text-white dark:text-slate-950 shadow-lg"><CheckCircle size={18} /></div>
-                    </div>
-                    <h4 className="text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic">Alex Rivera</h4>
-                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-[0.3em] mt-2">Sovereign identity v4</p>
-                 </div>
-
-                 <div className="grid grid-cols-2 gap-4 mb-10">
-                    <div className="p-6 bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 rounded-[2rem] text-center shadow-inner">
-                       <p className="text-[8px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] mb-2">UID</p>
-                       <code className="text-[11px] text-slate-900 dark:text-white font-mono font-bold tracking-tighter">FLD-49022</code>
-                    </div>
-                    <div className="p-6 bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 rounded-[2rem] text-center shadow-inner">
-                       <p className="text-[8px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] mb-2">Reputation</p>
-                       <p className="text-[11px] text-blue-600 dark:text-cyan-400 font-black tracking-widest uppercase">Elite</p>
-                    </div>
-                 </div>
-
-                 <div className="space-y-3 pb-12">
-                    {[
-                      { label: 'Linked Passkeys', val: '2', icon: Link },
-                      { label: 'Vault Integrity', val: '99%', icon: Activity },
-                      { label: 'Affiliate Status', val: 'Founder', icon: Users },
-                      { label: 'Protocol Tier', val: 'Genesis', icon: LifeBuoy },
-                      { label: 'Ecosystem XP', val: '4,820', icon: Star },
-                    ].map((item, i) => (
-                      <button key={i} className="w-full flex items-center justify-between p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-[2rem] hover:border-blue-500 dark:hover:border-cyan-500/30 transition-all group shadow-sm">
-                         <div className="flex items-center gap-4">
-                            <item.icon size={20} className="text-slate-300 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-cyan-400" />
-                            <span className="text-xs font-black text-slate-700 dark:text-white uppercase tracking-tight leading-none">{item.label}</span>
-                         </div>
-                         <div className="flex items-center gap-3">
-                            <span className="text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-tighter">{item.val}</span>
-                            <ChevronRight size={16} className="text-slate-100 dark:text-slate-800 group-hover:text-blue-600 dark:group-hover:text-cyan-500 transition-colors" />
-                         </div>
-                      </button>
-                    ))}
-                 </div>
-
-                 <button onClick={() => triggerToast('Session terminated')} className="w-full py-6 mt-4 bg-slate-50 dark:bg-slate-900 border border-rose-500/20 text-rose-600 dark:text-rose-500 font-black rounded-[2.5rem] text-xs uppercase tracking-[0.3em] hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all flex items-center justify-center gap-3 mb-24 shadow-sm">
-                    <LogOut size={20} /> Disconnect Vault
-                 </button>
-              </div>
-            )}
-
-            {/* More Menu Overlay */}
-            {isMoreOpen && (
-              <div className="absolute inset-0 z-[400] bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm animate-fade-in flex flex-col justify-end">
-                  <div onClick={() => setIsMoreOpen(false)} className="flex-1"></div>
-                  <div className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 rounded-t-[3.5rem] p-8 pb-16 animate-fade-in-up shadow-[0_-30px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_-30px_60px_rgba(0,0,0,0.5)] max-h-[85%] overflow-y-auto custom-scrollbar">
-                      <div className="w-12 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full mx-auto mb-10"></div>
-                      <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-8 text-center">Ecosystem Management</h4>
-                      <div className="grid grid-cols-3 gap-5 pb-12">
-                        {moreTabs.map(tab => (
-                          <button key={tab.id} onClick={() => handleTabChange(tab.id as any)} className={`flex flex-col items-center gap-4 p-6 rounded-[2.5rem] transition-all shadow-sm ${activeTab === tab.id ? 'bg-blue-600 dark:bg-cyan-500/10 text-white dark:text-cyan-400 border border-blue-600 dark:border-cyan-500/20 shadow-xl' : 'bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-white/5 text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white hover:border-slate-300'}`}>
-                            <tab.icon size={28} />
-                            <span className="text-[9px] font-black uppercase tracking-widest">{tab.label}</span>
-                          </button>
-                        ))}
-                        <button onClick={() => setShowHeaderOverlay('settings')} className="flex flex-col items-center gap-4 p-6 rounded-[2.5rem] bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-white/5 text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white shadow-sm">
-                           <Settings size={28} />
-                           <span className="text-[9px] font-black uppercase tracking-widest">Protocol</span>
-                        </button>
-                        <button onClick={() => triggerToast('Security audit complete')} className="flex flex-col items-center gap-4 p-6 rounded-[2.5rem] bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-white/5 text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white shadow-sm">
-                           <Shield size={28} />
-                           <span className="text-[9px] font-black uppercase tracking-widest">Audits</span>
-                        </button>
-                        <button onClick={() => setIsMoreOpen(false)} className="flex flex-col items-center gap-4 p-6 rounded-[2.5rem] bg-rose-500/5 border border-rose-500/20 text-rose-600 dark:text-rose-500 shadow-sm">
-                           <X size={28} />
-                           <span className="text-[9px] font-black uppercase tracking-widest">Close</span>
-                        </button>
-                      </div>
-                  </div>
-              </div>
-            )}
-
-            {/* Simulation Bottom Navbar */}
-            <nav className="absolute bottom-0 left-0 w-full bg-white/95 dark:bg-slate-950/90 backdrop-blur-xl border-t border-slate-100 dark:border-slate-900 px-3 py-6 flex justify-between items-center z-[300] shadow-2xl">
-                {mainTabs.map(item => (
-                    <button key={item.id} onClick={() => handleTabChange(item.id as any)} className={`flex flex-col items-center gap-2 transition-all flex-1 ${activeTab === item.id ? 'text-blue-600 dark:text-cyan-400 scale-110' : 'text-slate-300 dark:text-slate-700 hover:text-slate-500 dark:hover:text-slate-500'}`}>
-                      <item.icon size={deviceSize === 'mobile' ? 20 : 22} strokeWidth={activeTab === item.id ? 3 : 2} className={item.id === 'swap' && activeTab === 'swap' ? 'animate-spin-slow' : ''} />
-                      <span className="text-[7px] font-black tracking-[0.2em] uppercase">{item.label}</span>
-                    </button>
-                ))}
-                <button onClick={() => setIsMoreOpen(!isMoreOpen)} className={`flex flex-col items-center gap-2 transition-all flex-1 ${isMoreActive || isMoreOpen ? 'text-blue-600 dark:text-cyan-400 scale-110' : 'text-slate-300 dark:text-slate-700 hover:text-slate-500 dark:hover:text-slate-500'}`}>
-                  <div className="relative">
-                    <MoreHorizontal size={deviceSize === 'mobile' ? 20 : 22} strokeWidth={(isMoreActive || isMoreOpen) ? 3 : 2} />
-                    {isMoreActive && !isMoreOpen && <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-600 dark:bg-cyan-500 rounded-full border-2 border-white dark:border-slate-950"></div>}
-                  </div>
-                  <span className="text-[7px] font-black tracking-[0.2em] uppercase">Apps</span>
-                </button>
-            </nav>
           </div>
         </div>
-
-        <section className="mt-20 py-24 border-t border-slate-200 dark:border-white/5 relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 dark:bg-cyan-500/5 rounded-full blur-[140px] pointer-events-none"></div>
-          
-          <div className="max-w-5xl mx-auto relative z-10 text-center mb-20">
-            <div className="inline-block px-5 py-2 rounded-xl bg-blue-600/5 dark:bg-cyan-500/10 border border-blue-500/20 dark:border-cyan-500/30 text-blue-600 dark:text-cyan-400 text-[10px] font-black uppercase tracking-[0.3em] mb-8 shadow-2xl">
-              Protocol Specifications
-            </div>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6 uppercase tracking-tighter leading-[1.1]">
-              Institutional-Grade <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 dark:from-cyan-400 dark:via-blue-500 dark:to-indigo-600">Vault Architecture</span>
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-lg font-medium tracking-tight leading-relaxed">
-              The Fluid Vault isn't just a wallet—it's a sharding-aware command center for the sharded internet. Secure, liquid, and eternally connected to global financial rails.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 relative z-10">
-            {capabilities.map((cap, i) => (
-              <div key={i} className="scroll-card p-10 rounded-[3rem] bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-white/5 hover:border-blue-500 dark:hover:border-cyan-500/30 transition-all group relative overflow-hidden flex flex-col h-full shadow-lg hover:shadow-2xl">
-                <div className="absolute inset-0 bg-tech-grid opacity-[0.03] pointer-events-none"></div>
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/5 dark:bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 dark:group-hover:bg-cyan-500/10 transition-colors"></div>
-                
-                <div className={`w-16 h-16 rounded-2xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0 border border-slate-200 dark:border-white/5 shadow-inner group-hover:scale-110 transition-transform mb-10 ${cap.color}`}>
-                  <cap.icon size={32} />
-                </div>
-                
-                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-4 uppercase tracking-tight leading-tight">{cap.title}</h3>
-                <p className="text-slate-500 dark:text-slate-500 text-sm font-medium leading-relaxed tracking-tight flex-grow">{cap.desc}</p>
-                
-                <div className="mt-10 pt-8 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
-                  <span className="text-[10px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.3em]">Active System</span>
-                  <CheckCircle size={16} className="text-emerald-500 opacity-50 shadow-sm" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-24 flex justify-center px-4 relative z-10">
-            <div className="p-12 md:p-16 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-[4rem] max-w-4xl w-full flex flex-col md:flex-row items-center gap-12 shadow-2xl relative group overflow-hidden transition-all hover:border-blue-500/20 dark:hover:border-white/20">
-              <div className="absolute inset-0 bg-tech-grid opacity-[0.05] pointer-events-none"></div>
-              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-500/5 dark:bg-cyan-500/10 rounded-full blur-[80px]"></div>
-              
-              <div className="text-center md:text-left flex-1 relative z-10">
-                <h4 className="text-slate-900 dark:text-white font-black text-3xl md:text-4xl mb-6 uppercase tracking-tighter leading-tight italic">Master Your <br/><span className="text-blue-600 dark:text-cyan-400">Digital Sovereignty</span></h4>
-                <p className="text-slate-500 dark:text-slate-500 text-base md:text-lg font-medium tracking-tight leading-relaxed max-w-md">
-                  Join 45,000+ pioneers who have transitioned to the world's first sharded non-custodial vault ecosystem.
-                </p>
-              </div>
-              
-              <div className="flex flex-col gap-6 relative z-10 shrink-0">
-                <button className="px-12 py-6 bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black rounded-2xl text-xs uppercase tracking-[0.2em] hover:opacity-90 active:scale-95 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-white/5">
-                  Secure Desktop Vault
-                </button>
-                <div className="flex items-center justify-center gap-8 opacity-20 dark:opacity-40">
-                   <PhoneIcon size={24} className="text-slate-900 dark:text-white" />
-                   <Monitor size={24} className="text-slate-900 dark:text-white" />
-                   <Tablet size={24} className="text-slate-900 dark:text-white" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+      )}
     </div>
   );
 };

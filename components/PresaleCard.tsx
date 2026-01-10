@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronDown, Wallet, CheckCircle, AlertCircle, Info, TrendingUp, ShieldCheck } from 'lucide-react';
+import { ChevronDown, Wallet, CheckCircle, AlertCircle, Info, TrendingUp, ShieldCheck, Star } from 'lucide-react';
 import { 
   useActiveAccount, 
   ConnectButton,
@@ -131,6 +131,17 @@ const PresaleCard: React.FC = () => {
                 </div>
             </div>
 
+            {/* Dividend Callout */}
+            <div className="p-4 bg-emerald-500/5 dark:bg-emerald-400/5 border border-emerald-500/20 rounded-2xl relative overflow-hidden group">
+               <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-inner group-hover:scale-110 transition-transform"><Star size={20} /></div>
+                  <div>
+                    <h4 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest italic mb-0.5">Genesis Profit Sharing</h4>
+                    <p className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-tight">Presale buyers earn a share of global DEX & Storage fees perpetually.</p>
+                  </div>
+               </div>
+            </div>
+
             {/* Amount Inputs */}
             <div className="space-y-5">
                 <div className="space-y-3">
@@ -154,7 +165,7 @@ const PresaleCard: React.FC = () => {
                     <div>
                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Expected Tokens</span>
                         <div className="text-2xl font-black text-blue-600 dark:text-cyan-400 tracking-tighter">
-                            {fluidAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })} <span className="text-sm">FLD</span>
+                            {fluidAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })} <span className="text-sm">Fluids</span>
                         </div>
                     </div>
                     <div className="text-right">
@@ -182,7 +193,7 @@ const PresaleCard: React.FC = () => {
                         {status === 'PENDING' ? (
                             <><div className="w-5 h-5 border-4 border-white/30 border-t-white rounded-full animate-spin"></div> Syncing Node</>
                         ) : (
-                            <><Wallet size={20} /> Swap for FLUID</>
+                            <><Wallet size={20} /> Swap for Fluids</>
                         )}
                     </button>
                 )}

@@ -63,6 +63,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       label: 'Resources',
       children: [
         { label: 'About Fluid', action: () => handleLinkClick('about') },
+        { label: 'Whitepaper', action: () => handleLinkClick('whitepaper') },
         { label: 'Roadmap', action: () => handleLinkClick('roadmap') },
         { label: 'FAQs', action: () => handleLinkClick('faq') },
       ]

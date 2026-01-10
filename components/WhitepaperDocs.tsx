@@ -1,407 +1,373 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Layers, Shield, Zap, Database, Lock, Repeat, TrendingUp, Cpu, 
   Globe, Activity, Smartphone, Star, ShieldCheck, HardDrive, 
   Network, Coins, ShieldAlert, Gauge, Fingerprint, Landmark, 
   Infinity as InfinityIcon, ChevronRight, Server, Box, GitMerge,
-  Cpu as CpuIcon, ArrowRight, Share2, RefreshCw
+  Cpu as CpuIcon, ArrowRight, Share2, RefreshCw, PieChart, ArrowDownRight,
+  TrendingDown, DollarSign, Code, FileCode, CheckCircle2, Workflow,
+  ArrowUpRight, BarChart3, Binary, Building2, Terminal, Info, 
+  AlertCircle, ChevronDown, CheckCircle, Scale, CreditCard, ArrowRightLeft,
+  Key, Eye, MousePointer2, Link, Layout, Users
 } from 'lucide-react';
+import { 
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
+  ResponsiveContainer, BarChart, Bar, Cell, PieChart as RePie, 
+  Pie, Legend, LineChart, Line 
+} from 'recharts';
 
-// --- Internal Visual Components for the Whitepaper ---
+// --- TECHNICAL DATA FLOW SCHEMAS & SIMULATIONS ---
 
-const NetworkTopologyDiagram = () => (
-  <div className="my-12 p-8 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 rounded-[3rem] shadow-inner relative overflow-hidden">
-    <div className="absolute inset-0 bg-tech-grid opacity-[0.03] pointer-events-none"></div>
-    <div className="relative z-10">
-      <h5 className="text-[10px] font-black text-blue-600 dark:text-cyan-400 uppercase tracking-[0.3em] mb-8 text-center">Fig 1.0: Layered Sharding Topology</h5>
-      <div className="flex flex-col items-center gap-6">
-        {/* Coordination Layer */}
-        <div className="w-full max-w-md p-4 bg-white dark:bg-slate-800 rounded-2xl border-2 border-blue-500/30 text-center shadow-xl">
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Layer 0</span>
-          <span className="text-xs font-black text-slate-900 dark:text-white uppercase italic">Global Coordination Layer (Beacon)</span>
+const MathBlock = ({ children }: { children?: React.ReactNode }) => (
+  <div className="my-8 p-8 bg-slate-100 dark:bg-slate-900/80 rounded-[2rem] border-l-8 border-blue-600 dark:border-cyan-500 font-mono text-xs md:text-sm overflow-x-auto selection:bg-cyan-500/40 shadow-inner">
+    <div className="flex items-center gap-2 mb-4 text-slate-500 dark:text-slate-400">
+        <Scale size={14} />
+        <span className="text-[10px] font-black uppercase tracking-widest">Formal Notation</span>
+    </div>
+    {children}
+  </div>
+);
+
+const RevenueFlowSchema = () => (
+  <div className="my-12 p-10 bg-slate-950 border border-white/5 rounded-[3rem] relative overflow-hidden group">
+    <div className="absolute inset-0 bg-tech-grid opacity-[0.05] pointer-events-none"></div>
+    <h5 className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.3em] mb-12 text-center">Fig 8.0: Distributed Revenue Protocol (DRP) Data Flow</h5>
+    
+    <div className="flex flex-col items-center gap-6 relative z-10">
+      {/* Sources */}
+      <div className="grid grid-cols-3 gap-4 w-full max-w-2xl">
+        {[
+          { label: "DEX FEE (0.3%)", icon: ArrowRightLeft, desc: "Atomic Swaps" },
+          { label: "HOST RENT", icon: Server, desc: "Parmaweb Storage" },
+          { label: "CARD FX (0.1%)", icon: CreditCard, desc: "Fiat Network" }
+        ].map((s, i) => (
+          <div key={i} className="p-4 bg-slate-900 rounded-2xl border border-white/5 flex flex-col items-center text-center">
+            <s.icon size={18} className="text-emerald-500 mb-2" />
+            <span className="text-[9px] font-black text-white uppercase mb-1">{s.label}</span>
+            <span className="text-[8px] text-slate-500 font-bold uppercase">{s.desc}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="h-10 w-px bg-emerald-500/30 animate-pulse"></div>
+
+      {/* Collector */}
+      <div className="px-12 py-6 bg-slate-900 border-2 border-emerald-500/30 rounded-3xl flex flex-col items-center shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+        <Workflow className="text-emerald-400 mb-2" size={24} />
+        <span className="text-[10px] font-black text-white uppercase tracking-widest">DRP SMART CONTRACT</span>
+        <span className="text-[8px] text-emerald-600 font-bold mt-1 italic">Real-Time Siphoning</span>
+      </div>
+
+      <div className="flex w-full max-w-lg items-start justify-between gap-8 pt-4">
+        <div className="flex flex-col items-center text-center flex-1">
+          <div className="h-8 w-px bg-blue-500/30 mb-2"></div>
+          <div className="p-5 bg-blue-500/10 border border-blue-500/20 rounded-2xl w-full">
+            <Star className="text-blue-400 mx-auto mb-2" size={20} />
+            <span className="text-[10px] font-black text-white block uppercase">40% GENESIS</span>
+            <span className="text-[8px] text-blue-500 font-bold uppercase italic">Buyers Dividend</span>
+          </div>
         </div>
-        
-        <div className="h-8 w-px bg-gradient-to-b from-blue-500 to-cyan-500"></div>
-
-        {/* Shard Clusters */}
-        <div className="flex justify-center gap-4 w-full overflow-x-auto pb-4">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="flex flex-col items-center gap-4 min-w-[120px]">
-              <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-white/10 text-center w-full">
-                <span className="text-[8px] font-black text-cyan-500 block">SHARD {i}</span>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {[1, 2, 3, 4].map(n => (
-                  <div key={n} className="w-6 h-6 rounded bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-          <div className="flex items-center text-slate-400 font-black text-xl px-4">...</div>
-          <div className="flex flex-col items-center gap-4 min-w-[120px]">
-            <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-white/10 text-center w-full">
-              <span className="text-[8px] font-black text-cyan-500 block">SHARD 1024</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-               {[1, 2, 3, 4].map(n => (
-                  <div key={n} className="w-6 h-6 rounded bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></div>
-                  </div>
-                ))}
-            </div>
+        <div className="flex flex-col items-center text-center flex-1">
+          <div className="h-8 w-px bg-cyan-500/30 mb-2"></div>
+          <div className="p-5 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl w-full">
+            <Cpu className="text-cyan-400 mx-auto mb-2" size={20} />
+            <span className="text-[10px] font-black text-white block uppercase">60% NODES</span>
+            <span className="text-[8px] text-cyan-500 font-bold uppercase italic">Validator Reward</span>
           </div>
         </div>
       </div>
-      <p className="text-[9px] text-slate-500 text-center mt-6 uppercase font-bold tracking-widest">Protocol-Enforced Asynchronous Linear Scaling</p>
     </div>
   </div>
 );
 
-const DataFlowSchema = () => (
-  <div className="my-12 flex flex-col items-center gap-4">
-    <h5 className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.3em] mb-4">Fig 2.0: Parmaweb Persistence Pipeline</h5>
-    <div className="w-full max-w-3xl flex flex-col md:flex-row items-center justify-between gap-4">
-       {[
-         { icon: Lock, label: 'Client Encryption', color: 'text-blue-500' },
-         { icon: GitMerge, label: 'Reed-Solomon Splitting', color: 'text-indigo-500' },
-         { icon: Share2, label: 'Gossip Distribution', color: 'text-purple-500' },
-         { icon: ShieldCheck, label: 'ZK-Proof Validation', color: 'text-emerald-500' }
-       ].map((step, i, arr) => (
-         <React.Fragment key={i}>
-            <div className="flex flex-col items-center gap-3 p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-3xl shadow-lg w-full md:w-40 hover:scale-105 transition-transform">
-               <div className={`w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center ${step.color} shadow-inner`}>
-                  <step.icon size={20} />
-               </div>
-               <span className="text-[8px] font-black text-slate-500 uppercase text-center leading-tight tracking-widest">{step.label}</span>
+const SocialShardingSchema = () => (
+  <div className="my-10 p-8 bg-slate-900 border border-slate-800 rounded-[2.5rem] relative overflow-hidden">
+     <h5 className="text-[10px] font-black text-rose-400 uppercase tracking-[0.3em] mb-10 text-center">Social Key Recovery (Shamir Secret Sharing)</h5>
+     <div className="flex flex-col items-center gap-8 relative z-10">
+        <div className="flex flex-col items-center">
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-slate-950 shadow-2xl mb-2">
+                <Key size={32} />
             </div>
-            {i < arr.length - 1 && (
-              <div className="hidden md:block">
-                 <ArrowRight size={20} className="text-slate-300 dark:text-slate-700" />
-              </div>
-            )}
-         </React.Fragment>
-       ))}
-    </div>
+            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Master Key</span>
+        </div>
+        
+        <div className="flex items-center gap-12">
+            {[1, 2, 3].map(i => (
+                <div key={i} className="flex flex-col items-center gap-3">
+                    <div className="h-10 w-px bg-gradient-to-b from-rose-500 to-transparent"></div>
+                    <div className="p-4 bg-slate-800 border border-white/10 rounded-xl">
+                        <Share2 size={16} className="text-rose-400" />
+                    </div>
+                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Share {i}</span>
+                </div>
+            ))}
+        </div>
+        
+        <div className="mt-4 p-5 bg-slate-950 border border-rose-500/20 rounded-2xl text-center">
+            <p className="text-[9px] font-bold text-rose-500 uppercase tracking-widest">Threshold reached: 2/3 shares</p>
+            <p className="text-[11px] text-slate-400 mt-2 italic font-medium">"Automatic Vault Reconstruction Activated"</p>
+        </div>
+     </div>
   </div>
 );
 
-const EndowmentCycleDiagram = () => (
-  <div className="my-12 p-10 bg-slate-950 rounded-[4rem] border border-white/5 relative overflow-hidden group">
-    <div className="absolute inset-0 bg-tech-grid opacity-10"></div>
-    <div className="relative z-10 flex flex-col items-center">
-       <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
-          {/* Circular Path */}
-          <div className="absolute inset-0 border-[3px] border-dashed border-cyan-500/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
-          
-          {/* Center */}
-          <div className="w-32 h-32 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex flex-col items-center justify-center text-slate-950 shadow-[0_0_50px_rgba(34,211,238,0.3)] group-hover:scale-110 transition-transform">
-             <Landmark size={32} />
-             <span className="text-[10px] font-black uppercase mt-1">Protocol Pool</span>
-          </div>
+const ShardHeatmap = () => {
+    const [activeNodes, setActiveNodes] = useState<number[]>([]);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActiveNodes(Array.from({ length: 64 }, () => Math.random() > 0.7 ? 1 : 0));
+        }, 1500);
+        return () => clearInterval(interval);
+    }, []);
 
-          {/* Satellites */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-slate-900 border border-white/10 rounded-2xl flex flex-col items-center gap-1 shadow-2xl">
-             <Coins size={16} className="text-emerald-400" />
-             <span className="text-[8px] font-black text-white uppercase tracking-widest">Entry Fee</span>
-          </div>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 p-4 bg-slate-900 border border-white/10 rounded-2xl flex flex-col items-center gap-1 shadow-2xl">
-             <TrendingUp size={16} className="text-cyan-400" />
-             <span className="text-[8px] font-black text-white uppercase tracking-widest">Yield Gen</span>
-          </div>
-          <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-slate-900 border border-white/10 rounded-2xl flex flex-col items-center gap-1 shadow-2xl">
-             <Zap size={16} className="text-yellow-400" />
-             <span className="text-[8px] font-black text-white uppercase tracking-widest">Node Payout</span>
-          </div>
-          <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 p-4 bg-slate-900 border border-white/10 rounded-2xl flex flex-col items-center gap-1 shadow-2xl">
-             <Box size={16} className="text-purple-400" />
-             <span className="text-[8px] font-black text-white uppercase tracking-widest">Storage Provision</span>
-          </div>
-       </div>
-       <h5 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mt-16">Fig 3.0: Perpetual Yield Equilibrium</h5>
+    return (
+        <div className="my-10 p-8 bg-slate-950 rounded-[3rem] border border-white/5 relative overflow-hidden group no-print">
+            <div className="absolute inset-0 bg-tech-grid opacity-[0.05] pointer-events-none"></div>
+            <h5 className="text-[10px] font-black text-cyan-400 uppercase tracking-[0.3em] mb-8 text-center">Fig 6.0: Global Validator Shard Entropy (Live Simulation)</h5>
+            
+            <div className="grid grid-cols-8 gap-2 max-w-xs mx-auto">
+                {activeNodes.length > 0 ? activeNodes.map((active, i) => (
+                    <div 
+                        key={i} 
+                        className={`aspect-square rounded-md transition-all duration-700 ${
+                            active ? 'bg-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.5)]' : 'bg-slate-800'
+                        }`}
+                    ></div>
+                )) : Array.from({ length: 64 }).map((_, i) => <div key={i} className="aspect-square rounded-md bg-slate-800"></div>)}
+            </div>
+            
+            <div className="mt-8 flex justify-center gap-6">
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-cyan-500"></div>
+                    <span className="text-[8px] font-black text-slate-500 uppercase">Committing</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-slate-800"></div>
+                    <span className="text-[8px] font-black text-slate-500 uppercase">Idle / Standby</span>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const EmissionGraph = () => {
+  const data = Array.from({ length: 21 }, (_, i) => {
+    const t = i * 10; 
+    const emission = 90 * (1 - Math.exp(-0.02 * t)); 
+    return { year: t, supply: parseFloat(emission.toFixed(2)) };
+  });
+
+  return (
+    <div className="h-72 w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id="colorSupply" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#22d3ee" stopOpacity={0.3}/>
+              <stop offset="95%" stopColor="#22d3ee" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} opacity={0.1} />
+          <XAxis dataKey="year" stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} label={{ value: 'Years', position: 'insideBottom', offset: -5, fontSize: 10, fill: '#64748b' }} />
+          <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} unit="M" />
+          <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '1rem', fontSize: '10px' }} />
+          <Area type="monotone" dataKey="supply" stroke="#22d3ee" strokeWidth={3} fillOpacity={1} fill="url(#colorSupply)" />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
-  </div>
-);
+  );
+};
+
+// --- MAIN WHITEPAPER COMPONENT ---
 
 const WhitepaperDocs: React.FC = () => {
   return (
-    <div className="space-y-32 py-12 docs-section selection:bg-cyan-500/30">
-      {/* 01. Abstract */}
-      <section id="wp-abstract">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="h-px w-12 bg-blue-600 dark:bg-cyan-500"></div>
-          <span className="text-sm font-black text-blue-600 dark:text-cyan-500 uppercase tracking-[0.4em]">01.00</span>
+    <div className="space-y-48 py-12 docs-section selection:bg-cyan-500/30">
+      
+      {/* 01. Purpose and Scope */}
+      <section id="wp-abstract" className="animate-fade-in-up">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="h-1.5 w-16 bg-blue-600 dark:bg-cyan-500 rounded-full"></div>
+          <span className="text-sm font-black text-blue-600 dark:text-cyan-400 uppercase tracking-[0.5em]">01.00</span>
         </div>
-        <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-12">Abstract</h2>
-        <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 text-lg leading-relaxed space-y-6">
-          <p className="text-2xl font-medium text-slate-800 dark:text-slate-200 italic border-l-4 border-cyan-500 pl-8 py-2 bg-slate-50 dark:bg-slate-900/50 rounded-r-3xl">
-            "Fluid Protocol introduces a hyper-scalable, sharded Layer-1 blockchain ecosystem designed to unify decentralized storage with institutional-grade financial liquidity."
+        <h2 className="text-5xl md:text-8xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-16 leading-none">The Systemic <br/><span className="text-blue-600 dark:text-cyan-500">Constraint</span></h2>
+        <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 text-xl leading-relaxed space-y-12">
+          <p className="text-3xl font-medium text-slate-800 dark:text-slate-200 italic border-l-8 border-cyan-500 pl-10 py-6 bg-slate-50 dark:bg-slate-900/50 rounded-r-[3rem] shadow-xl">
+            "Fluid Protocol defines a non-monolithic Layer-1 architecture where the cost of network state is neutralized by programmatic yield."
           </p>
           <p>
-            The protocol addresses the 'State Bloat' and 'Centralized Gateway' problems pervasive in legacy L1/L2 solutions. By implementing <strong>Dynamic State Sharding</strong> and the <strong>Parmaweb</strong> persistent hosting layer, Fluid ensures that both transaction data and application front-ends are hosted natively within the consensus layer, backed by a perpetual economic endowment.
+            Current distributed ledgers suffer from the <strong>Decentralization Bottleneck</strong>: as state grows, validator hardware requirements increase, leading to node consolidation. Fluid solves this via <strong>State Partitioning σ(A)</strong>, which routes account data into ephemeral, redundant clusters.
           </p>
         </div>
       </section>
 
-      {/* 02. Blockchain Architecture & Features */}
-      <section id="wp-blockchain">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="h-px w-12 bg-blue-600 dark:bg-cyan-500"></div>
-          <span className="text-sm font-black text-blue-600 dark:text-cyan-500 uppercase tracking-[0.4em]">02.00</span>
+      {/* 02. Formal Consensus Theory */}
+      <section id="wp-blockchain" className="animate-fade-in-up">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="h-1.5 w-16 bg-blue-600 dark:bg-cyan-500 rounded-full"></div>
+          <span className="text-sm font-black text-blue-600 dark:text-cyan-400 uppercase tracking-[0.5em]">02.00</span>
         </div>
-        <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-12">Blockchain <br/><span className="text-blue-600 dark:text-cyan-500">Infrastructure</span></h2>
+        <h2 className="text-5xl md:text-8xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-20 leading-none">Blockchain <br/><span className="text-blue-600 dark:text-cyan-400">Features</span></h2>
         
-        <div className="space-y-12">
-          <div className="p-10 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 rounded-[3rem] shadow-xl relative overflow-hidden group">
-             <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none group-hover:scale-110 transition-transform"><Network size={160} /></div>
-             <div className="relative z-10">
-                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase mb-6 italic tracking-tight leading-none">Torrent BFT Consensus</h4>
-                <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                  Fluid utilizes <strong>Torrent BFT</strong>, a proprietary high-fidelity gossip protocol that optimizes block propagation across thousands of nodes. It integrates <strong>BLS Multi-Signatures</strong> to reduce bandwidth requirements for shard-to-shard validation.
-                </p>
-                
-                <NetworkTopologyDiagram />
-
-                <div className="grid md:grid-cols-2 gap-6 mt-12">
-                   <div className="bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-100 dark:border-white/5 shadow-inner">
-                      <span className="text-[10px] font-black text-blue-600 dark:text-cyan-400 uppercase tracking-widest block mb-2">Throughput Pipelining</span>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white">Fluid achieves a peak capacity of 2M+ TPS through asynchronous transaction batching and non-blocking state execution.</p>
-                   </div>
-                   <div className="bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-100 dark:border-white/5 shadow-inner">
-                      <span className="text-[10px] font-black text-blue-600 dark:text-cyan-400 uppercase tracking-widest block mb-2">Finality Guarantee</span>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white">Deterministic finality is reached within 600ms, secured by a slashable stake-weighted validator set across 1,024 shards.</p>
-                   </div>
-                </div>
-             </div>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-             {[
-               { icon: Activity, title: "Adaptive Sharding", desc: "Shards autonomously split and merge based on computational pressure, ensuring consistent gas fees regardless of global volume." },
-               { icon: Gauge, title: "Linear Scalability", desc: "Network capacity increases 1:1 with node addition, eliminating the bottleneck of single-threaded sequencers found in L2s." },
-               { icon: ShieldCheck, title: "ZK-State Snapshots", desc: "Recursive Zero-Knowledge proofs enable instant state verification for mobile clients without downloading the full transaction history." }
-             ].map((item, i) => (
-               <div key={i} className="p-8 bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-white/5 rounded-[2.5rem] hover:border-blue-500 transition-all shadow-md group">
-                  <div className="text-blue-600 dark:text-cyan-400 mb-6 group-hover:scale-110 transition-transform"><item.icon size={28} /></div>
-                  <h5 className="font-black text-slate-900 dark:text-white uppercase italic text-sm mb-3 tracking-tight">{item.title}</h5>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium">{item.desc}</p>
-               </div>
-             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 03. Tokenomics */}
-      <section id="wp-tokenomics">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="h-px w-12 bg-blue-600 dark:bg-cyan-500"></div>
-          <span className="text-sm font-black text-blue-600 dark:text-cyan-500 uppercase tracking-[0.4em]">03.00</span>
-        </div>
-        <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-12">Token <br/><span className="text-emerald-600 dark:text-emerald-400">Economics</span></h2>
-        
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          <div className="space-y-8">
-            <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight">Hard Cap: 100M FLD</h4>
-            <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              Fluid implements a highly restrictive <strong>10/90 Supply Model</strong>. This architecture ensures that 90% of all tokens are earned through contribution rather than speculation.
-            </p>
-            <div className="bg-slate-950 p-8 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden group">
-               <div className="absolute inset-0 bg-tech-grid opacity-10 pointer-events-none"></div>
-               <h5 className="text-white font-black uppercase text-xs tracking-widest mb-6 relative z-10 flex items-center gap-2">
-                 <InfinityIcon size={14} className="text-cyan-400" /> Perpetual Block Rewards
-               </h5>
-               <p className="text-slate-400 text-sm leading-relaxed relative z-10">
-                 90% of the total supply (90,000,000 $FLUID) is emitted infinitely through native block rewards over a 200-year decaying curve. This guarantees node incentives and network security for multiple generations.
-               </p>
-            </div>
-            <ul className="space-y-4">
-               <li className="flex items-center gap-3 text-sm font-bold text-slate-700 dark:text-slate-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                  10M Genesis Supply (10% Total)
-               </li>
-               <li className="flex items-center gap-3 text-sm font-bold text-slate-700 dark:text-slate-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                  90M Native Emissions (90% Total)
-               </li>
-               <li className="flex items-center gap-3 text-sm font-bold text-slate-700 dark:text-slate-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                  Automatic burn mechanism on transaction fees.
-               </li>
-            </ul>
-          </div>
-          <div className="bg-white dark:bg-slate-900/60 p-10 border border-slate-200 dark:border-white/5 rounded-[3rem] shadow-2xl space-y-8">
-             <h5 className="text-slate-900 dark:text-white font-black uppercase text-sm italic tracking-widest">Genesis Allocation Matrix</h5>
+        <div className="space-y-16">
+          <div className="grid md:grid-cols-2 gap-12">
              <div className="space-y-6">
-                {[
-                  { label: 'Public Presale', val: '30%', color: 'bg-emerald-500' },
-                  { label: 'Ecosystem Incentives', val: '40%', color: 'bg-cyan-500' },
-                  { label: 'Market Liquidity', val: '10%', color: 'bg-blue-600' },
-                  { label: 'Team (10-yr Vesting)', val: '10%', color: 'bg-indigo-600' },
-                  { label: 'Protocol Treasury', val: '10%', color: 'bg-slate-500' }
-                ].map((item, i) => (
-                  <div key={i} className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
-                       <span>{item.label}</span>
-                       <span className="text-slate-900 dark:text-white">{item.val}</span>
-                    </div>
-                    <div className="w-full h-2 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden shadow-inner">
-                       <div className={`h-full ${item.color} rounded-full transition-all duration-1000`} style={{ width: item.val }}></div>
-                    </div>
-                  </div>
-                ))}
-             </div>
-             <p className="text-[9px] text-slate-400 font-bold uppercase text-center tracking-widest leading-relaxed">Genesis figures represent the initial 10% supply phase only.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 04. Parmaweb Hosting Protocol */}
-      <section id="wp-hosting">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="h-px w-12 bg-blue-600 dark:bg-cyan-500"></div>
-          <span className="text-sm font-black text-blue-600 dark:text-cyan-500 uppercase tracking-[0.4em]">04.00</span>
-        </div>
-        <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-12">Parmaweb <br/><span className="text-indigo-600 dark:text-indigo-400">Eternal Hosting</span></h2>
-        
-        <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-400 mb-16">
-          <p className="text-lg leading-relaxed">
-            Parmaweb is an on-chain, content-addressed storage layer. It utilizes <strong>Reed-Solomon Erasure Coding</strong> to split data into 32 redundant shards, requiring only 12 shards for full data reconstruction.
-          </p>
-        </div>
-
-        <DataFlowSchema />
-
-        <div className="grid md:grid-cols-2 gap-8 mb-16 mt-20">
-           <div className="p-10 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 rounded-[3rem] shadow-xl group">
-              <div className="w-14 h-14 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-8 shadow-inner group-hover:scale-110 transition-transform">
-                 <HardDrive size={32} />
-              </div>
-              <h4 className="text-xl font-black text-slate-900 dark:text-white uppercase mb-4 italic tracking-tight">Zero-Knowledge Storage Proofs</h4>
-              <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400 font-medium">
-                Nodes must continuously provide <strong>Proof-of-Retrievability (PoR)</strong> every 10 blocks. These proofs are compressed via ZK-SNARKs and verified by the shard's validator set to ensure 100% data availability.
-              </p>
-           </div>
-           <div className="p-10 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 rounded-[3rem] shadow-xl group">
-              <div className="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-600 dark:text-cyan-400 mb-8 shadow-inner group-hover:scale-110 transition-transform">
-                 <Globe size={32} />
-              </div>
-              <h4 className="text-xl font-black text-slate-900 dark:text-white uppercase mb-4 italic tracking-tight">Censorship-Resistant DNS</h4>
-              <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400 font-medium">
-                Fluid Name Service (FNS) maps immutable Content-IDs to readable domains. Since resolution happens within the sharded gossip layer, front-ends cannot be taken down by traditional ISP blocks.
-              </p>
-           </div>
-        </div>
-      </section>
-
-      {/* 05. Vault Wallet Architecture */}
-      <section id="wp-wallet">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="h-px w-12 bg-blue-600 dark:bg-cyan-500"></div>
-          <span className="text-sm font-black text-blue-600 dark:text-cyan-500 uppercase tracking-[0.4em]">05.00</span>
-        </div>
-        <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-12">Fluid Vault <br/><span className="text-blue-600 dark:text-cyan-400">Sovereign OS</span></h2>
-        
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="p-12 bg-slate-950 rounded-[4rem] border border-white/10 shadow-2xl relative overflow-hidden group">
-             <div className="absolute inset-0 bg-tech-grid opacity-[0.05] pointer-events-none"></div>
-             <div className="relative z-10 flex flex-col items-center">
-                <div className="w-24 h-24 bg-gradient-to-tr from-cyan-400 to-blue-600 rounded-[2.5rem] flex items-center justify-center text-slate-950 mb-10 shadow-2xl group-hover:rotate-6 transition-transform">
-                   <Lock size={48} />
-                </div>
-                <h4 className="text-2xl font-black text-white uppercase italic mb-4">Secure TEE Isolation</h4>
-                <p className="text-slate-400 text-sm text-center leading-relaxed mb-8 font-medium">
-                  The Fluid Vault leverages <strong>Trusted Execution Environments (TEE)</strong> to sign transactions. Private keys are never exposed to the application layer or memory.
+                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight">2.1 Proof-of-Fluidity (PoF)</h4>
+                <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                   A gossip-optimized BFT model leveraging Torrent-style propagation. Let {'$V$'} be the total validator set:
                 </p>
-                <div className="grid grid-cols-2 gap-8 w-full border-t border-white/10 pt-8">
-                   <div className="text-center">
-                      <Fingerprint className="text-cyan-400 mx-auto mb-2" size={32} />
-                      <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Biometric FIDO2</span>
+                <MathBlock>
+                    {`f < |V| / 3`}<br/>
+                    {`Q = ⌊ 2/3 * |V| ⌋ + 1`}<br/>
+                    {`Throughput(B) ∝ log(N_total)`}
+                </MathBlock>
+             </div>
+             <div className="space-y-6">
+                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight">2.2 Dynamic Sharding</h4>
+                <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                   The network autonomously partitions state into 1,024 shards. Each shard maintains its own independent mempool and execution thread.
+                </p>
+                <div className="p-6 bg-slate-900 border border-white/5 rounded-3xl">
+                   <div className="flex justify-between items-end mb-4">
+                      <span className="text-[9px] font-black text-cyan-500 uppercase tracking-widest">Shard #842 Load</span>
+                      <span className="text-lg font-black text-white">82%</span>
                    </div>
-                   <div className="text-center">
-                      <Smartphone className="text-cyan-400 mx-auto mb-2" size={32} />
-                      <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">MPC Recovery</span>
+                   <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-cyan-500 w-[82%] shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
                    </div>
                 </div>
              </div>
           </div>
-          
-          <div className="space-y-10">
-            <div>
-               <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight mb-4 flex items-center gap-3">
-                 <ShieldAlert size={24} className="text-blue-600 dark:text-cyan-400" /> Multi-Shard Guardians
-               </h4>
-               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-medium">
-                 Fluid replaces seed phrases with <strong>Social Recovery Shards</strong>. Keys are split into 5 encrypted components distributed across user-selected guardians and cloud providers.
-               </p>
-            </div>
-            <div>
-               <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight mb-4 flex items-center gap-3">
-                 <Landmark size={24} className="text-blue-600 dark:text-cyan-400" /> Native IBAN Bridging
-               </h4>
-               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed font-medium">
-                 Direct mapping of crypto balances to <strong>Virtual Euro/Dollar IBANs</strong>. Spend $FLD at any VISA/Mastercard terminal via the integrated off-ramp engine.
-               </p>
-            </div>
-          </div>
+
+          <ShardHeatmap />
         </div>
       </section>
 
-      {/* 06. Endowment Economy */}
-      <section id="wp-endowment">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="h-px w-12 bg-blue-600 dark:bg-cyan-500"></div>
-          <span className="text-sm font-black text-blue-600 dark:text-cyan-500 uppercase tracking-[0.4em]">06.00</span>
+      {/* 03. Wallet Ecosystem */}
+      <section id="wp-wallet" className="animate-fade-in-up">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="h-1.5 w-16 bg-purple-600 dark:bg-purple-400 rounded-full"></div>
+          <span className="text-sm font-black text-purple-600 dark:text-purple-400 uppercase tracking-[0.5em]">03.00</span>
         </div>
-        <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-12">Endowment <br/><span className="text-cyan-600 dark:text-cyan-400">Perpetual Yield Engine</span></h2>
+        <h2 className="text-5xl md:text-8xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-20 leading-none">Wallet <br/><span className="text-purple-600 dark:text-purple-400">Ecosystem</span></h2>
         
-        <div className="p-12 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-white/5 rounded-[4rem] shadow-2xl relative overflow-hidden">
-           <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-cyan-600/5 rounded-full blur-[100px] pointer-events-none"></div>
-           <div className="max-w-4xl space-y-12 relative z-10">
-              <p className="text-xl font-medium text-slate-700 dark:text-slate-300 italic border-l-4 border-cyan-500 pl-8 leading-relaxed">
-                "The 'Pay Once, Host Forever' model is sustained by the <strong>Kryder's Law Balancing Algorithm</strong>. One-time fees generate yield that outpaces storage depreciation."
+        <div className="grid md:grid-cols-2 gap-12">
+           <div className="space-y-6">
+              <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight">3.1 Hardware-Isolated Vault</h4>
+              <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                 Fluid Vault utilizes Device Enclave (TEE) signatures. Keys are never exposed to the OS layer, ensuring immunity to malware-based extraction.
               </p>
-              
-              <EndowmentCycleDiagram />
-
-              <div className="grid md:grid-cols-2 gap-12">
-                 <div className="space-y-6">
-                    <h5 className="font-black text-slate-900 dark:text-white uppercase text-sm italic tracking-widest flex items-center gap-2">
-                      <Star size={16} className="text-cyan-500" /> Capital Preservation (CP)
-                    </h5>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                      95% of storage fees are locked in the <strong>Protocol Endowment Pool (PEP)</strong>. This principal is programmatically deployed into delta-neutral staking yield strategies.
-                    </p>
+              <div className="p-8 bg-slate-900 border border-white/5 rounded-3xl flex items-center justify-between">
+                 <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-400"><ShieldCheck size={24}/></div>
+                    <span className="text-[10px] font-black text-white uppercase tracking-widest">TEE Signed</span>
                  </div>
-                 <div className="space-y-6">
-                    <h5 className="font-black text-slate-900 dark:text-white uppercase text-sm italic tracking-widest flex items-center gap-2">
-                      <TrendingUp size={16} className="text-cyan-500" /> Yield-Cost Differential
-                    </h5>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                      Nodes are paid exclusively from generated yield. As hardware costs drop (avg. 20% annually), the endowment's safety margin increases, ensuring infinite sustainability.
-                    </p>
-                 </div>
+                 <div className="h-px flex-1 bg-slate-800 mx-4"></div>
+                 <div className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-[9px] font-black text-emerald-500 uppercase">Verified</div>
               </div>
-
-              <div className="p-8 bg-white dark:bg-slate-950 border border-slate-100 dark:border-white/10 rounded-[2.5rem] shadow-inner text-center">
-                 <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-4">Sustainability Formula</p>
-                 <p className="text-slate-900 dark:text-white font-bold text-lg italic">
-                   "Endowment Sustainability Ratio (ESR) = (Portfolio Yield % + Cost Deflation %) / Node OpEx. Current ESR Projection: 4.8x."
-                 </p>
+           </div>
+           
+           <div className="space-y-6">
+              <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight">3.2 Fiat Integration (Fluid Card)</h4>
+              <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                 Our card bridge allows real-time liquidation of on-chain assets for POS terminals via the <strong>Liquidity-to-Fiat (L2F)</strong> relay.
+              </p>
+              <div className="p-6 bg-slate-950 border border-white/5 rounded-3xl space-y-3">
+                 {[
+                    { s: "Merchant", d: "Auth Request" },
+                    { s: "Shard Oracle", d: "Balance Check" },
+                    { s: "Settlement", d: "Fiat Payout" }
+                 ].map((item, i) => (
+                    <div key={i} className="flex justify-between items-center text-[10px] font-black uppercase">
+                       <span className="text-slate-500">{item.s}</span>
+                       <ArrowRight size={12} className="text-cyan-500" />
+                       <span className="text-white">{item.d}</span>
+                    </div>
+                 ))}
               </div>
            </div>
         </div>
 
-        <div className="mt-32 p-16 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-cyan-500 dark:to-blue-600 rounded-[5rem] text-white shadow-2xl relative overflow-hidden group text-center">
-           <div className="absolute top-0 right-0 p-12 opacity-20 pointer-events-none group-hover:scale-110 transition-transform"><CpuIcon size={240} /></div>
-           <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tighter italic mb-8">Eternity is the Benchmark.</h3>
-           <p className="text-white/90 text-lg md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed mb-12">
-             Fluid Protocol is the definitive realization of the permanent internet. By aligning institutional finance with immortal data, we empower humanity to build on a foundation that truly lasts.
-           </p>
-           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="px-12 py-5 bg-white text-slate-950 font-black rounded-3xl text-xs uppercase tracking-[0.3em] shadow-2xl hover:bg-cyan-50 active:scale-95 transition-all">
-             Start Your Genesis Journey
-           </button>
+        <div className="grid md:grid-cols-2 gap-12 pt-12">
+            <div className="space-y-6">
+                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight">3.3 Atomic DEX & dApp Portal</h4>
+                <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                   Fluid DEX enables cross-shard swaps with zero slippage via <strong>Intent-Based Routing</strong>. The dApp browser sandboxes third-party code for total safety.
+                </p>
+                <MathBlock>
+                   {`Swap(x, y) = batch_exec(σ_842, σ_101)`}<br/>
+                   {`Slippage = 0 ∀ batch_volume < Shard_Liquidity`}
+                </MathBlock>
+            </div>
+            <div className="space-y-6">
+                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight">3.4 Enhanced Security</h4>
+                <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                   Beyond TEE, we implement <strong>Post-Quantum Signature Schemes (Dilithium)</strong> and Social Key Sharding.
+                </p>
+                <SocialShardingSchema />
+            </div>
         </div>
+      </section>
+
+      {/* 04. Parmaweb & Endowment */}
+      <section id="wp-hosting" className="animate-fade-in-up">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="h-1.5 w-16 bg-indigo-600 dark:bg-indigo-400 rounded-full"></div>
+          <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.5em]">04.00</span>
+        </div>
+        <h2 className="text-5xl md:text-8xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-20 leading-none">Endowment <br/><span className="text-indigo-600 dark:text-indigo-400">Economy</span></h2>
+        
+        <div className="space-y-16">
+          <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed text-xl">
+            Fluid achieves digital permanence via the <strong>Endowment Principle</strong>. One-time payments fund programmatic yield that pays nodes indefinitely.
+          </p>
+          
+          <MathBlock>
+             {`Principal_P = Host_Fee(D)`}<br/>
+             {`Yield_Y(t) = Principal_P * ROI(t)`}<br/>
+             {`Constraint: Yield_Y(t) > Node_Rent(t) ∀ t > 0`}
+          </MathBlock>
+
+          <RevenueFlowSchema />
+        </div>
+      </section>
+
+      {/* 05. Tokenomics */}
+      <section id="wp-tokenomics" className="animate-fade-in-up">
+        <div className="flex items-center gap-4 mb-10">
+          <div className="h-1.5 w-16 bg-emerald-600 dark:bg-emerald-400 rounded-full"></div>
+          <span className="text-sm font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.5em]">05.00</span>
+        </div>
+        <h2 className="text-5xl md:text-8xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic mb-20 leading-none">Emission <br/><span className="text-emerald-600 dark:text-emerald-400">Dynamics</span></h2>
+        
+        <div className="grid lg:grid-cols-2 gap-20 items-start">
+          <div className="space-y-10">
+            <h4 className="text-3xl font-black text-slate-900 dark:text-white uppercase italic tracking-tight leading-none">Asymptotic Decay</h4>
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium text-lg">
+              Fluid supply converges to 100M units. 90M are minted over 200 years to sustain network security indefinitely.
+            </p>
+            <MathBlock>
+              {`E(t) = E_0 * e^{-λt}`}<br/>
+              {`∫₀^∞ E(t) dt = 90,000,000`}
+            </MathBlock>
+          </div>
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-200 dark:border-white/5 shadow-2xl">
+             <EmissionGraph />
+          </div>
+        </div>
+      </section>
+
+      {/* Final Statement */}
+      <section className="mt-32 p-20 bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-cyan-500 dark:to-blue-600 rounded-[6rem] text-white shadow-2xl relative overflow-hidden group text-center">
+         <div className="absolute top-0 right-0 p-16 opacity-20 pointer-events-none group-hover:scale-110 transition-transform"><CpuIcon size={300} /></div>
+         <h3 className="text-5xl md:text-8xl font-black uppercase tracking-tighter italic mb-12 leading-none">Build on <br/>Permanence.</h3>
+         <p className="text-white/90 text-2xl md:text-3xl font-medium max-w-5xl mx-auto leading-relaxed mb-16">
+           Join the genesis of a sharded, sovereign internet.
+         </p>
+         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="px-16 py-6 bg-white text-slate-950 font-black rounded-3xl text-xs uppercase tracking-[0.4em] shadow-2xl hover:bg-cyan-50 active:scale-95 transition-all">
+           Initialize Shard Genesis
+         </button>
       </section>
     </div>
   );
