@@ -1,6 +1,14 @@
 import React from 'react';
 import { CreditCard, Globe, Lock, Sliders, Smartphone, Wifi, Zap, RefreshCw, ShieldCheck, ShoppingBag, Layers } from 'lucide-react';
 
+const FLUID_LOGO_SVG = (
+  <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+    <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" />
+    <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" />
+    <path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" />
+  </svg>
+);
+
 const FluidBrand = ({ className = "text-white" }: { className?: string }) => (
   <div className={`flex items-center gap-1.5 ${className}`}>
     <svg width="28" height="28" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -17,8 +25,11 @@ const CardsPage: React.FC = () => {
     <div className="min-h-screen pt-28 pb-16 overflow-hidden">
       
       {/* Hero Section */}
-      <section className="text-center mb-20 px-4 relative z-10">
-        <span className="text-emerald-400 font-bold uppercase tracking-widest text-sm">Fluid Card Ecosystem</span>
+      <section className="text-center mb-20 px-4 relative z-10 flex flex-col items-center">
+        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-slate-900/80 border border-white/10 mb-10 backdrop-blur-xl animate-fade-in-up">
+            <div className="w-4 h-4 text-emerald-400">{FLUID_LOGO_SVG}</div>
+            <span className="text-white text-[10px] font-bold tracking-widest uppercase">Card Network under Development</span>
+        </div>
         <h1 className="text-4xl md:text-6xl font-extrabold text-white mt-4 mb-6 leading-tight">
            One Wallet. <br/>
            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Two Realities.</span>

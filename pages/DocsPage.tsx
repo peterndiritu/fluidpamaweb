@@ -179,8 +179,8 @@ const EndowmentChart = () => (
 );
 
 const tokenomicsData = [
-  { name: 'Presale', value: 40, color: '#10b981' },
-  { name: 'Incentives', value: 30, color: '#06b6d4' },
+  { name: 'Presale', value: 30, color: '#10b981' },
+  { name: 'Incentives', value: 40, color: '#06b6d4' },
   { name: 'Liquidity', value: 10, color: '#3b82f6' },
   { name: 'Team', value: 10, color: '#a855f7' },
   { name: 'Treasury', value: 10, color: '#f97316' },
@@ -292,8 +292,8 @@ const TokenomicsSection = () => {
             <TokenomicsCharts />
             <h4>Genesis Token Allocation (10,000,000 Tokens)</h4>
             <ul>
-                <li><strong>Presale (40%):</strong> 4,000,000 tokens allocated for public sale to distribute ownership and raise funds for development.</li>
-                <li><strong>Incentives (30%):</strong> 3,000,000 tokens for community growth, including airdrops, marketing, and early user rewards.</li>
+                <li><strong>Presale (30%):</strong> 3,000,000 tokens allocated for public sale to distribute ownership and raise funds for development.</li>
+                <li><strong>Incentives (40%):</strong> 4,000,000 tokens for community growth, including airdrops, marketing, and early user rewards.</li>
                 <li><strong>Liquidity (10%):</strong> 1,000,000 tokens to provide initial liquidity on decentralized and centralized exchanges.</li>
                 <li><strong>Team (10%):</strong> 1,000,000 tokens for core contributors, subject to a 10-year vesting schedule to ensure long-term alignment.</li>
                 <li><strong>Treasury (10%):</strong> 1,000,000 tokens for the ecosystem fund, used for partnerships, grants, and future development, also subject to a 10-year vesting period.</li>

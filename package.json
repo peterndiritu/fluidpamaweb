@@ -15,7 +15,7 @@
     "ethers": "6.11.1",
     "@google/genai": "^1.33.0",
     "recharts": "2.12.7",
-    "thirdweb": "5.54.0",
+    "thirdweb": "^5.116.1",
     "canvas-confetti": "1.9.2"
   },
   "devDependencies": {

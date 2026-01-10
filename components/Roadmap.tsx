@@ -1,121 +1,179 @@
 import React from 'react';
+import { Rocket, Zap, Layers, ShieldCheck, Globe, Milestone, Clock } from 'lucide-react';
 
 const roadmapData = [
   {
     phase: 1,
-    quarter: "Q1 - 2024",
-    title: "Initial Planning",
+    stage: 1,
+    quarter: "Q1 to Q4 - 2026",
+    title: "Token Presale & Ecosystem Genesis",
     items: [
-      "Conduct market research to identify user needs and pain points.",
-      "Define the app's core features including multichain support.",
-      "Assemble skilled development team and finalize project scope.",
-      "Create wireframes and initial design concepts.",
-      "Establish partnerships with key partners and services."
+      "Launch of the FLUID multi-stage presale with cross-chain support (ETH, BNB, SOL).",
+      "Comprehensive security audits of the FLUID genesis token and vault contracts.",
+      "Global 'Fluid Shift' marketing initiative targeting 100k+ early adopters.",
+      "Strategic partnership finalization with major liquidity providers and market makers.",
+      "Release of the Fluid whitepaper V2 outlining sharded hosting economics."
     ]
   },
   {
     phase: 2,
-    quarter: "Q2 - 2024",
-    title: "Development Kickoff & Prototyping",
+    stage: 2,
+    quarter: "Q2 - 2027",
+    title: "Mainnet V2 & Sharding Expansion",
     items: [
-      "Begin development of core architecture ensuring security.",
-      "Integrate essential blockchain networks and APIs.",
-      "Develop basic wallet functionalities (storage, transfers).",
-      "Design and implement intuitive user interface.",
-      "Launch internal prototype for feedback and refinement."
+      "End of Presale and initiation of the 1:1 token swap to native FLUID coins.",
+      "Dynamic shard splitting optimization for 5M+ TPS peak capacity.",
+      "Activation of the secondary validation layer for cross-shard consistency.",
+      "Launch of the native FLUID explorer with real-time shard health monitoring.",
+      "Integration of Zero-Knowledge proofs for private vault transactions."
     ]
   },
   {
     phase: 3,
-    quarter: "Q3 - 2024",
-    title: "Advanced Features & Testing",
+    stage: 2,
+    quarter: "Q3 - 2027",
+    title: "Fiat-to-Node Payouts & Institutional Vaults",
     items: [
-      "Implement advanced features: staking, swapping, bridging.",
-      "Develop and integrate AML safety check tools.",
-      "Perform rigorous security audits and compliance checks.",
-      "Expand network support and optimize performance.",
-      "Begin closed beta testing with select user group."
+      "Implementation of direct fiat node incentive payouts via bank bridge.",
+      "Launch of Institutional Vaults with multi-signature hardware support.",
+      "Global expansion of the Fluid Fiat Gateway to 40+ local currencies.",
+      "Integration of advanced AML/KYC modules for corporate compliance.",
+      "Release of the Fluid Mobile App V2 with native biometric passkey sync."
     ]
   },
   {
     phase: 4,
-    quarter: "Q4 - 2024",
-    title: "Pre-Launch Preparation",
+    stage: 2,
+    quarter: "Q4 - 2027",
+    title: "Parmaweb CDN & Edge Delivery",
     items: [
-      "Conduct extensive testing on all features.",
-      "Finalize app development and polish UX.",
-      "Prepare for mobile store submission (iOS & Play Store).",
-      "Launch marketing campaigns and PR strategies.",
-      "Begin onboarding early adopters."
+      "Global rollout of Edge Storage Nodes for sub-100ms content delivery.",
+      "Implementation of the Permaweb CDN protocol for permanent static sites.",
+      "Partnership with major decentralized storage providers for cross-redundancy.",
+      "Launch of the Fluid Domains (FNS) Marketplace for premium identities.",
+      "Beta testing of the 'One-Click Site Deploy' CLI for developers."
     ]
   },
   {
     phase: 5,
-    quarter: "2025",
-    title: "Official Launch",
+    stage: 2,
+    quarter: "Q1 - 2028",
+    title: "Cross-Chain Liquid Staking",
     items: [
-      "Launch Fluid Wallet on App Store and Google Play.",
-      "Provide robust post-launch user support.",
-      "Monitor app performance and user feedback.",
-      "Initiate Fluid Token presale.",
-      "Introduce in-app off-ramp solutions."
+      "Introduction of Liquid Staking (stFLUID) for enhanced ecosystem liquidity.",
+      "Release of the DEX Aggregator bridging Fluid L1 with major EVM chains.",
+      "Implementation of atomic cross-chain swaps without external bridges.",
+      "Integration of Chainlink CCIP for hardened cross-chain messaging.",
+      "Activation of the Fluid Yield Optimizer for automated vault returns."
     ]
   },
   {
     phase: 6,
-    quarter: "Q1 - 2026",
-    title: "Proprietary DEX & Cards",
+    stage: 2,
+    quarter: "Q2 - 2028",
+    title: "Global Physical Card Rollout",
     items: [
-      "List Fluid Token on popular CEX/DEXs.",
-      "Begin integrating proprietary DEX within wallet.",
-      "Design and develop Fluid Crypto Cards.",
-      "Add support for Lightning Network and Monero.",
-      "Increase stakable assets availability."
+      "Shipment of premium metal Fluid Cards to approved regions (EU/US/APAC).",
+      "Full integration with Apple Pay and Google Pay for instant spending.",
+      "Launch of the Fluid Rewards program with up to 5% crypto cashback.",
+      "Implementation of AI-driven fraud detection for the Card Network.",
+      "Integration of disposable virtual cards for enhanced online privacy."
+    ]
+  },
+  {
+    phase: 7,
+    stage: 2,
+    quarter: "H2 - 2028",
+    title: "Autonomous DAO & Sovereign Identity",
+    items: [
+      "Full transition of protocol governance to the FLUID DAO.",
+      "Launch of the Sovereign Identity (SID) protocol for on-chain reputation.",
+      "Integration of SID with physical card transactions for unified data.",
+      "Initiation of the $50M Ecosystem Grant fund for Parmaweb projects.",
+      "Permanent hosting of the first fully autonomous government dApp."
     ]
   }
 ];
 
 const Roadmap: React.FC = () => {
   return (
-    <div className="relative max-w-4xl mx-auto px-4 py-12">
+    <div className="relative max-w-5xl mx-auto px-4 py-12">
+      {/* Commitment Disclaimer */}
+      <div className="mb-20 text-center animate-fade-in-up">
+        <div className="inline-flex flex-col items-center gap-4 px-8 py-6 rounded-[2.5rem] bg-slate-900/50 border border-white/5 backdrop-blur-xl max-w-2xl mx-auto shadow-2xl relative overflow-hidden group">
+          <div className="absolute inset-0 bg-tech-grid opacity-[0.03] pointer-events-none"></div>
+          <div className="flex items-center gap-3 text-cyan-400">
+            <Clock size={18} />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Operational Protocol</span>
+          </div>
+          <p className="text-xs md:text-sm font-medium text-slate-400 leading-relaxed italic">
+            "Projected milestones are subject to agile optimization; however, we remain committed to high-velocity execution and the shortest possible delivery cycles."
+          </p>
+        </div>
+      </div>
+
+      {/* Background decoration */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+      {/* Vertical Line */}
       <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-slate-200 dark:bg-slate-800 transform md:-translate-x-1/2"></div>
       
       {roadmapData.map((item, index) => (
-        <div key={index} className={`relative flex flex-col md:flex-row gap-8 mb-16 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+        <div key={index} className={`relative flex flex-col md:flex-row gap-8 mb-24 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
           
-          {/* Content */}
-          <div className="flex-1 ml-16 md:ml-0">
-            <div className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-lg relative ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
-               <span className="text-cyan-500 font-bold text-xs tracking-widest uppercase mb-1 block">{item.quarter}</span>
-               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">{item.title}</h3>
-               <ul className={`space-y-2 text-slate-600 dark:text-slate-400 text-sm list-disc inline-block ${index % 2 === 0 ? 'pl-4' : 'pr-4 md:pl-0 md:pr-4'} text-left`}>
+          {/* Content Card */}
+          <div className="flex-1 ml-16 md:ml-0 group">
+            <div className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-[2.5rem] shadow-2xl relative transition-all group-hover:border-cyan-500/30 ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
+               <div className="absolute inset-0 bg-tech-grid opacity-[0.03] pointer-events-none rounded-[2.5rem]"></div>
+               
+               <div className={`flex items-center gap-3 mb-4 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                  <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${item.stage === 1 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.1)]'}`}>
+                    Stage {item.stage}
+                  </div>
+                  <span className="text-slate-500 font-bold text-[10px] tracking-widest uppercase">{item.quarter}</span>
+               </div>
+
+               <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6 uppercase tracking-tight relative z-10 leading-tight">
+                  {item.title}
+               </h3>
+
+               <ul className={`space-y-4 text-slate-600 dark:text-slate-400 text-sm relative z-10 ${index % 2 === 0 ? 'pl-0' : 'md:pl-0'} transition-colors`}>
                  {item.items.map((point, i) => (
-                   <li key={i}>{point}</li>
+                   <li key={i} className={`flex gap-3 leading-relaxed font-medium ${index % 2 !== 0 ? 'md:flex-row-reverse md:text-right' : ''}`}>
+                      <div className={`mt-1.5 shrink-0 w-1.5 h-1.5 rounded-full ${item.stage === 1 ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.5)]'}`}></div>
+                      <span>{point}</span>
+                   </li>
                  ))}
                </ul>
             </div>
           </div>
 
-          {/* Marker */}
+          {/* Timeline Marker */}
           <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center">
-             <div className="w-16 h-16 rounded-full bg-slate-900 dark:bg-slate-950 border-4 border-slate-200 dark:border-slate-800 flex items-center justify-center z-10">
-                <div className="w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center text-white font-bold text-xl shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+             <div className="w-16 h-16 rounded-full bg-slate-950 border-4 border-slate-800 flex items-center justify-center z-10 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-slate-950 font-black text-xl shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all ${item.stage === 1 ? 'bg-emerald-500 shadow-emerald-500/20' : 'bg-cyan-500 shadow-cyan-500/20'}`}>
                   {item.phase}
                 </div>
              </div>
           </div>
 
-          {/* Empty space for balance */}
+          {/* Spacer */}
           <div className="flex-1 hidden md:block"></div>
         </div>
       ))}
 
-      <div className="text-center mt-12">
-         <div className="inline-block p-4 rounded-full bg-slate-900 dark:bg-slate-800 border border-slate-700">
-            <span className="text-2xl">🚀</span>
+      {/* Infinite Horizon Callout */}
+      <div className="text-center mt-20 relative z-10">
+         <div className="inline-block p-10 rounded-[3rem] bg-slate-900 border border-slate-800 shadow-2xl relative overflow-hidden group">
+            <div className="absolute inset-0 bg-tech-grid opacity-[0.05] pointer-events-none"></div>
+            <div className="w-24 h-24 bg-cyan-500/10 rounded-[2.5rem] flex items-center justify-center text-cyan-400 mx-auto mb-6 border border-cyan-500/20 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_50px_rgba(6,182,212,0.1)]">
+              <Rocket size={48} className="animate-bounce-slow" />
+            </div>
+            <h3 className="text-3xl font-black text-white uppercase tracking-tighter italic">The Sky is the Limit</h3>
+            <p className="text-slate-500 text-sm mt-3 font-medium max-w-xs mx-auto leading-relaxed">
+              Fluid evolution continues beyond H2 2028 with sharded AI node integration and deep space storage protocols.
+            </p>
          </div>
-         <h3 className="text-xl font-bold text-white mt-4">The Sky is the Limit!</h3>
-         <p className="text-slate-400">Fluid's development doesn't stop here.</p>
       </div>
     </div>
   );

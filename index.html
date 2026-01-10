@@ -14,16 +14,8 @@
     <meta property="og:description" content="Fluid is the first Layer-1 blockchain delivering 2M+ TPS with zero-downtime hosting. Store, spend, and host infinitely with our secure non-custodial wallet and Parmaweb protocol." />
     <meta property="og:image" content="https://fluid.finance/og-image.jpg" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://fluid.finance/" />
-    <meta property="twitter:title" content="Fluid - Crypto, Fiat Wallet & Blockchain Hosting" />
-    <meta property="twitter:description" content="Fluid is the first Layer-1 blockchain delivering 2M+ TPS with zero-downtime hosting. Store, spend, and host infinitely with our secure non-custodial wallet and Parmaweb protocol." />
-    <meta property="twitter:image" content="https://fluid.finance/og-image.jpg" />
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Polyfill process for browser environment if missing
       if (typeof process === 'undefined') {
         window.process = { env: {} };
       }
@@ -32,6 +24,9 @@
         darkMode: 'class',
         theme: {
           extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
             colors: {
               slate: {
                 850: '#151e32',
@@ -41,55 +36,55 @@
             animation: {
               'fade-in-up': 'fadeInUp 0.5s ease-out',
               'bounce-slow': 'bounce 3s infinite',
+              'gradient-x': 'gradientX 8s ease infinite',
             },
             keyframes: {
               fadeInUp: {
                 '0%': { opacity: '0', transform: 'translateY(10px)' },
                 '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              gradientX: {
+                '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
               }
             }
           }
         }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
       body {
-        font-family: 'Inter', sans-serif;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0f172a;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #475569;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+        background-color: #020617;
+        color: white;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
       }
       
+      /* Enforce font family everywhere */
+      * {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+      }
+
+      /* Global non-italic rule except for docs-section */
+      *:not(.docs-section *) {
+        font-style: normal !important;
+      }
+
       /* Tech/Hosting Background Pattern */
       .bg-tech-grid {
         background-size: 50px 50px;
         background-image: 
-          linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-      }
-      .dark .bg-tech-grid {
-        background-image: 
-          linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       }
 
       /* Scroll Animation Classes */
       .scroll-card {
         opacity: 0;
-        transform: translateY(30px) scale(0.95);
+        transform: translateY(30px) scale(0.98);
         transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         will-change: opacity, transform;
       }
@@ -98,6 +93,12 @@
         opacity: 1;
         transform: translateY(0) scale(1);
       }
+
+      /* Unified Custom Scrollbar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #020617; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
   <script type="importmap">
 {
@@ -111,50 +112,37 @@
     "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
     "recharts": "https://esm.sh/recharts@2.12.7?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb": "https://esm.sh/thirdweb@5.54.0?deps=react@18.3.1,react-dom@18.3.1",
-    "thirdweb/": "https://esm.sh/thirdweb@5.54.0/?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/react": "https://esm.sh/thirdweb@5.54.0/react?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/wallets": "https://esm.sh/thirdweb@5.54.0/wallets?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/chains": "https://esm.sh/thirdweb@5.54.0/chains?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/utils": "https://esm.sh/thirdweb@5.54.0/utils?deps=react@18.3.1,react-dom@18.3.1",
-    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.2"
+    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.2",
+    "thirdweb/": "https://esm.sh/thirdweb@^5.116.1/"
   }
 }
 </script>
 </head>
-  <body class="bg-gray-50 text-slate-900 dark:bg-slate-950 dark:text-white">
+  <body class="bg-slate-950 text-white">
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
     <script>
-      // Intersection Observer for scroll animations
       document.addEventListener('DOMContentLoaded', () => {
-        const observerOptions = {
-          root: null,
-          rootMargin: '0px',
-          threshold: 0.15
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
             } else {
-              // Elements fade out when scrolled off
               entry.target.classList.remove('in-view'); 
             }
           });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        // Function to attach observer to new elements (useful if React renders them later)
         const observeElements = () => {
-          const elements = document.querySelectorAll('.scroll-card');
-          elements.forEach(el => observer.observe(el));
+          document.querySelectorAll('.scroll-card').forEach(el => observer.observe(el));
         };
 
-        // Observe initially
         observeElements();
-
-        // Re-observe periodically to catch dynamic content (simple hack for React apps without MutationObserver complexity)
-        setInterval(observeElements, 1000);
+        setInterval(observeElements, 1500);
       });
     </script>
   </body>

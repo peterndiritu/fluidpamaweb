@@ -4,18 +4,18 @@ import { Lock, Clock, Coins, Users, Landmark, Wallet, Rocket } from 'lucide-reac
 const data = [
   { 
     name: 'Presale', 
-    value: 40, 
+    value: 30, 
     color: '#10b981', 
-    amount: '4,000,000', 
+    amount: '3,000,000', 
     icon: Rocket,
     desc: 'Public sale allocation',
     vesting: null
   },
   { 
     name: 'Incentives', 
-    value: 30, 
+    value: 40, 
     color: '#06b6d4', 
-    amount: '3,000,000', 
+    amount: '4,000,000', 
     icon: Users,
     desc: 'Rewards & Airdrops',
     vesting: '10 Year Vesting'
@@ -54,6 +54,7 @@ const Tokenomics: React.FC = () => {
     <section id="tokenomics" className="py-8 bg-transparent relative overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
+        {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900 dark:text-white">Tokenomics</h2>
           <p className="text-slate-700 dark:text-slate-300 max-w-2xl mx-auto text-lg font-medium">
@@ -66,7 +67,7 @@ const Tokenomics: React.FC = () => {
               {data.map((item, index) => (
                   <div 
                     key={item.name} 
-                    className={`scroll-card bg-white/10 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-5 hover:border-opacity-50 transition-all hover:-translate-y-1 duration-300 group shadow-sm dark:shadow-none ${index === 0 ? 'sm:col-span-2' : ''}`}
+                    className={`scroll-card bg-white/10 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-5 hover:border-opacity-50 transition-all hover:-translate-y-1 duration-300 group shadow-sm dark:shadow-none ${index < 2 ? 'sm:col-span-1' : ''}`}
                     style={{ borderColor: `${item.color}40` }}
                   >
                       <div className="flex items-start justify-between mb-4">
