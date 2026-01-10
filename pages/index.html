@@ -14,16 +14,11 @@
     <meta property="og:description" content="Fluid is the first Layer-1 blockchain delivering 2M+ TPS with zero-downtime hosting. Store, spend, and host infinitely with our secure non-custodial wallet and Parmaweb protocol." />
     <meta property="og:image" content="https://fluid.finance/og-image.jpg" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://fluid.finance/" />
-    <meta property="twitter:title" content="Fluid - Crypto, Fiat Wallet & Blockchain Hosting" />
-    <meta property="twitter:description" content="Fluid is the first Layer-1 blockchain delivering 2M+ TPS with zero-downtime hosting. Store, spend, and host infinitely with our secure non-custodial wallet and Parmaweb protocol." />
-    <meta property="twitter:image" content="https://fluid.finance/og-image.jpg" />
-
+    <!-- External Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <script>
-      // Polyfill process for browser environment if missing
       if (typeof process === 'undefined') {
         window.process = { env: {} };
       }
@@ -32,6 +27,9 @@
         darkMode: 'class',
         theme: {
           extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
             colors: {
               slate: {
                 850: '#151e32',
@@ -42,6 +40,7 @@
               'fade-in-up': 'fadeInUp 0.5s ease-out',
               'bounce-slow': 'bounce 3s infinite',
               'gradient-x': 'gradientX 8s ease infinite',
+              'spin-slow': 'spin 8s linear infinite',
             },
             keyframes: {
               fadeInUp: {
@@ -57,44 +56,43 @@
         }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
       body {
-        font-family: 'Inter', sans-serif;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0f172a;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #475569;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
       }
       
+      /* Enforce font family everywhere */
+      * {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+      }
+
+      /* Global non-italic rule except for docs-section */
+      *:not(.docs-section *) {
+        font-style: normal !important;
+      }
+
       /* Tech/Hosting Background Pattern */
       .bg-tech-grid {
         background-size: 50px 50px;
         background-image: 
-          linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+          linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
       }
+      
       .dark .bg-tech-grid {
         background-image: 
-          linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       }
 
       /* Scroll Animation Classes */
       .scroll-card {
         opacity: 0;
-        transform: translateY(30px) scale(0.95);
+        transform: translateY(30px) scale(0.98);
         transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         will-change: opacity, transform;
       }
@@ -104,30 +102,63 @@
         transform: translateY(0) scale(1);
       }
 
-      @keyframes scrollDot {
-        0% { transform: translateY(0); opacity: 0; }
-        50% { opacity: 1; }
-        100% { transform: translateY(20px); opacity: 0; }
-      }
-      .animate-scroll-dot {
-        animation: scrollDot 2s infinite ease-in-out;
-      }
+      /* Unified Custom Scrollbar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      .dark ::-webkit-scrollbar-track { background: #020617; }
+      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+      .dark ::-webkit-scrollbar-thumb { background: #1e293b; }
+      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
-      /* Marquee Animation */
-      @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+      /* Print styles for PDF generation */
+      @media print {
+        body {
+          background: white !important;
+          color: black !important;
+        }
+        nav, footer, aside, .no-print {
+          display: none !important;
+        }
+        .bg-tech-grid {
+          display: none !important;
+        }
+        main {
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .min-h-screen {
+          min-h: auto !important;
+          padding-top: 0 !important;
+        }
+        .max-w-[1400px], .max-w-4xl {
+          max-width: 100% !important;
+        }
+        h1, h2, h3, h4, h5 {
+          color: black !important;
+          page-break-after: avoid;
+        }
+        p, div {
+          color: #333 !important;
+        }
+        section {
+          page-break-inside: avoid;
+          margin-bottom: 2rem !important;
+        }
+        .animate-fade-in-up {
+          animation: none !important;
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .dark {
+          color-scheme: light !important;
+        }
+        .shadow-2xl, .shadow-xl, .shadow-lg, .shadow-md, .shadow-sm {
+          box-shadow: none !important;
+          border: 1px solid #eee !important;
+        }
       }
-      .animate-marquee {
-        animation: marquee 30s linear infinite;
-        width: max-content;
-        will-change: transform;
-      }
-
-      /* Custom Utilities */
-      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-      .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
   <script type="importmap">
 {
@@ -141,29 +172,22 @@
     "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
     "recharts": "https://esm.sh/recharts@2.12.7?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb": "https://esm.sh/thirdweb@5.54.0?deps=react@18.3.1,react-dom@18.3.1",
-    "thirdweb/": "https://esm.sh/thirdweb@5.54.0/?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/react": "https://esm.sh/thirdweb@5.54.0/react?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/wallets": "https://esm.sh/thirdweb@5.54.0/wallets?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/chains": "https://esm.sh/thirdweb@5.54.0/chains?deps=react@18.3.1,react-dom@18.3.1",
     "thirdweb/utils": "https://esm.sh/thirdweb@5.54.0/utils?deps=react@18.3.1,react-dom@18.3.1",
-    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.2"
+    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.2",
+    "thirdweb/": "https://esm.sh/thirdweb@^5.116.1/"
   }
 }
 </script>
 </head>
-  <body class="bg-gray-50 text-slate-900 dark:bg-slate-950 dark:text-white">
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
     <script>
-      // Intersection Observer for scroll animations
       document.addEventListener('DOMContentLoaded', () => {
-        const observerOptions = {
-          root: null,
-          rootMargin: '0px',
-          threshold: 0.15
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
@@ -171,15 +195,14 @@
               entry.target.classList.remove('in-view'); 
             }
           });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
         const observeElements = () => {
-          const elements = document.querySelectorAll('.scroll-card');
-          elements.forEach(el => observer.observe(el));
+          document.querySelectorAll('.scroll-card').forEach(el => observer.observe(el));
         };
 
         observeElements();
-        setInterval(observeElements, 1000);
+        setInterval(observeElements, 1500);
       });
     </script>
   </body>

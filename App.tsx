@@ -11,91 +11,26 @@ import FaqPage from './pages/FaqPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import BlockchainPage from './pages/BlockchainPage';
-import BuyPage from './pages/BuyPage';
 import SupportPage from './pages/SupportPage';
 import DocsPage from './pages/DocsPage';
-
-// Define the logical order of pages for navigation
-const PAGE_SEQUENCE = [
-  'home',
-  'buy',
-  'blockchain',
-  'wallet',
-  'token',
-  'host',
-  'about',
-  'roadmap',
-  'docs',
-  'support',
-  'faq',
-  'terms',
-  'privacy'
-];
+import WhitepaperPage from './pages/WhitepaperPage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
-  
-  // Swipe State
-  const [touchStart, setTouchStart] = useState<{x: number, y: number} | null>(null);
-  const [touchEnd, setTouchEnd] = useState<{x: number, y: number} | null>(null);
 
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null); // Reset touch end
-    setTouchStart({
-      x: e.targetTouches[0].clientX,
-      y: e.targetTouches[0].clientY
-    });
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd({
-      x: e.targetTouches[0].clientX,
-      y: e.targetTouches[0].clientY
-    });
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    // Disable swiping if we are on the wallet page because it has its own internal horizontal nav/gestures potentially
-    if (currentPage === 'wallet') return;
-
-    const distanceX = touchStart.x - touchEnd.x;
-    const distanceY = touchStart.y - touchEnd.y;
-    const isLeftSwipe = distanceX > minSwipeDistance;
-    const isRightSwipe = distanceX < -minSwipeDistance;
-    
-    // Ensure it's a horizontal swipe (horizontal distance > vertical distance)
-    if (Math.abs(distanceX) > Math.abs(distanceY)) {
-        const currentIndex = PAGE_SEQUENCE.indexOf(currentPage);
-
-        if (isLeftSwipe) {
-          // Swipe Left -> Next Page
-          if (currentIndex < PAGE_SEQUENCE.length - 1) {
-            setCurrentPage(PAGE_SEQUENCE[currentIndex + 1]);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        }
-    
-        if (isRightSwipe) {
-          // Swipe Right -> Previous Page
-          if (currentIndex > 0) {
-            setCurrentPage(PAGE_SEQUENCE[currentIndex - 1]);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        }
-    }
+  const navigateToWhitepaper = () => {
+    setCurrentPage('whitepaper');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const renderPage = () => {
     switch(currentPage) {
-      case 'home': return <Home onNavigate={setCurrentPage} />;
-      case 'buy': return <BuyPage />;
-      case 'blockchain': return <BlockchainPage />;
+      case 'home': return <Home onNavigate={setCurrentPage} onOpenWhitepaper={navigateToWhitepaper} />;
+      case 'buy': 
+      case 'token': return <TokenPage onNavigate={setCurrentPage} onOpenWhitepaper={navigateToWhitepaper} />;
+      case 'blockchain': return <BlockchainPage onOpenWhitepaper={navigateToWhitepaper} />;
+      case 'whitepaper': return <WhitepaperPage />;
       case 'wallet': return <WalletPage />;
-      case 'token': return <TokenPage />;
       case 'host': return <HostPage />;
       case 'about': return <AboutPage />;
       case 'roadmap': return <RoadmapPage />;
@@ -104,16 +39,13 @@ function App() {
       case 'terms': return <TermsPage />;
       case 'privacy': return <PrivacyPage />;
       case 'support': return <SupportPage />;
-      default: return <Home onNavigate={setCurrentPage} />;
+      default: return <Home onNavigate={setCurrentPage} onOpenWhitepaper={navigateToWhitepaper} />;
     }
   };
 
   return (
     <div 
-      className="min-h-screen bg-gray-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-cyan-500/30 transition-colors duration-300 relative"
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
+      className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-cyan-500/30 transition-colors duration-300 relative"
     >
       
       {/* Technological Hosting Grid Background */}
@@ -126,7 +58,7 @@ function App() {
           {renderPage()}
         </main>
 
-        <Footer />
+        <Footer onNavigate={setCurrentPage} />
       </div>
     </div>
   );

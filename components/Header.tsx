@@ -48,10 +48,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
     }
   };
 
-  const toggleMobileSubmenu = (menu: string) => {
-    setMobileSubmenu(mobileSubmenu === menu ? null : menu);
-  };
-
   const navStructure = [
     {
       label: 'Products',
@@ -78,37 +74,37 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
     <nav 
       className={`fixed w-full z-50 top-0 left-0 transition-all duration-300 py-4 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
-      } ${isMenuOpen ? 'bg-slate-950/95 backdrop-blur-xl' : ''}`}
+      } ${isMenuOpen ? 'bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl' : ''}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div 
           className={`flex items-center justify-between h-16 rounded-xl px-6 transition-all duration-300 ${
             isScrolled || isMenuOpen
-              ? 'backdrop-blur-xl bg-slate-900/50 border border-white/10 shadow-lg' 
+              ? 'backdrop-blur-xl bg-white/70 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 shadow-lg' 
               : 'bg-transparent border-transparent'
           }`}
         >
           <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => handleLinkClick('home')}>
-            <svg width="32" height="32" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-white transition-transform duration-300 group-hover:scale-110">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-slate-900 dark:text-white transition-transform duration-300 group-hover:scale-110">
                 <path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" />
                 <path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" />
                 <path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" />
             </svg>
-            <span className="font-black text-xl tracking-tight text-white">Fluid</span>
+            <span className="font-black text-xl tracking-tight text-slate-900 dark:text-white">Fluid</span>
           </div>
           
           <div className="hidden md:flex items-center space-x-1">
             {navStructure.map(item => (
               item.children ? (
                 <div key={item.label} className="group relative">
-                  <button className="flex items-center space-x-1 px-4 py-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors uppercase">
+                  <button className="flex items-center space-x-1 px-4 py-2 text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors uppercase">
                     <span>{item.label}</span>
                     <ChevronDown size={10} />
                   </button>
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
-                    <div className="bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-lg shadow-2xl p-2 min-w-[200px]">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 group-hover:opacity-100 transition-all invisible group-hover:visible translate-y-2 group-hover:translate-y-0">
+                    <div className="bg-white dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg shadow-2xl p-2 min-w-[200px]">
                       {item.children.map(child => (
-                        <a key={child.label} onClick={child.action} className="block px-4 py-2 text-[11px] text-slate-300 hover:bg-white/5 hover:text-white rounded cursor-pointer font-bold transition-colors">
+                        <a key={child.label} onClick={child.action} className="block px-4 py-2 text-[11px] text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white rounded cursor-pointer font-bold transition-colors">
                           {child.label}
                         </a>
                       ))}
@@ -116,7 +112,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                   </div>
                 </div>
               ) : (
-                <a key={item.label} onClick={item.action} className="px-4 py-2 text-[10px] font-bold text-slate-400 hover:text-white transition-colors cursor-pointer uppercase">
+                <a key={item.label} onClick={item.action} className="px-4 py-2 text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer uppercase">
                   {item.label}
                 </a>
               )
@@ -128,17 +124,17 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               <ConnectButton 
                 client={client}
                 wallets={wallets}
-                theme={"dark"}
+                theme={theme === 'dark' ? "dark" : "light"}
                 connectButton={{
-                  className: "!py-2 !px-4 !rounded-lg !text-[10px] !font-bold !bg-white/5 !border !border-white/10 !text-white hover:!bg-white/10 !transition-all"
+                  className: "!py-2 !px-4 !rounded-lg !text-[10px] !font-bold !bg-slate-900 dark:!bg-white/5 !border !border-slate-800 dark:!border-white/10 !text-white hover:!bg-slate-800 dark:hover:!bg-white/10 !transition-all"
                 }}
               />
             </div>
-            <button onClick={toggleTheme} className="p-2 rounded-lg text-slate-400 bg-white/5 hover:bg-white/10 transition-colors">
+            <button onClick={toggleTheme} className="p-2 rounded-lg text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
               {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <div className="md:hidden">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-lg text-slate-400 bg-white/5 hover:bg-white/10 transition-colors">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-lg text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
                 {isMenuOpen ? <X size={16} /> : <Menu size={16} />}
               </button>
             </div>
