@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { ChevronDown, Wallet, CheckCircle, AlertCircle, Info, TrendingUp, ShieldCheck, Star } from 'lucide-react';
+
+import React, { useEffect, useState, useMemo } from 'react';
+import { 
+  ChevronDown, Wallet, CheckCircle, AlertCircle, Info, 
+  TrendingUp, ShieldCheck, Star, Calculator, ArrowRight, 
+  Activity, Copy, Share2, Sparkles, Zap, Timer, 
+  Crown, Gift, ArrowDownUp, RefreshCw
+} from 'lucide-react';
 import { 
   useActiveAccount, 
   ConnectButton,
   useSwitchActiveWalletChain,
   useActiveWalletChain
 } from "thirdweb/react";
-import { 
-  defineChain,
-} from "thirdweb";
+import { defineChain } from "thirdweb";
 import { client, wallets } from "../client";
 import { useTheme } from '../context/ThemeContext';
 
-// --- Configuration ---
-const FALLBACK_FLUID_PRICE = 0.05; // $0.05 per Fluid
+const FLUID_PRICE = 0.05;
+const PRICE_INCREASE_DATE = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3);
 
 interface PaymentOption {
   id: string;
@@ -46,9 +50,28 @@ const PresaleCard: React.FC = () => {
   const [usdAmount, setUsdAmount] = useState<string>('500');
   const [cryptoPrice, setCryptoPrice] = useState<number>(3400); 
   const [status, setStatus] = useState<'IDLE' | 'PENDING' | 'SUCCESS' | 'ERROR'>('IDLE');
-  const [progress, setProgress] = useState(64);
+  const [progress, setProgress] = useState(68);
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [calcPeriod, setCalcPeriod] = useState<'month' | 'year'>('year');
+  const [showReferral, setShowReferral] = useState(false);
   
-  const fluidAmount = usdAmount ? parseFloat(usdAmount) / FALLBACK_FLUID_PRICE : 0;
+  const fluidAmount = useMemo(() => {
+    const base = usdAmount ? parseFloat(usdAmount) / FLUID_PRICE : 0;
+    let bonusMult = 1;
+    const val = parseFloat(usdAmount || '0');
+    if (val >= 10000) bonusMult = 1.15;
+    else if (val >= 5000) bonusMult = 1.10;
+    else if (val >= 1000) bonusMult = 1.05;
+    return Math.floor(base * bonusMult);
+  }, [usdAmount]);
+
+  const projectedRevenue = 50000000;
+  const totalGenesisPool = 2000000;
+  const dividendYield = useMemo(() => {
+    const userStake = parseFloat(usdAmount || '0');
+    const annual = (userStake / totalGenesisPool) * (projectedRevenue * 0.40);
+    return calcPeriod === 'year' ? annual : annual / 12;
+  }, [usdAmount, calcPeriod]);
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -73,7 +96,7 @@ const PresaleCard: React.FC = () => {
       if (chainId !== selectedPayment.chainId) {
          await switchChain(defineChain(selectedPayment.chainId));
       }
-      setTimeout(() => setStatus('SUCCESS'), 2500);
+      setTimeout(() => setStatus('SUCCESS'), 3000);
     } catch (e) {
       setStatus('ERROR');
       setTimeout(() => setStatus('IDLE'), 3000);
@@ -81,136 +104,144 @@ const PresaleCard: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-[500px] mx-auto z-10 scroll-card">
-      <div className="bg-white dark:bg-slate-950/80 backdrop-blur-3xl border border-slate-200 dark:border-white/10 rounded-[3rem] overflow-hidden shadow-2xl ring-1 ring-blue-500/10">
+    <div className="w-full max-w-[540px] mx-auto z-10 animate-fade-in-up">
+      <div className="bg-white dark:bg-slate-950 border-2 border-slate-200 dark:border-white/10 rounded-[3.5rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative ring-1 ring-white/5">
+        <div className="absolute inset-0 bg-tech-grid opacity-[0.03] pointer-events-none"></div>
         
-        {/* Header with Progress */}
-        <div className="p-8 pb-4">
-            <div className="flex justify-between items-end mb-6">
-                <div>
-                   <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter uppercase italic leading-none">Presale Genesis</h2>
-                   <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mt-2 flex items-center gap-1.5">
-                     <ShieldCheck size={12} className="text-emerald-500" /> Audited Smart Contracts
-                   </p>
-                </div>
-                <div className="text-right">
-                   <span className="text-[10px] font-black text-blue-600 dark:text-cyan-400 uppercase tracking-widest block mb-1">Stage 1 of 5</span>
-                   <span className="text-xl font-black text-slate-900 dark:text-white tracking-tighter">64.2% SOLD</span>
-                </div>
+        <div className="bg-slate-50 dark:bg-white/5 border-b border-white/5 px-8 py-4 flex justify-between items-center">
+            <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Shard #1024 Execution</span>
             </div>
-            
-            <div className="w-full h-3 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden shadow-inner border border-slate-200 dark:border-white/5">
-                <div className="h-full bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-400 rounded-full animate-gradient-x shadow-[0_0_15px_rgba(6,182,212,0.5)]" style={{ width: `${progress}%` }}></div>
-            </div>
-            <div className="flex justify-between mt-3 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-               <span>Softcap: $500k</span>
-               <span className="text-emerald-500">Raised: $1,284,500</span>
-               <span>Hardcap: $2M</span>
+            <div className="flex items-center gap-4 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <div className="flex items-center gap-1"><ShieldCheck size={12} className="text-cyan-500" /> Audit Passed</div>
+                <div className="flex items-center gap-1"><Zap size={12} className="text-yellow-500" /> 2M+ TPS Ready</div>
             </div>
         </div>
 
-        <div className="p-8 pt-6 space-y-8">
-            {/* Payment Method */}
+        <div className="p-10 pb-6 relative z-10">
+            <div className="flex justify-between items-start mb-8">
+                <div className="space-y-1">
+                   <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter uppercase italic leading-none">Genesis Round</h2>
+                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 rounded-full border border-cyan-500/20">
+                      <Crown size={12} className="text-cyan-500" />
+                      <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest">Phase 1: Tier Alpha</span>
+                   </div>
+                </div>
+                <div className="text-right">
+                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Current Price</span>
+                   <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">$0.05 <span className="text-xs text-slate-500">/ FLD</span></span>
+                </div>
+            </div>
+            
+            <div className="bg-rose-500/5 border border-rose-500/20 rounded-2xl p-3 flex items-center justify-between mb-8">
+                <div className="flex items-center gap-2">
+                    <Timer size={16} className="text-rose-500" />
+                    <span className="text-[10px] font-black text-rose-400 uppercase tracking-widest">Price Increase in:</span>
+                </div>
+                <span className="text-xs font-black text-rose-400 font-mono tracking-widest">02D : 14H : 52M</span>
+            </div>
+
+            <div className="space-y-3">
+                <div className="flex justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                   <span>Progress</span>
+                   <span className="text-cyan-400 font-black">68.2% Sold Out</span>
+                </div>
+                <div className="w-full h-4 bg-slate-900 rounded-full overflow-hidden shadow-inner border border-white/5 relative">
+                    <div className="h-full bg-fluid-gradient animate-gradient-x rounded-full shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all duration-1000" style={{ width: `${progress}%` }}>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-glow-line"></div>
+                    </div>
+                </div>
+                <div className="flex justify-between text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                   <span>Goal: 40M FLD</span>
+                   <span className="text-emerald-500">Total Raised: $1,420,000</span>
+                </div>
+            </div>
+        </div>
+
+        <div className="p-10 pt-4 space-y-8 relative z-10">
             <div className="space-y-4">
-                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                    <span>Select Network & Asset</span>
-                    <TrendingUp size={14} className="text-emerald-500" />
-                </div>
-                <div className="grid grid-cols-4 gap-3">
-                    {PAYMENT_OPTIONS.map(opt => (
-                        <button 
-                          key={opt.id} 
-                          onClick={() => setSelectedPayment(opt)} 
-                          className={`flex flex-col items-center p-4 rounded-[1.5rem] border transition-all relative overflow-hidden group ${selectedPayment.id === opt.id ? 'bg-blue-600/5 dark:bg-cyan-500/10 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.1)]' : 'bg-white dark:bg-white/5 border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20'}`}
-                        >
-                            <img src={opt.icon} alt={opt.symbol} className="w-8 h-8 rounded-full mb-3 shadow-md group-hover:scale-110 transition-transform" />
-                            <span className="text-[10px] font-black text-slate-900 dark:text-slate-300 tracking-tighter">{opt.symbol}</span>
-                            {selectedPayment.id === opt.id && <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-blue-500 dark:bg-cyan-400 rounded-full shadow-[0_0_5px_rgba(34,211,238,1)]"></div>}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Dividend Callout */}
-            <div className="p-4 bg-emerald-500/5 dark:bg-emerald-400/5 border border-emerald-500/20 rounded-2xl relative overflow-hidden group">
-               <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-inner group-hover:scale-110 transition-transform"><Star size={20} /></div>
-                  <div>
-                    <h4 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest italic mb-0.5">Genesis Profit Sharing</h4>
-                    <p className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-tight">Presale buyers earn a share of global DEX & Storage fees perpetually.</p>
-                  </div>
-               </div>
-            </div>
-
-            {/* Amount Inputs */}
-            <div className="space-y-5">
-                <div className="space-y-3">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Investment Amount (USD)</label>
-                    <div className="relative">
+                <div className="bg-slate-900/60 border border-white/5 rounded-[2.5rem] p-8 shadow-inner relative group hover:border-cyan-500/30 transition-all">
+                    <div className="flex justify-between items-center mb-4">
+                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Investment Amount</label>
+                        <div className="flex gap-2">
+                             {['100', '500', '2500'].map(v => (
+                                 <button key={v} onClick={() => setUsdAmount(v)} className="text-[9px] font-black text-slate-400 hover:text-cyan-400 uppercase transition-colors px-2 py-1 rounded-md hover:bg-cyan-500/5">${v}</button>
+                             ))}
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
                         <input 
                           type="number" 
                           value={usdAmount} 
                           onChange={(e) => setUsdAmount(e.target.value)} 
-                          className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-[1.5rem] py-5 pl-6 pr-32 text-3xl font-black text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-cyan-500 transition-all shadow-inner tracking-tighter" 
+                          className="flex-1 bg-transparent text-5xl font-black text-slate-900 dark:text-white outline-none tracking-tighter placeholder:text-slate-800" 
                           placeholder="0.00" 
                         />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-white dark:bg-slate-800 px-4 py-2.5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm flex items-center gap-2">
-                            <span className="text-xs font-black text-slate-900 dark:text-white">USD</span>
+                        <div className="bg-slate-800 px-5 py-3 rounded-2xl border border-white/5 shadow-xl flex items-center gap-2">
+                            <span className="text-sm font-black text-white">USD</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-[1.5rem] p-5 flex justify-between items-center relative overflow-hidden group shadow-inner">
-                    <div className="absolute inset-0 bg-tech-grid opacity-[0.02]"></div>
-                    <div>
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Expected Tokens</span>
-                        <div className="text-2xl font-black text-blue-600 dark:text-cyan-400 tracking-tighter">
-                            {fluidAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })} <span className="text-sm">Fluids</span>
-                        </div>
+                <div className="flex justify-center -my-6 relative z-20">
+                    <div className="bg-slate-900 p-2 rounded-2xl border-4 border-slate-950 shadow-2xl">
+                        <ArrowDownUp size={20} className="text-cyan-500" />
                     </div>
-                    <div className="text-right">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Price Per Unit</span>
-                        <div className="text-sm font-black text-slate-900 dark:text-white">$0.05</div>
+                </div>
+
+                <div className="bg-slate-900/60 border border-white/5 rounded-[2.5rem] p-8 shadow-inner relative group">
+                    <div className="flex justify-between items-center mb-4">
+                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Expected Distribution</label>
+                        {parseFloat(usdAmount) >= 1000 && (
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                                <Gift size={10} className="text-emerald-500" />
+                                <span className="text-[8px] font-black text-emerald-500 uppercase">+{parseFloat(usdAmount) >= 10000 ? '15%' : parseFloat(usdAmount) >= 5000 ? '10%' : '5%'} Bonus</span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <div className="flex-1 text-5xl font-black text-fluid-gradient tracking-tighter">
+                            {fluidAmount.toLocaleString()}
+                        </div>
+                        <div className="bg-cyan-500/10 px-5 py-3 rounded-2xl border border-cyan-500/20 shadow-xl flex items-center gap-2">
+                            <div className="w-5 h-5 text-cyan-400">
+                                <svg viewBox="0 0 100 100" fill="currentColor"><path d="M55 20 H90 A5 5 0 0 1 90 35 H55 A5 5 0 0 1 55 20 Z" transform="skewX(-20)" /><path d="M40 42 H85 A5 5 0 0 1 85 57 H40 A5 5 0 0 1 40 42 Z" transform="skewX(-20)" /><path d="M25 64 H60 A5 5 0 0 1 60 79 H25 A5 5 0 0 1 25 64 Z" transform="skewX(-20)" /></svg>
+                            </div>
+                            <span className="text-sm font-black text-cyan-400">FLD</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Action Button */}
             <div className="pt-2">
                 {!account ? (
                     <ConnectButton 
                         client={client} 
                         wallets={wallets} 
-                        theme={theme === 'dark' ? "dark" : "light"} 
-                        connectButton={{ label: "Connect to Buy", className: "!w-full !py-5 !rounded-3xl !text-lg !font-black !bg-slate-900 dark:!bg-white !text-white dark:!text-black !shadow-2xl !tracking-widest !uppercase !transition-all hover:!opacity-90" }} 
+                        theme="dark"
+                        connectButton={{ 
+                            label: "Initialize Genesis", 
+                            className: "!w-full !py-7 !rounded-[2.5rem] !text-xl !font-black !bg-white !text-slate-950 !shadow-2xl !tracking-[0.2em] !uppercase !transition-all hover:!opacity-90 active:!scale-95" 
+                        }} 
                     />
                 ) : (
                     <button 
                       onClick={handleBuy} 
-                      disabled={status === 'PENDING'} 
-                      className="w-full py-5 rounded-3xl text-lg font-black bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-cyan-400 dark:to-blue-600 text-white dark:text-slate-950 hover:brightness-110 active:scale-[0.98] transition-all shadow-2xl uppercase tracking-[0.2em] flex items-center justify-center gap-3"
+                      disabled={status === 'PENDING' || !usdAmount} 
+                      className={`w-full py-7 rounded-[2.5rem] text-xl font-black transition-all shadow-2xl uppercase tracking-[0.2em] flex items-center justify-center gap-3 active:scale-[0.98] ${
+                        status === 'PENDING' 
+                        ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
+                        : 'bg-fluid-gradient animate-gradient-x text-white hover:brightness-110'
+                      }`}
                     >
                         {status === 'PENDING' ? (
-                            <><div className="w-5 h-5 border-4 border-white/30 border-t-white rounded-full animate-spin"></div> Syncing Node</>
+                            <><RefreshCw className="animate-spin" size={24} /> Syncing Shards...</>
                         ) : (
-                            <><Wallet size={20} /> Swap for Fluids</>
+                            <><Wallet size={24} /> Secure {fluidAmount.toLocaleString()} Fluids</>
                         )}
                     </button>
                 )}
-            </div>
-
-            {status === 'SUCCESS' && (
-                <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-black text-center uppercase tracking-widest animate-fade-in-up flex items-center justify-center gap-2">
-                    <CheckCircle size={14} /> Transaction Confirmed on Shard #102
-                </div>
-            )}
-            
-            <div className="flex items-center justify-center gap-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-               <div className="flex items-center gap-1"><ShieldCheck size={12} className="text-blue-500" /> Secure</div>
-               <div className="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
-               <div className="flex items-center gap-1"><Info size={12} /> Min: $50</div>
-               <div className="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
-               <div className="flex items-center gap-1"><TrendingUp size={12} className="text-emerald-500" /> Yield Active</div>
             </div>
         </div>
       </div>

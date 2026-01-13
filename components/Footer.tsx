@@ -1,7 +1,13 @@
+
 import React from 'react';
 import { Download, Mail, Facebook } from 'lucide-react';
 
-const Footer: React.FC = () => {
+// Fix: Added props interface to support onNavigate navigation
+interface FooterProps {
+  onNavigate: (page: string) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const handleDownloadLogo = () => {
     const svgContent = `
       <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100" fill="white">
@@ -109,8 +115,19 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="flex justify-center gap-6 mb-6 text-sm text-slate-600 dark:text-slate-400 font-medium">
-            <a href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</a>
+            {/* Fix: Added onNavigate logic to privacy and terms links */}
+            <button 
+                onClick={() => onNavigate('privacy')}
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+                Privacy Policy
+            </button>
+            <button 
+                onClick={() => onNavigate('terms')}
+                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+                Terms of Service
+            </button>
             <button onClick={handleDownloadLogo} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Brand Kit</button>
           </div>
 

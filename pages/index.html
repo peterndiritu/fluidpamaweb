@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth dark">
   <head>
@@ -7,17 +8,7 @@
     <meta name="description" content="Fluid is the first Layer-1 blockchain delivering 2M+ TPS with zero-downtime hosting. Store, spend, and host infinitely with our secure non-custodial wallet and Parmaweb protocol." />
     <meta name="keywords" content="Fluid, Crypto, Fiat, Wallet, Blockchain, Hosting, Presale, Layer-1, DEX, AI, Web3, Parmaweb, Non-custodial" />
     
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fluid.finance/" />
-    <meta property="og:title" content="Fluid - Crypto, Fiat Wallet & Blockchain Hosting" />
-    <meta property="og:description" content="Fluid is the first Layer-1 blockchain delivering 2M+ TPS with zero-downtime hosting. Store, spend, and host infinitely with our secure non-custodial wallet and Parmaweb protocol." />
-    <meta property="og:image" content="https://fluid.finance/og-image.jpg" />
-
-    <!-- External Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
     <script>
       if (typeof process === 'undefined') {
         window.process = { env: {} };
@@ -34,13 +25,19 @@
               slate: {
                 850: '#151e32',
                 950: '#020617',
+              },
+              fluid: {
+                cyan: '#22d3ee',
+                indigo: '#6366f1',
+                emerald: '#10b981'
               }
             },
             animation: {
               'fade-in-up': 'fadeInUp 0.5s ease-out',
               'bounce-slow': 'bounce 3s infinite',
-              'gradient-x': 'gradientX 8s ease infinite',
+              'gradient-x': 'gradientX 6s linear infinite',
               'spin-slow': 'spin 8s linear infinite',
+              'glow-line': 'glowLine 3s linear infinite',
             },
             keyframes: {
               fadeInUp: {
@@ -50,7 +47,15 @@
               gradientX: {
                 '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
                 '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+              },
+              glowLine: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' },
               }
+            },
+            backgroundImage: {
+              'fluid-gradient': 'linear-gradient(to right, #22d3ee, #6366f1, #a855f7, #10b981)',
+              'fluid-gradient-vertical': 'linear-gradient(to bottom, #22d3ee, #6366f1, #10b981)',
             }
           }
         }
@@ -61,128 +66,47 @@
       body {
         font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
+        background-color: #020617;
       }
       
-      /* Enforce font family everywhere */
-      * {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-      }
+      * { font-family: 'Inter', sans-serif !important; }
 
-      /* Global non-italic rule except for docs-section */
-      *:not(.docs-section *) {
-        font-style: normal !important;
-      }
+      *:not(.docs-section *) { font-style: normal !important; }
 
-      /* Tech/Hosting Background Pattern */
       .bg-tech-grid {
         background-size: 50px 50px;
-        background-image: 
-          linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-      }
-      
-      .dark .bg-tech-grid {
         background-image: 
           linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
           linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       }
 
-      /* Scroll Animation Classes */
+      .text-fluid-gradient {
+        background: linear-gradient(to right, #22d3ee, #6366f1, #a855f7, #10b981);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientX 6s linear infinite;
+      }
+
       .scroll-card {
         opacity: 0;
-        transform: translateY(30px) scale(0.98);
-        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform;
+        transform: translateY(20px);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .scroll-card.in-view {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
 
-      /* Unified Custom Scrollbar */
       ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      .dark ::-webkit-scrollbar-track { background: #020617; }
-      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-      .dark ::-webkit-scrollbar-thumb { background: #1e293b; }
-      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-      .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
-
-      /* Print styles for PDF generation */
-      @media print {
-        body {
-          background: white !important;
-          color: black !important;
-        }
-        nav, footer, aside, .no-print {
-          display: none !important;
-        }
-        .bg-tech-grid {
-          display: none !important;
-        }
-        main {
-          width: 100% !important;
-          margin: 0 !important;
-          padding: 0 !important;
-        }
-        .min-h-screen {
-          min-h: auto !important;
-          padding-top: 0 !important;
-        }
-        .max-w-[1400px], .max-w-4xl {
-          max-width: 100% !important;
-        }
-        h1, h2, h3, h4, h5 {
-          color: black !important;
-          page-break-after: avoid;
-        }
-        p, div {
-          color: #333 !important;
-        }
-        section {
-          page-break-inside: avoid;
-          margin-bottom: 2rem !important;
-        }
-        .animate-fade-in-up {
-          animation: none !important;
-          opacity: 1 !important;
-          transform: none !important;
-        }
-        .dark {
-          color-scheme: light !important;
-        }
-        .shadow-2xl, .shadow-xl, .shadow-lg, .shadow-md, .shadow-sm {
-          box-shadow: none !important;
-          border: 1px solid #eee !important;
-        }
-      }
+      ::-webkit-scrollbar-track { background: #020617; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@18.3.1",
-    "react/": "https://esm.sh/react@18.3.1/",
-    "react-dom": "https://esm.sh/react-dom@18.3.1",
-    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
-    "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.3.1",
-    "ethers": "https://esm.sh/ethers@6.11.1",
-    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
-    "recharts": "https://esm.sh/recharts@2.12.7?deps=react@18.3.1,react-dom@18.3.1",
-    "thirdweb": "https://esm.sh/thirdweb@5.54.0?deps=react@18.3.1,react-dom@18.3.1",
-    "thirdweb/react": "https://esm.sh/thirdweb@5.54.0/react?deps=react@18.3.1,react-dom@18.3.1",
-    "thirdweb/wallets": "https://esm.sh/thirdweb@5.54.0/wallets?deps=react@18.3.1,react-dom@18.3.1",
-    "thirdweb/chains": "https://esm.sh/thirdweb@5.54.0/chains?deps=react@18.3.1,react-dom@18.3.1",
-    "thirdweb/utils": "https://esm.sh/thirdweb@5.54.0/utils?deps=react@18.3.1,react-dom@18.3.1",
-    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.2",
-    "thirdweb/": "https://esm.sh/thirdweb@^5.116.1/"
-  }
-}
-</script>
-</head>
-  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-300">
+  </head>
+  <body class="bg-slate-950 text-white selection:bg-cyan-500/30">
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
     <script>
@@ -191,18 +115,16 @@
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
-            } else {
-              entry.target.classList.remove('in-view'); 
             }
           });
         }, { threshold: 0.1 });
 
-        const observeElements = () => {
+        const observe = () => {
           document.querySelectorAll('.scroll-card').forEach(el => observer.observe(el));
         };
 
-        observeElements();
-        setInterval(observeElements, 1500);
+        observe();
+        setInterval(observe, 1500);
       });
     </script>
   </body>

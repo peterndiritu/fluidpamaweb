@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Zap, Shield, Layers, Code2, Globe, Cpu, CheckCircle, Wifi, Copy, Check, Wallet } from 'lucide-react';
 
@@ -9,7 +10,12 @@ const FLUID_LOGO_SVG = (
   </svg>
 );
 
-const BlockchainPage: React.FC = () => {
+// Fix: Added props interface to support onOpenWhitepaper navigation
+interface BlockchainPageProps {
+  onOpenWhitepaper: () => void;
+}
+
+const BlockchainPage: React.FC<BlockchainPageProps> = ({ onOpenWhitepaper }) => {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const copyToClipboard = (text: string, field: string) => {
@@ -36,7 +42,11 @@ const BlockchainPage: React.FC = () => {
              <button className="px-8 py-4 bg-blue-600 text-white font-black rounded-full hover:bg-blue-500 transition-colors shadow-lg shadow-blue-500/25 tracking-tight">
                 Start building
              </button>
-             <button className="px-8 py-4 bg-transparent border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-black rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors tracking-tight">
+             {/* Fix: Added onClick handler to trigger whitepaper navigation */}
+             <button 
+                onClick={onOpenWhitepaper}
+                className="px-8 py-4 bg-transparent border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-black rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors tracking-tight"
+             >
                 Read whitepaper
              </button>
         </div>
